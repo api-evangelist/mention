@@ -1,0 +1,63 @@
+{
+    "name": "Mention",
+    "description": "Get the easy-to-use media monitoring tool that lets you track social mentions, analyze competitors, find influencers, and generate leads.",
+    "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/screen-capture-api\/1761-mention.jpg",
+    "tags": [
+        "api provider",
+        "have api",
+        "media monitoring",
+        "notifications",
+        "social"
+    ],
+    "created": "2019-12-19",
+    "modified": "2019-12-19",
+    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/mention\/master\/apis.json",
+    "specificationVersion": "0.14",
+    "apis": [
+        {
+            "name": "Mention",
+            "description": null,
+            "image": "http:\/\/kinlane-productions.s3.amazonaws.com\/screen-capture-api\/1761-mention.jpg",
+            "humanURL": "https:\/\/mention.net\/",
+            "baseURL": "",
+            "tags": [],
+            "properties": [
+                {
+                    "type": "x-openapi",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/mention-openapi.json"
+                },
+                {
+                    "type": "x-postman-collecction",
+                    "url": "https:\/\/raw.githubusercontent.com\/api-evangelist\/1forge\/master\/mention-postman-collection.json"
+                }
+            ]
+        }
+    ],
+    "include": [],
+    "x-common": [
+        {
+            "type": "Base",
+            "url": "https:\/\/web.mention.net\/"
+        },
+        {
+            "type": "Crunchbase",
+            "url": "https:\/\/crunchbase.com\/organization\/mention"
+        },
+        {
+            "type": "Developers",
+            "url": "https:\/\/dev.mention.net\/"
+        },
+        {
+            "type": "Email",
+            "url": "support@mention.com"
+        },
+        {
+            "type": "Twitter",
+            "url": "https:\/\/twitter.com\/mention"
+        },
+        {
+            "type": "Website",
+            "url": "https:\/\/mention.net\/"
+        }
+    ]
+}
