@@ -8,10 +8,10 @@ description: >-
 type: Index
 image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
 tags:
-  - Media Monitoring
-  - Social Listening
   - Alerts
   - Brand Monitoring
+  - Media Monitoring
+  - Social Listening
 url: >-
   https://raw.githubusercontent.com/api-evangelist/mention/refs/heads/main/apis.yml
 created: '2026-03-16'
@@ -28,9 +28,9 @@ apis:
     humanURL: https://api.mention.com/
     baseURL: https://api.mention.com/api
     tags:
+      - Alerts
       - Media Monitoring
       - Social Listening
-      - Alerts
     properties:
       - type: Documentation
         url: https://api.mention.com/
