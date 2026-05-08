@@ -36,6 +36,8 @@ apis:
         url: https://api.mention.com/
       - type: Getting Started
         url: https://en.support.mention.com/en/articles/1904644-api-access-explained
+      - type: OpenAPI
+        url: openapi/mention-openapi.yml
 common:
   - type: Portal
     url: https://mention.com/en/media-monitoring-api/
