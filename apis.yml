@@ -34,7 +34,7 @@ apis:
     properties:
       - type: Documentation
         url: https://api.mention.com/
-      - type: Getting Started
+      - type: GettingStarted
         url: https://en.support.mention.com/en/articles/1904644-api-access-explained
       - type: OpenAPI
         url: openapi/mention-openapi.yml
@@ -43,7 +43,7 @@ common:
     url: https://mention.com/en/media-monitoring-api/
   - type: Website
     url: https://mention.com/
-  - type: Sign Up
+  - type: SignUp
     url: https://mention.com/en/pricing/
   - type: Login
     url: https://app.mention.com/login
