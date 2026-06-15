@@ -1,0 +1,613 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Mention API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Fetch all alerts of an account",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/alerts"
+      },
+      "docs": "Fetch all alerts of an account"
+    },
+    {
+      "info": {
+        "name": "Create an alert",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://api.mention.com/api/alerts"
+      },
+      "docs": "Create an alert"
+    },
+    {
+      "info": {
+        "name": "Fetch an alert",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/alerts/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Fetch an alert"
+    },
+    {
+      "info": {
+        "name": "Update an alert",
+        "type": "http"
+      },
+      "http": {
+        "method": "PUT",
+        "url": "https://api.mention.com/api/alerts/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Update an alert"
+    },
+    {
+      "info": {
+        "name": "Delete an alert",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://api.mention.com/api/alerts/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Delete an alert"
+    },
+    {
+      "info": {
+        "name": "Pause an alert",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://api.mention.com/api/alerts/:id/pause",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Pause an alert"
+    },
+    {
+      "info": {
+        "name": "Unpause an alert",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://api.mention.com/api/alerts/:id/unpause",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Unpause an alert"
+    },
+    {
+      "info": {
+        "name": "Fetch mentions",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/mentions"
+      },
+      "docs": "Fetch mentions"
+    },
+    {
+      "info": {
+        "name": "Fetch a mention",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/mentions/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Fetch a mention"
+    },
+    {
+      "info": {
+        "name": "Curate a mention",
+        "type": "http"
+      },
+      "http": {
+        "method": "PUT",
+        "url": "https://api.mention.com/api/mentions/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Curate a mention"
+    },
+    {
+      "info": {
+        "name": "Fetch mention children",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/mentions/:id/children",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Fetch mention children"
+    },
+    {
+      "info": {
+        "name": "Stream mentions",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/mentions/stream"
+      },
+      "docs": "Stream mentions"
+    },
+    {
+      "info": {
+        "name": "Mark all mentions as read",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://api.mention.com/api/mentions/mark-all-read"
+      },
+      "docs": "Mark all mentions as read"
+    },
+    {
+      "info": {
+        "name": "Create an account",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://api.mention.com/api/accounts"
+      },
+      "docs": "Create an account"
+    },
+    {
+      "info": {
+        "name": "Fetch an account",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/accounts/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Fetch an account"
+    },
+    {
+      "info": {
+        "name": "Update an account",
+        "type": "http"
+      },
+      "http": {
+        "method": "PUT",
+        "url": "https://api.mention.com/api/accounts/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Update an account"
+    },
+    {
+      "info": {
+        "name": "Delete an account",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://api.mention.com/api/accounts/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Delete an account"
+    },
+    {
+      "info": {
+        "name": "Get my account",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/accounts/me"
+      },
+      "docs": "Get my account"
+    },
+    {
+      "info": {
+        "name": "Fetch all shares of an alert",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/alerts/:id/shares",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Fetch all shares of an alert"
+    },
+    {
+      "info": {
+        "name": "Create a share",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://api.mention.com/api/alerts/:id/shares",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Create a share"
+    },
+    {
+      "info": {
+        "name": "Fetch a share",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/shares/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Fetch a share"
+    },
+    {
+      "info": {
+        "name": "Update a share",
+        "type": "http"
+      },
+      "http": {
+        "method": "PUT",
+        "url": "https://api.mention.com/api/shares/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Update a share"
+    },
+    {
+      "info": {
+        "name": "Delete a share",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://api.mention.com/api/shares/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Delete a share"
+    },
+    {
+      "info": {
+        "name": "Fetch alert preferences",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/alerts/:id/preferences",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Fetch alert preferences"
+    },
+    {
+      "info": {
+        "name": "Update alert preferences",
+        "type": "http"
+      },
+      "http": {
+        "method": "PUT",
+        "url": "https://api.mention.com/api/alerts/:id/preferences",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Update alert preferences"
+    },
+    {
+      "info": {
+        "name": "Fetch all tags of an alert",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/alerts/:id/tags",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Fetch all tags of an alert"
+    },
+    {
+      "info": {
+        "name": "Create a tag for an alert",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://api.mention.com/api/alerts/:id/tags",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Create a tag for an alert"
+    },
+    {
+      "info": {
+        "name": "Rename a tag",
+        "type": "http"
+      },
+      "http": {
+        "method": "PUT",
+        "url": "https://api.mention.com/api/tags/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Rename a tag"
+    },
+    {
+      "info": {
+        "name": "Delete a tag",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://api.mention.com/api/tags/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Delete a tag"
+    },
+    {
+      "info": {
+        "name": "Fetch authors",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/authors"
+      },
+      "docs": "Fetch authors"
+    },
+    {
+      "info": {
+        "name": "Fetch all tasks of a mention",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/mentions/:id/tasks",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Fetch all tasks of a mention"
+    },
+    {
+      "info": {
+        "name": "Create a task on a mention",
+        "type": "http"
+      },
+      "http": {
+        "method": "POST",
+        "url": "https://api.mention.com/api/mentions/:id/tasks",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Create a task on a mention"
+    },
+    {
+      "info": {
+        "name": "Fetch all tasks of an alert",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/alerts/:id/tasks",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Fetch all tasks of an alert"
+    },
+    {
+      "info": {
+        "name": "Fetch a task",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/tasks/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Fetch a task"
+    },
+    {
+      "info": {
+        "name": "Update a task",
+        "type": "http"
+      },
+      "http": {
+        "method": "PUT",
+        "url": "https://api.mention.com/api/tasks/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Update a task"
+    },
+    {
+      "info": {
+        "name": "Delete a task",
+        "type": "http"
+      },
+      "http": {
+        "method": "DELETE",
+        "url": "https://api.mention.com/api/tasks/:id",
+        "params": [
+          {
+            "name": "id",
+            "value": "",
+            "type": "path"
+          }
+        ]
+      },
+      "docs": "Delete a task"
+    },
+    {
+      "info": {
+        "name": "Fetch statistics",
+        "type": "http"
+      },
+      "http": {
+        "method": "GET",
+        "url": "https://api.mention.com/api/stats"
+      },
+      "docs": "Fetch statistics"
+    }
+  ],
+  "bundled": true
+}
