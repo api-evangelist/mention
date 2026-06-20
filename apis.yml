@@ -5,7 +5,7 @@ description: >-
   42 languages. Its JSON-based RESTful API gives developers programmatic access to alerts, mentions, streaming data, and
   account management features.
 type: Index
-image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 tags:
   - Alerts
   - Brand Monitoring
