@@ -42,7 +42,7 @@ common:
     url: https://mention.com/en/media-monitoring-api/
   - type: Website
     url: https://mention.com/
-  - type: SignUp
+  - type: Signup
     url: https://mention.com/en/pricing/
   - type: Login
     url: https://app.mention.com/login
