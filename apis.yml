@@ -36,6 +36,8 @@ apis:
       - type: OpenAPI
         url: openapi/mention-openapi.yml
 common:
+  - type: DomainSecurity
+    url: security/mention-domain-security.yml
   - type: LinkedIn
     url: https://www.linkedin.com/company/mention
   - type: Portal
@@ -50,6 +52,8 @@ common:
     url: https://mention.com/en/pricing/
   - type: Support
     url: https://en.support.mention.com/
+  - url: https://mention.com/en/blog/feed/
+    type: Blog
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
