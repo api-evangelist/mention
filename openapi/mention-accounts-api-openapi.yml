@@ -1,0 +1,84 @@
+openapi: 3.1.0
+info:
+  title: Mention Accounts API
+  description: Minimal OpenAPI 3.1 specification for the Mention API, covering alerts, mentions, accounts, shares, alert preferences, tags, authors, tasks, and statistics.
+  version: 1.0.0
+servers:
+- url: https://api.mention.com/api
+  description: Mention API
+tags:
+- name: Accounts
+paths:
+  /accounts:
+    post:
+      operationId: createAccount
+      summary: Create an account
+      responses:
+        '201':
+          description: Account created
+        default:
+          description: Error response
+      tags:
+      - Accounts
+  /accounts/{id}:
+    get:
+      operationId: getAccount
+      summary: Fetch an account
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Account object
+        default:
+          description: Error response
+      tags:
+      - Accounts
+    put:
+      operationId: updateAccount
+      summary: Update an account
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Account updated
+        default:
+          description: Error response
+      tags:
+      - Accounts
+    delete:
+      operationId: deleteAccount
+      summary: Delete an account
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Account deleted
+        default:
+          description: Error response
+      tags:
+      - Accounts
+  /accounts/me:
+    get:
+      operationId: getMe
+      summary: Get my account
+      responses:
+        '200':
+          description: My account
+        default:
+          description: Error response
+      tags:
+      - Accounts
+x-generated-from: https://dev.mention.com/
+x-generated-by: claude-crawl-2026-05-08

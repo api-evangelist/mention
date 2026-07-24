@@ -1,0 +1,233 @@
+openapi: 3.1.0
+info:
+  title: Mention Accounts Alerts API
+  description: Minimal OpenAPI 3.1 specification for the Mention API, covering alerts, mentions, accounts, shares, alert preferences, tags, authors, tasks, and statistics.
+  version: 1.0.0
+servers:
+- url: https://api.mention.com/api
+  description: Mention API
+tags:
+- name: Alerts
+paths:
+  /alerts:
+    get:
+      operationId: listAlerts
+      summary: Fetch all alerts of an account
+      responses:
+        '200':
+          description: List of alerts
+        default:
+          description: Error response
+      tags:
+      - Alerts
+    post:
+      operationId: createAlert
+      summary: Create an alert
+      responses:
+        '201':
+          description: Alert created
+        default:
+          description: Error response
+      tags:
+      - Alerts
+  /alerts/{id}:
+    get:
+      operationId: getAlert
+      summary: Fetch an alert
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Alert object
+        default:
+          description: Error response
+      tags:
+      - Alerts
+    put:
+      operationId: updateAlert
+      summary: Update an alert
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Alert updated
+        default:
+          description: Error response
+      tags:
+      - Alerts
+    delete:
+      operationId: deleteAlert
+      summary: Delete an alert
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Alert deleted
+        default:
+          description: Error response
+      tags:
+      - Alerts
+  /alerts/{id}/pause:
+    post:
+      operationId: pauseAlert
+      summary: Pause an alert
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Alert paused
+        default:
+          description: Error response
+      tags:
+      - Alerts
+  /alerts/{id}/unpause:
+    post:
+      operationId: unpauseAlert
+      summary: Unpause an alert
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Alert unpaused
+        default:
+          description: Error response
+      tags:
+      - Alerts
+  /alerts/{id}/shares:
+    get:
+      operationId: listAlertShares
+      summary: Fetch all shares of an alert
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of shares
+        default:
+          description: Error response
+      tags:
+      - Alerts
+    post:
+      operationId: createAlertShare
+      summary: Create a share
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Share created
+        default:
+          description: Error response
+      tags:
+      - Alerts
+  /alerts/{id}/preferences:
+    get:
+      operationId: getAlertPreferences
+      summary: Fetch alert preferences
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Preferences object
+        default:
+          description: Error response
+      tags:
+      - Alerts
+    put:
+      operationId: updateAlertPreferences
+      summary: Update alert preferences
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Preferences updated
+        default:
+          description: Error response
+      tags:
+      - Alerts
+  /alerts/{id}/tags:
+    get:
+      operationId: listAlertTags
+      summary: Fetch all tags of an alert
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of tags
+        default:
+          description: Error response
+      tags:
+      - Alerts
+    post:
+      operationId: createAlertTag
+      summary: Create a tag for an alert
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Tag created
+        default:
+          description: Error response
+      tags:
+      - Alerts
+  /alerts/{id}/tasks:
+    get:
+      operationId: listAlertTasks
+      summary: Fetch all tasks of an alert
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of tasks
+        default:
+          description: Error response
+      tags:
+      - Alerts
+x-generated-from: https://dev.mention.com/
+x-generated-by: claude-crawl-2026-05-08

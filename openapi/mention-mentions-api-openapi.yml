@@ -1,0 +1,129 @@
+openapi: 3.1.0
+info:
+  title: Mention Accounts Mentions API
+  description: Minimal OpenAPI 3.1 specification for the Mention API, covering alerts, mentions, accounts, shares, alert preferences, tags, authors, tasks, and statistics.
+  version: 1.0.0
+servers:
+- url: https://api.mention.com/api
+  description: Mention API
+tags:
+- name: Mentions
+paths:
+  /mentions:
+    get:
+      operationId: listMentions
+      summary: Fetch mentions
+      responses:
+        '200':
+          description: List of mentions
+        default:
+          description: Error response
+      tags:
+      - Mentions
+  /mentions/{id}:
+    get:
+      operationId: getMention
+      summary: Fetch a mention
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Mention object
+        default:
+          description: Error response
+      tags:
+      - Mentions
+    put:
+      operationId: curateMention
+      summary: Curate a mention
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Mention curated
+        default:
+          description: Error response
+      tags:
+      - Mentions
+  /mentions/{id}/children:
+    get:
+      operationId: getMentionChildren
+      summary: Fetch mention children
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of mention children
+        default:
+          description: Error response
+      tags:
+      - Mentions
+  /mentions/stream:
+    get:
+      operationId: streamMentions
+      summary: Stream mentions
+      responses:
+        '200':
+          description: Stream of mentions
+        default:
+          description: Error response
+      tags:
+      - Mentions
+  /mentions/mark-all-read:
+    post:
+      operationId: markAllMentionsRead
+      summary: Mark all mentions as read
+      responses:
+        '204':
+          description: Marked as read
+        default:
+          description: Error response
+      tags:
+      - Mentions
+  /mentions/{id}/tasks:
+    get:
+      operationId: listMentionTasks
+      summary: Fetch all tasks of a mention
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of tasks
+        default:
+          description: Error response
+      tags:
+      - Mentions
+    post:
+      operationId: createMentionTask
+      summary: Create a task on a mention
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Task created
+        default:
+          description: Error response
+      tags:
+      - Mentions
+x-generated-from: https://dev.mention.com/
+x-generated-by: claude-crawl-2026-05-08

@@ -1,0 +1,62 @@
+openapi: 3.1.0
+info:
+  title: Mention Accounts Shares API
+  description: Minimal OpenAPI 3.1 specification for the Mention API, covering alerts, mentions, accounts, shares, alert preferences, tags, authors, tasks, and statistics.
+  version: 1.0.0
+servers:
+- url: https://api.mention.com/api
+  description: Mention API
+tags:
+- name: Shares
+paths:
+  /shares/{id}:
+    get:
+      operationId: getShare
+      summary: Fetch a share
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Share object
+        default:
+          description: Error response
+      tags:
+      - Shares
+    put:
+      operationId: updateShare
+      summary: Update a share
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Share updated
+        default:
+          description: Error response
+      tags:
+      - Shares
+    delete:
+      operationId: deleteShare
+      summary: Delete a share
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Share deleted
+        default:
+          description: Error response
+      tags:
+      - Shares
+x-generated-from: https://dev.mention.com/
+x-generated-by: claude-crawl-2026-05-08

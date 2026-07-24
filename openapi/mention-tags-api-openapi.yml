@@ -1,0 +1,46 @@
+openapi: 3.1.0
+info:
+  title: Mention Accounts Tags API
+  description: Minimal OpenAPI 3.1 specification for the Mention API, covering alerts, mentions, accounts, shares, alert preferences, tags, authors, tasks, and statistics.
+  version: 1.0.0
+servers:
+- url: https://api.mention.com/api
+  description: Mention API
+tags:
+- name: Tags
+paths:
+  /tags/{id}:
+    put:
+      operationId: renameTag
+      summary: Rename a tag
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Tag renamed
+        default:
+          description: Error response
+      tags:
+      - Tags
+    delete:
+      operationId: deleteTag
+      summary: Delete a tag
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Tag deleted
+        default:
+          description: Error response
+      tags:
+      - Tags
+x-generated-from: https://dev.mention.com/
+x-generated-by: claude-crawl-2026-05-08

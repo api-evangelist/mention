@@ -1,0 +1,24 @@
+openapi: 3.1.0
+info:
+  title: Mention Accounts Authors API
+  description: Minimal OpenAPI 3.1 specification for the Mention API, covering alerts, mentions, accounts, shares, alert preferences, tags, authors, tasks, and statistics.
+  version: 1.0.0
+servers:
+- url: https://api.mention.com/api
+  description: Mention API
+tags:
+- name: Authors
+paths:
+  /authors:
+    get:
+      operationId: listAuthors
+      summary: Fetch authors
+      responses:
+        '200':
+          description: List of authors
+        default:
+          description: Error response
+      tags:
+      - Authors
+x-generated-from: https://dev.mention.com/
+x-generated-by: claude-crawl-2026-05-08
