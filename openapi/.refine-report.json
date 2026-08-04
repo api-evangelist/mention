@@ -1,0 +1,28 @@
+{
+  "provider": "mention",
+  "sources": [
+    "mention-accounts-api-openapi.yml",
+    "mention-alerts-api-openapi.yml",
+    "mention-authors-api-openapi.yml",
+    "mention-mentions-api-openapi.yml",
+    "mention-shares-api-openapi.yml",
+    "mention-stats-api-openapi.yml",
+    "mention-tags-api-openapi.yml",
+    "mention-tasks-api-openapi.yml"
+  ],
+  "outputs": [
+    "mention-accounts-api-openapi.yml",
+    "mention-alerts-api-openapi.yml",
+    "mention-authors-api-openapi.yml",
+    "mention-mentions-api-openapi.yml",
+    "mention-shares-api-openapi.yml",
+    "mention-stats-api-openapi.yml",
+    "mention-tags-api-openapi.yml",
+    "mention-tasks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

@@ -1,0 +1,501 @@
+openapi: 3.1.0
+info:
+  title: Mention API
+  description: >-
+    Minimal OpenAPI 3.1 specification for the Mention API, covering
+    alerts, mentions, accounts, shares, alert preferences, tags,
+    authors, tasks, and statistics.
+  version: 1.0.0
+x-generated-from: https://dev.mention.com/
+x-generated-by: claude-crawl-2026-05-08
+servers:
+  - url: https://api.mention.com/api
+    description: Mention API
+paths:
+  /alerts:
+    get:
+      operationId: listAlerts
+      summary: Fetch all alerts of an account
+      responses:
+        '200':
+          description: List of alerts
+        default:
+          description: Error response
+    post:
+      operationId: createAlert
+      summary: Create an alert
+      responses:
+        '201':
+          description: Alert created
+        default:
+          description: Error response
+  /alerts/{id}:
+    get:
+      operationId: getAlert
+      summary: Fetch an alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Alert object
+        default:
+          description: Error response
+    put:
+      operationId: updateAlert
+      summary: Update an alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Alert updated
+        default:
+          description: Error response
+    delete:
+      operationId: deleteAlert
+      summary: Delete an alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Alert deleted
+        default:
+          description: Error response
+  /alerts/{id}/pause:
+    post:
+      operationId: pauseAlert
+      summary: Pause an alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Alert paused
+        default:
+          description: Error response
+  /alerts/{id}/unpause:
+    post:
+      operationId: unpauseAlert
+      summary: Unpause an alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Alert unpaused
+        default:
+          description: Error response
+  /mentions:
+    get:
+      operationId: listMentions
+      summary: Fetch mentions
+      responses:
+        '200':
+          description: List of mentions
+        default:
+          description: Error response
+  /mentions/{id}:
+    get:
+      operationId: getMention
+      summary: Fetch a mention
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Mention object
+        default:
+          description: Error response
+    put:
+      operationId: curateMention
+      summary: Curate a mention
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Mention curated
+        default:
+          description: Error response
+  /mentions/{id}/children:
+    get:
+      operationId: getMentionChildren
+      summary: Fetch mention children
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of mention children
+        default:
+          description: Error response
+  /mentions/stream:
+    get:
+      operationId: streamMentions
+      summary: Stream mentions
+      responses:
+        '200':
+          description: Stream of mentions
+        default:
+          description: Error response
+  /mentions/mark-all-read:
+    post:
+      operationId: markAllMentionsRead
+      summary: Mark all mentions as read
+      responses:
+        '204':
+          description: Marked as read
+        default:
+          description: Error response
+  /accounts:
+    post:
+      operationId: createAccount
+      summary: Create an account
+      responses:
+        '201':
+          description: Account created
+        default:
+          description: Error response
+  /accounts/{id}:
+    get:
+      operationId: getAccount
+      summary: Fetch an account
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Account object
+        default:
+          description: Error response
+    put:
+      operationId: updateAccount
+      summary: Update an account
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Account updated
+        default:
+          description: Error response
+    delete:
+      operationId: deleteAccount
+      summary: Delete an account
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Account deleted
+        default:
+          description: Error response
+  /accounts/me:
+    get:
+      operationId: getMe
+      summary: Get my account
+      responses:
+        '200':
+          description: My account
+        default:
+          description: Error response
+  /alerts/{id}/shares:
+    get:
+      operationId: listAlertShares
+      summary: Fetch all shares of an alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of shares
+        default:
+          description: Error response
+    post:
+      operationId: createAlertShare
+      summary: Create a share
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Share created
+        default:
+          description: Error response
+  /shares/{id}:
+    get:
+      operationId: getShare
+      summary: Fetch a share
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Share object
+        default:
+          description: Error response
+    put:
+      operationId: updateShare
+      summary: Update a share
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Share updated
+        default:
+          description: Error response
+    delete:
+      operationId: deleteShare
+      summary: Delete a share
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Share deleted
+        default:
+          description: Error response
+  /alerts/{id}/preferences:
+    get:
+      operationId: getAlertPreferences
+      summary: Fetch alert preferences
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Preferences object
+        default:
+          description: Error response
+    put:
+      operationId: updateAlertPreferences
+      summary: Update alert preferences
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Preferences updated
+        default:
+          description: Error response
+  /alerts/{id}/tags:
+    get:
+      operationId: listAlertTags
+      summary: Fetch all tags of an alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of tags
+        default:
+          description: Error response
+    post:
+      operationId: createAlertTag
+      summary: Create a tag for an alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Tag created
+        default:
+          description: Error response
+  /tags/{id}:
+    put:
+      operationId: renameTag
+      summary: Rename a tag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Tag renamed
+        default:
+          description: Error response
+    delete:
+      operationId: deleteTag
+      summary: Delete a tag
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Tag deleted
+        default:
+          description: Error response
+  /authors:
+    get:
+      operationId: listAuthors
+      summary: Fetch authors
+      responses:
+        '200':
+          description: List of authors
+        default:
+          description: Error response
+  /mentions/{id}/tasks:
+    get:
+      operationId: listMentionTasks
+      summary: Fetch all tasks of a mention
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of tasks
+        default:
+          description: Error response
+    post:
+      operationId: createMentionTask
+      summary: Create a task on a mention
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          description: Task created
+        default:
+          description: Error response
+  /alerts/{id}/tasks:
+    get:
+      operationId: listAlertTasks
+      summary: Fetch all tasks of an alert
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of tasks
+        default:
+          description: Error response
+  /tasks/{id}:
+    get:
+      operationId: getTask
+      summary: Fetch a task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Task object
+        default:
+          description: Error response
+    put:
+      operationId: updateTask
+      summary: Update a task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Task updated
+        default:
+          description: Error response
+    delete:
+      operationId: deleteTask
+      summary: Delete a task
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Task deleted
+        default:
+          description: Error response
+  /stats:
+    get:
+      operationId: getStats
+      summary: Fetch statistics
+      responses:
+        '200':
+          description: Statistics
+        default:
+          description: Error response
+components: {}
