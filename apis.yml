@@ -1,166 +1,284 @@
 aid: mention
 name: Mention
 description: >-
-  Mention is a media monitoring and social listening platform that monitors over one billion sources in real-time across
-  42 languages. Its JSON-based RESTful API gives developers programmatic access to alerts, mentions, streaming data, and
-  account management features.
+  Mention is a media monitoring and social listening platform that watches over one billion sources in real time across
+  42 languages, covering social networks, news, blogs, forums, video and 75+ review sites. Its JSON-based RESTful API,
+  documented at dev.mention.com, gives developers programmatic access to alerts (the standing keyword queries Mention
+  crawls for), the mentions those alerts collect, curation by folder/tone/tag, mention tasks assigned to team mates,
+  alert sharing and permissions, authors and influencer scoring, aggregate statistics, and a long-lived streaming
+  endpoint for real-time delivery. Authentication is a bearer token obtained from a registered app or through an OAuth2
+  authorization-code flow, and the API version is selected per request with an Accept-Version header. Mention is sold by
+  Agorapulse SAS; API access is a paid add-on rather than an included capability of the published plan.
 type: Index
 accessModel:
-  pricing: freemium
-  onboarding: unknown
-  trial: false
+  pricing: sales-gated
+  onboarding: demo-request
+  trial: true
   try_now: false
   public: false
-  label: Freemium
-  confidence: medium
+  label: Contact Sales
+  confidence: high
   source:
-  - plans
-  generated: '2026-07-22'
-  method: derived
+  - https://mention.com/en/pricing/
+  - https://en.support.mention.com/en/articles/1904644-api-access-explained
+  generated: '2026-08-13'
+  method: searched
+  note: >-
+    One published plan (Company) with no price on it and a "Request a demo" call to action. A free
+    trial exists at social.agorapulse.com/mention-trial. API access is listed as a paid add-on, not
+    included in the plan.
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/mention.png
 tags:
   - Alerts
   - Brand Monitoring
   - Media Monitoring
   - Social Listening
+  - Social Media
+  - Sentiment Analysis
+  - Reputation Management
+  - Influencer Marketing
+  - Competitive Intelligence
+  - Streaming
+  - Marketing
 url: https://raw.githubusercontent.com/api-evangelist/mention/refs/heads/main/apis.yml
 created: '2026-03-16'
-modified: '2026-05-19'
-specificationVersion: '0.19'
+modified: '2026-08-13'
+specificationVersion: '0.21'
 apis:
 - aid: mention:mention-accounts-api
   name: Mention Accounts API
-  description: The Accounts API from Mention — 3 operation(s) for accounts.
-  humanURL: https://api.mention.com/
-  baseURL: https://api.mention.com/api
+  description: >-
+    The Accounts API from Mention — 5 operations for account CRUD and identity resolution — createAccount, getAccount, updateAccount, deleteAccount and getMe. An access token can only act on its own account; cross-account calls return 403.
+  humanURL: https://dev.mention.com/current/
+  baseURL: https://api.mention.net/api
   tags:
   - Accounts
   properties:
   - type: OpenAPI
     url: openapi/mention-accounts-api-openapi.yml
+  - type: Overlay
+    url: overlays/mention-accounts-overlay.yaml
   - type: Documentation
-    url: https://api.mention.com/
+    url: https://dev.mention.com/current/
   - type: GettingStarted
     url: https://en.support.mention.com/en/articles/1904644-api-access-explained
 - aid: mention:mention-alerts-api
   name: Mention Alerts API
-  description: The Alerts API from Mention — 8 operation(s) for alerts.
-  humanURL: https://api.mention.com/
-  baseURL: https://api.mention.com/api
+  description: >-
+    The Alerts API from Mention — 8 operations for the standing keyword queries Mention crawls the web and social media for — list, create, read, update, pause and unpause an alert, plus the per-account notification preferences on it. Since version 1.21 group_id is mandatory on create and the stats field must be requested explicitly. There is no delete operation: an alert dies with its last share.
+  humanURL: https://dev.mention.com/current/
+  baseURL: https://api.mention.net/api
   tags:
   - Alerts
   properties:
   - type: OpenAPI
     url: openapi/mention-alerts-api-openapi.yml
+  - type: Overlay
+    url: overlays/mention-alerts-overlay.yaml
   - type: Documentation
-    url: https://api.mention.com/
+    url: https://dev.mention.com/current/
   - type: GettingStarted
     url: https://en.support.mention.com/en/articles/1904644-api-access-explained
 - aid: mention:mention-authors-api
   name: Mention Authors API
-  description: The Authors API from Mention — 1 operation(s) for authors.
-  humanURL: https://api.mention.com/
-  baseURL: https://api.mention.com/api
+  description: >-
+    The Authors API from Mention — 1 operation. listAuthors returns the authors and influencers behind an alert’s mentions with influence score, reach and the underlying social profile, filterable by kind and date and sortable by score.
+  humanURL: https://dev.mention.com/current/
+  baseURL: https://api.mention.net/api
   tags:
   - Authors
   properties:
   - type: OpenAPI
     url: openapi/mention-authors-api-openapi.yml
+  - type: Overlay
+    url: overlays/mention-authors-overlay.yaml
   - type: Documentation
-    url: https://api.mention.com/
+    url: https://dev.mention.com/current/
   - type: GettingStarted
     url: https://en.support.mention.com/en/articles/1904644-api-access-explained
 - aid: mention:mention-mentions-api
   name: Mention Mentions API
-  description: The Mentions API from Mention — 6 operation(s) for mentions.
-  humanURL: https://api.mention.com/
-  baseURL: https://api.mention.com/api
+  description: >-
+    The Mentions API from Mention — 6 operations over the results an alert collects — list with an extensive filter surface, read one, read its grouped children, curate folder/tone/tags/read state, mark all read, and stream new mentions in real time from https://stream.mention.net/api.
+  humanURL: https://dev.mention.com/current/
+  baseURL: https://api.mention.net/api
   tags:
   - Mentions
   properties:
   - type: OpenAPI
     url: openapi/mention-mentions-api-openapi.yml
+  - type: Overlay
+    url: overlays/mention-mentions-overlay.yaml
   - type: Documentation
-    url: https://api.mention.com/
+    url: https://dev.mention.com/current/
   - type: GettingStarted
     url: https://en.support.mention.com/en/articles/1904644-api-access-explained
 - aid: mention:mention-shares-api
   name: Mention Shares API
-  description: The Shares API from Mention — 1 operation(s) for shares.
-  humanURL: https://api.mention.com/
-  baseURL: https://api.mention.com/api
+  description: >-
+    The Shares API from Mention — 5 operations over the join between an account and an alert. Share is the authorization primitive AND the lifecycle owner of an alert: deleting the last share deletes the alert and everything it collected.
+  humanURL: https://dev.mention.com/current/
+  baseURL: https://api.mention.net/api
   tags:
   - Shares
   properties:
   - type: OpenAPI
     url: openapi/mention-shares-api-openapi.yml
+  - type: Overlay
+    url: overlays/mention-shares-overlay.yaml
   - type: Documentation
-    url: https://api.mention.com/
+    url: https://dev.mention.com/current/
   - type: GettingStarted
     url: https://en.support.mention.com/en/articles/1904644-api-access-explained
 - aid: mention:mention-stats-api
   name: Mention Stats API
-  description: The Stats API from Mention — 1 operation(s) for stats.
-  humanURL: https://api.mention.com/
-  baseURL: https://api.mention.com/api
+  description: >-
+    The Stats API from Mention — 1 operation. getStats returns aggregate counters alert by alert over a date range and interval, with week-day, per-interval tone, country and influencer breakdowns, all expressed as query string filters.
+  humanURL: https://dev.mention.com/current/
+  baseURL: https://api.mention.net/api
   tags:
   - Stats
   properties:
   - type: OpenAPI
     url: openapi/mention-stats-api-openapi.yml
+  - type: Overlay
+    url: overlays/mention-stats-overlay.yaml
   - type: Documentation
-    url: https://api.mention.com/
+    url: https://dev.mention.com/current/
   - type: GettingStarted
     url: https://en.support.mention.com/en/articles/1904644-api-access-explained
 - aid: mention:mention-tags-api
   name: Mention Tags API
-  description: The Tags API from Mention — 1 operation(s) for tags.
-  humanURL: https://api.mention.com/
-  baseURL: https://api.mention.com/api
+  description: >-
+    The Tags API from Mention — 4 operations for the labels scoped to an alert, including up to five auto-tagging keywords per tag that label incoming mentions automatically. Limits: 100 tags per alert, 20 characters per name.
+  humanURL: https://dev.mention.com/current/
+  baseURL: https://api.mention.net/api
   tags:
   - Tags
   properties:
   - type: OpenAPI
     url: openapi/mention-tags-api-openapi.yml
+  - type: Overlay
+    url: overlays/mention-tags-overlay.yaml
   - type: Documentation
-    url: https://api.mention.com/
+    url: https://dev.mention.com/current/
   - type: GettingStarted
     url: https://en.support.mention.com/en/articles/1904644-api-access-explained
 - aid: mention:mention-tasks-api
   name: Mention Tasks API
-  description: The Tasks API from Mention — 1 operation(s) for tasks.
-  humanURL: https://api.mention.com/
-  baseURL: https://api.mention.com/api
+  description: >-
+    The Tasks API from Mention — 5 operations for the assignments created on a mention for team mates. assigned_to_account_id is fixed at creation; type, comment and done are updatable. A mention returns its tasks inline — there is no per-mention tasks endpoint.
+  humanURL: https://dev.mention.com/current/
+  baseURL: https://api.mention.net/api
   tags:
   - Tasks
   properties:
   - type: OpenAPI
     url: openapi/mention-tasks-api-openapi.yml
+  - type: Overlay
+    url: overlays/mention-tasks-overlay.yaml
   - type: Documentation
-    url: https://api.mention.com/
+    url: https://dev.mention.com/current/
+  - type: GettingStarted
+    url: https://en.support.mention.com/en/articles/1904644-api-access-explained
+- aid: mention:mention-app-api
+  name: Mention App API
+  description: >-
+    The App API from Mention — 1 operation. GET /app/data returns the reference vocabularies every
+    other Mention endpoint resolves its enumerated values against: alert sources, alert languages and
+    countries, tones, share roles, alert colours, task types, mention folders, mention log types,
+    social account types, week days, and the four notification-frequency maps.
+  humanURL: https://dev.mention.com/current/src/app/index.html
+  baseURL: https://api.mention.net/api
+  tags:
+  - App
+  - Vocabulary
+  properties:
+  - type: OpenAPI
+    url: openapi/mention-app-api-openapi.yml
+  - type: Overlay
+    url: overlays/mention-app-overlay.yaml
+  - type: Documentation
+    url: https://dev.mention.com/current/src/app/Appdata.html
   - type: GettingStarted
     url: https://en.support.mention.com/en/articles/1904644-api-access-explained
 common:
-  - type: AgenticAccess
-    url: agentic-access/mention-agentic-access.yml
-  - type: DomainSecurity
-    url: security/mention-domain-security.yml
-  - type: LinkedIn
-    url: https://www.linkedin.com/company/mention
+  - type: DeveloperPortal
+    url: https://dev.mention.com/current/
+  - type: Documentation
+    url: https://dev.mention.com/current/src/index.html
+  - type: APIReference
+    url: https://dev.mention.com/current/
+  - type: GettingStarted
+    url: https://dev.mention.com/current/src/guidelines/Clients.html
   - type: Portal
     url: https://mention.com/en/media-monitoring-api/
   - type: Website
     url: https://mention.com/
-  - type: Signup
-    url: https://mention.com/en/pricing/
-  - type: Login
-    url: https://app.mention.com/login
-  - type: Pricing
-    url: https://mention.com/en/pricing/
   - type: Support
     url: https://en.support.mention.com/
-  - url: https://mention.com/en/blog/feed/
-    type: Blog
+  - type: Blog
+    url: https://mention.com/en/blog/feed/
+  - type: GitHubOrganization
+    url: https://github.com/mentionapp
+  - type: LinkedIn
+    url: https://www.linkedin.com/company/mention
+  - type: Pricing
+    url: https://mention.com/en/pricing/
+  - type: SignUp
+    url: https://social.agorapulse.com/mention-trial
+  - type: Login
+    url: https://web.mention.com/#login
+  - type: TermsOfService
+    url: https://mention.com/en/terms-and-conditions/#general-terms-and-conditions
+  - type: PrivacyPolicy
+    url: https://mention.com/en/terms-and-conditions/#privacy-policy
+  - type: Security
+    url: https://mention.com/en/terms-and-conditions/#security-policy
+  - type: Compliance
+    url: https://mention.com/en/terms-and-conditions/#security-policy
+  - type: StatusPage
+    url: https://status.mention.com/
+  - type: ChangeLog
+    url: changelog/mention-changelog.yml
+  - type: Lifecycle
+    url: lifecycle/mention-lifecycle.yml
+  - type: Conventions
+    url: conventions/mention-conventions.yml
+  - type: Authentication
+    url: authentication/mention-authentication.yml
+  - type: OAuthScopes
+    url: scopes/mention-scopes.yml
+  - type: ErrorCatalog
+    url: errors/mention-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/mention-rate-limits.yml
+  - type: Plans
+    url: plans/mention-plans-pricing.yml
+  - type: FinOps
+    url: finops/mention-finops.yml
+  - type: DataModel
+    url: data-model/mention-data-model.yml
+  - type: Conformance
+    url: conformance/mention-conformance.yml
+  - type: Packages
+    url: packages/mention-packages.yml
+  - type: LLMsTxt
+    url: llms/mention-llms.txt
+  - type: AgentSkill
+    url: skills/_index.yml
+  - type: AgenticAccess
+    url: agentic-access/mention-agentic-access.yml
+  - type: DomainSecurity
+    url: security/mention-domain-security.yml
+  - type: VulnerabilityDisclosure
+    url: security/mention-vulnerability-disclosure.yml
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
+
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v1
