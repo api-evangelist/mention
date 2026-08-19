@@ -1,0 +1,128 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://dev.mention.com/current/src/appendix/Errors.html and
+  https://dev.mention.com/current/src/index.html (Errors + Validation errors), cross-checked against
+  the 4xx responses in openapi/_original/mention-openapi.yml and a live unauthenticated probe of
+  https://api.mention.net/api/accounts/me
+docs: https://dev.mention.com/current/src/appendix/Errors.html
+format: proprietary
+rfc9457: false
+summary: >-
+  Mention publishes an HTTP status vocabulary and one structured envelope — the form/children
+  validation document returned with 400 on POST and PUT. It publishes no error-code registry, no
+  type URIs, and no machine-stable identifiers. Mention states outright that outside the 200 and 400
+  cases "the body of an error would be html error message", so a client cannot rely on a parseable
+  body for 401, 403, 404 or 429. The gateway does return a JSON {error, error_description} document
+  on an unauthenticated call, observed live, but that shape is not documented.
+
+envelopes:
+  - name: ValidationError
+    applies_to: [400]
+    content_type: application/json
+    documented: true
+    schema: openapi/_original/mention-openapi.yml#/components/schemas/ValidationError
+    shape: |
+      {
+        "form": {
+          "errors": ["optional array of request-wide error messages"],
+          "children": {
+            "field_name_0": {"errors": ["optional array of field-specific error messages"]}
+          }
+        }
+      }
+    note: >-
+      Mention states these messages "should be displayed directly to the user when they are the
+      result of a form submission" — they are human copy, not codes. There is no stable identifier
+      an integration can branch on; matching is by field name only.
+  - name: OAuthError
+    applies_to: [401]
+    content_type: application/json
+    documented: false
+    observed: true
+    evidence:
+      url: https://api.mention.net/api/accounts/me
+      http_status: 401
+      body: '{"error":"access_denied","error_description":"OAuth2 authentication required"}'
+      fetched: '2026-08-13'
+    note: >-
+      Observed on a live unauthenticated request. The same shape is returned by the OAuth2 token
+      endpoint (invalid_request / "Invalid grant_type parameter or parameter missing") and the
+      authorize endpoint (invalid_request / "No client id supplied"). Undocumented but consistent.
+  - name: HTML error page
+    applies_to: [403, 404, 500]
+    content_type: text/html
+    documented: true
+    note: >-
+      Explicitly documented behaviour, not an accident: "For other methods, the body of an error
+      would be html error message."
+
+problems:
+  - status: 400
+    title: Invalid input
+    description: >-
+      Invalid query string, body or parameters. On POST and PUT the response carries the
+      form/children validation document.
+    envelope: ValidationError
+    remediation: >-
+      Read form.errors for request-wide messages and form.children.<field>.errors for field-level
+      messages. Correct the named fields and resubmit; there is no retry that fixes a 400.
+    source: https://dev.mention.com/current/src/appendix/Errors.html
+  - status: 401
+    title: Access denied
+    description: The access token is missing, malformed or no longer valid.
+    envelope: OAuthError
+    remediation: >-
+      Re-read the token from the app settings page, or run the OAuth2 authorization-code flow again
+      at https://web.mention.com/authorize. Mention documents no refresh-token flow and no token
+      lifetime, so the only recovery documented is re-authorization.
+    source: https://dev.mention.com/current/src/appendix/Errors.html
+  - status: 402
+    title: Payment required
+    description: >-
+      The account's plan does not cover this request. This is the status behind the entitlement
+      gates in the reference — the source, sort and q mention filters are limited to plans with
+      search access, and API access itself is a paid add-on on the Company plan.
+    envelope: unspecified
+    remediation: Upgrade the plan or drop the entitlement-gated parameter from the request.
+    source: https://dev.mention.com/current/src/appendix/Errors.html
+  - status: 403
+    title: Access denied
+    description: >-
+      The token is valid but not permitted on this resource. The reference calls this out repeatedly
+      for cross-account access — an access token cannot read, update or delete another person's
+      account even when that account was created through the API, and deleting someone else's share
+      requires team-admin rights.
+    envelope: HTML error page
+    remediation: Act on the account that owns the token, or obtain a token for the target account through OAuth2.
+    source: https://dev.mention.com/current/src/appendix/Errors.html
+  - status: 404
+    title: Resource does not exist
+    description: The alert, mention, account, share, tag or task id does not exist or is not visible to this token.
+    envelope: HTML error page
+    remediation: Re-resolve the id from its parent collection. Do not parse the body — it is HTML.
+    source: https://dev.mention.com/current/src/appendix/Errors.html
+  - status: 429
+    title: Rate limited
+    description: >-
+      A per-resource, per-method rate limit was exceeded. Mention states limits "vary based on
+      resource types and methods" without publishing the numbers per endpoint.
+    envelope: unspecified
+    headers:
+      - name: X-Rate-Limit-Reset
+        description: Unix timestamp at which the limit resets.
+    remediation: >-
+      Sleep until X-Rate-Limit-Reset and retry. No Retry-After, X-RateLimit-Limit or
+      X-RateLimit-Remaining header is returned, so a client cannot pace itself before the fact.
+    source: https://dev.mention.com/current/src/appendix/Ratelimits.html
+
+gaps:
+  - No RFC 9457 application/problem+json representation anywhere in the API.
+  - No error code registry, error slug, or type URI — every message is free prose.
+  - >-
+    No documented body for 401/403/404/429. The documented answer is an HTML page, which means an
+    agent cannot distinguish "wrong id" from "no permission" from a response body.
+  - No documented request-id or trace identifier to quote back to support on a failure.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

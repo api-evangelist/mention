@@ -1,0 +1,188 @@
+{
+  "item": [
+    {
+      "id": "938bc0ea-7c38-40fa-b831-c79047fde520",
+      "name": "Stats",
+      "description": {
+        "content": "Aggregate statistics across alerts.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c773a6a1-4b23-4a75-8a6e-98d2bbe57219",
+          "name": "Fetch statistics",
+          "request": {
+            "name": "Fetch statistics",
+            "description": {
+              "content": "Returns aggregate statistics alert by alert over a date range, with an extensive filter surface expressed entirely in the query string: date bounds and timezone, interval, folder flags, tone / language / source / country / tag filters, and switches for the week-day, per-interval tone, country and influencer breakdowns.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "stats"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": true,
+                  "key": "alerts[]",
+                  "value": "<string>",
+                  "description": "(Required) IDs of the alerts statistics are fetched for."
+                },
+                {
+                  "disabled": true,
+                  "key": "from",
+                  "value": "<string>",
+                  "description": "Statistics are fetched for mentions retrieved after this date."
+                },
+                {
+                  "disabled": true,
+                  "key": "to",
+                  "value": "<string>",
+                  "description": "Statistics are fetched for mentions retrieved before this date."
+                },
+                {
+                  "disabled": true,
+                  "key": "timezone",
+                  "value": "<string>",
+                  "description": "Timezone applied to the from and to bounds."
+                },
+                {
+                  "disabled": true,
+                  "key": "interval",
+                  "value": "<string>",
+                  "description": "Periodicity of the series: P1D daily, P1W weekly, P1M monthly."
+                },
+                {
+                  "disabled": true,
+                  "key": "favorite",
+                  "value": "<string>",
+                  "description": "Only count mentions in the favorite folder. May be combined with important."
+                },
+                {
+                  "disabled": true,
+                  "key": "important",
+                  "value": "<string>",
+                  "description": "Only count mentions in the important folder. May be combined with favorite."
+                },
+                {
+                  "disabled": true,
+                  "key": "week_day_stats",
+                  "value": "<string>",
+                  "description": "Classify mentions by week day. Cannot coexist with week_day_by_hour_stats."
+                },
+                {
+                  "disabled": true,
+                  "key": "week_day_by_hour_stats",
+                  "value": "<string>",
+                  "description": "Classify mentions by hour of each week day. Cannot coexist with week_day_stats."
+                },
+                {
+                  "disabled": true,
+                  "key": "tones_per_interval_stats",
+                  "value": "<string>",
+                  "description": "Break tones down per interval."
+                },
+                {
+                  "disabled": true,
+                  "key": "country_stats",
+                  "value": "<string>",
+                  "description": "Break mentions down by country."
+                },
+                {
+                  "disabled": true,
+                  "key": "influencers",
+                  "value": "<string>",
+                  "description": "Include influencer statistics."
+                },
+                {
+                  "disabled": true,
+                  "key": "tones[]",
+                  "value": "<string>",
+                  "description": "Only count mentions of the given tones."
+                },
+                {
+                  "disabled": true,
+                  "key": "languages[]",
+                  "value": "<string>",
+                  "description": "Only count mentions in the given language codes."
+                },
+                {
+                  "disabled": true,
+                  "key": "sources[]",
+                  "value": "<string>",
+                  "description": "Only count mentions from the given sources."
+                },
+                {
+                  "disabled": true,
+                  "key": "countries[]",
+                  "value": "<string>",
+                  "description": "Only count mentions from the given countries."
+                },
+                {
+                  "disabled": true,
+                  "key": "tags[]",
+                  "value": "<string>",
+                  "description": "Only count mentions carrying the given tags."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mention.net/api",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "REDACTED_EXAMPLE_TOKEN",
+      "key": "access_token"
+    },
+    {
+      "type": "string",
+      "value": "1.21",
+      "key": "apiVersion"
+    }
+  ],
+  "info": {
+    "_postman_id": "9239494e-cae2-480c-8d07-1d0d77c3a542",
+    "name": "Mention Stats API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation, tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client can do is available through this API.\n\nAuthentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header; without it, the version configured in the app's settings applies.\n\nThis description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/ \u2014 Mention does not publish a machine-readable OpenAPI definition.",
+      "type": "text/plain"
+    }
+  }
+}

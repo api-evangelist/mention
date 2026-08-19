@@ -1,0 +1,209 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://dev.mention.com/current/src/index.html (Overview),
+  https://dev.mention.com/current/src/appendix/OAuth2.html,
+  https://dev.mention.com/current/src/appendix/Errors.html,
+  https://dev.mention.com/current/src/appendix/Ratelimits.html,
+  https://dev.mention.com/current/src/Changelog.html
+docs: https://dev.mention.com/current/src/index.html
+summary: >-
+  Cross-cutting runtime semantics for the Mention API, read from Mention's own reference. The API is
+  a plain JSON REST surface with bearer-token auth, cursor pagination over a hypermedia _links
+  object, a header-selected API version, and a form-shaped validation-error envelope. It publishes
+  NO idempotency mechanism, NO request-id / correlation header, and NO RFC 9457 problem details.
+
+authentication:
+  style: bearer-token
+  header: 'Authorization: Bearer <access_token>'
+  alternative: access_token query string parameter (documented but discouraged — it puts the credential in the URL)
+  token_source: >-
+    An access token for your own account is printed at the bottom of your app's settings page after
+    registering an API client. A token for a third party's account is obtained through the OAuth2
+    authorization-code flow.
+  oauth2:
+    authorization_url: https://web.mention.com/authorize
+    token_url: https://web.mention.net/oauth/v2/token
+    grant: authorization_code
+    scopes: none defined — a granted token carries full access to the authorizing account
+    token_endpoint_content_type: application/x-www-form-urlencoded
+  docs: https://dev.mention.com/current/src/appendix/OAuth2.html
+  artifact: authentication/mention-authentication.yml
+
+idempotency:
+  supported: false
+  header: null
+  note: >-
+    Mention documents no idempotency key, no request de-duplication window and no safe-retry
+    guidance anywhere in its reference. Retrying a POST (create alert, create tag, create task,
+    create share) after a network failure can therefore duplicate the resource. This is a real gap
+    for agentic consumers, and it is why no Idempotency pointer is wired in apis.yml.
+
+pagination:
+  style: cursor
+  request_params:
+    - name: limit
+      note: Alerts default to all; mentions default to 20 with a maximum of 1000.
+    - name: cursor
+      note: Opaque value supplied by the API; never constructed by the client.
+    - name: since_id
+      note: Mentions only — id-ordered forward paging. Cannot be combined with before_date, not_before_date or cursor.
+    - name: before_date
+      note: Mentions only — publication-date-ordered backward paging.
+  response_fields:
+    - _links.more
+    - _links.pull
+  semantics: >-
+    Collections return a _links object. _links.more carries the href (and its decoded params) for the
+    next page of OLDER items and is present only when more exist. _links.pull carries the href for
+    NEWER items and is the documented polling idiom for mentions — Mention explicitly points callers
+    at the streaming endpoint instead of tight polling.
+  docs: https://dev.mention.com/current/src/account/alert/mention/GetMentions.html
+
+filtering:
+  style: query-string
+  note: >-
+    The mention collection is the filter-heavy surface: since_id, before_date, not_before_date,
+    limit, source, unread, favorite, folder, tone, countries, include_children, sort, languages,
+    timezone, q and cursor. Several combinations are explicitly forbidden (unread cannot be combined
+    with favorite, q or tone; favorite cannot be combined with folder unless folder is inbox or
+    archive; since_id cannot be combined with the date or cursor parameters).
+  entitlement_gated_filters:
+    - name: source
+      requires: a plan with search access
+    - name: sort
+      requires: a plan with search access
+    - name: q
+      requires: a plan with search access
+  index_version_gate: >-
+    Filter availability also depends on the alert's index_version attribute — the search-index
+    generation the alert was built on. An alert at index_version 1 cannot use filters marked 2+
+    (for example is:unread inside q). Clients must read index_version off the alert before assuming
+    a filter exists.
+
+expansion:
+  supported: partial
+  note: >-
+    There is no generic expand/fields parameter. Two ad-hoc mechanisms exist: the alerts collection
+    takes a stats query parameter naming which counters to compute (added in version 1.21, when the
+    stats field became empty by default), and mentions take include_children to inline grouped
+    children.
+
+request_format:
+  content_type: application/json
+  note: >-
+    POST and PUT bodies must be JSON with a Content-Type: application/json header. The OAuth2
+    endpoints are the sole exception and accept only application/x-www-form-urlencoded.
+  put_semantics: >-
+    PUT is a partial update, not a replace. Any property may be omitted and omitted properties are
+    left unchanged. The API is explicitly designed so a resource fetched with GET or POST can be
+    sent back unchanged in a PUT — server-managed properties such as id, created_at and updated_at
+    are ignored rather than rejected.
+
+response_format:
+  content_type: application/json
+  envelope: >-
+    Single resources are wrapped in a singular key (alert, account, share, tag, task, preferences);
+    collections in a plural key (alerts, mentions, shares, tags, tasks, authors) alongside _links.
+  guarantee: >-
+    JSON is guaranteed on 200 and on 400 validation errors. Mention states plainly that for other
+    error cases "the body of an error would be html error message" — so clients must not assume a
+    parseable body on 401/403/404/429.
+
+request_id:
+  supported: false
+  note: >-
+    No request-id, trace-id or correlation header is documented on requests or responses. There is
+    no documented way for a caller to quote a failing request back to support.
+
+versioning:
+  scheme: request-header
+  header: Accept-Version
+  current: '1.21'
+  example: 'Accept-Version: 1.21'
+  default: >-
+    When the header is omitted, the version configured in the app's settings page applies — the
+    default is per-app account state, not a documented constant.
+  granularity: >-
+    Only the first two figures select a version. The third figure denotes bug fixes and is applied
+    automatically to its major.minor line.
+  docs: https://dev.mention.com/current/src/Changelog.html
+  note: >-
+    The Overview page still closes with "This documentation is about the API version 1.8" while the
+    changelog runs to 1.21 — the reference contradicts itself on its own current version.
+
+errors:
+  envelope: form-children
+  rfc9457: false
+  content_type: application/json (validation errors only)
+  statuses: [400, 401, 402, 403, 404, 429]
+  note: >-
+    Validation failures on POST/PUT return 400 with a nested {form: {errors: [], children: {field:
+    {errors: []}}}} document. Mention states these strings are meant to be shown directly to the end
+    user. There is no error code vocabulary, no type URI and no machine-stable identifier — only
+    human-readable prose keyed by field name.
+  artifact: errors/mention-problem-types.yml
+
+rate_limits:
+  signalled: true
+  status: 429
+  headers:
+    - name: X-Rate-Limit-Reset
+      value: Unix timestamp at which the limit resets
+  missing_headers:
+    - X-RateLimit-Limit
+    - X-RateLimit-Remaining
+    - RateLimit-Policy
+    - Retry-After
+  note: >-
+    Only the reset timestamp is returned. A client cannot read its ceiling or its remaining budget
+    from a response, so limits can only be discovered by hitting them.
+  artifact: rate-limits/mention-rate-limits.yml
+
+date_format:
+  standard: W3C date and time formats, level 6 (NOTE-datetime)
+  pattern: YYYY-MM-DDThh:mm:ss.sTZD
+  example: '1997-07-16T19:20:30.12345+01:00'
+  rationale: >-
+    Fractional seconds are load-bearing: date-based pagination needs them to break ties when several
+    items share a timestamp.
+
+localization:
+  header: Accept-Language
+  note: >-
+    Translated fields follow the Accept-Language request header. The account's own language_code
+    property is the value clients are told to send.
+  vocabulary: https://dev.mention.com/current/src/appendix/Languages.html
+
+streaming:
+  supported: true
+  endpoint: https://stream.mention.net/api
+  operation: streamMentions
+  transport: long-lived HTTP response
+  constraint: one open stream at a time per account_id
+  note: >-
+    This is the provider's real-time surface. It is not webhooks and there is no AsyncAPI, no event
+    catalog and no callback registration anywhere in the reference — the consumer holds the
+    connection open and reads mention objects as they arrive.
+
+known_documentation_defects:
+  - >-
+    DELETE paths in the reference are written with {id} where every sibling operation uses
+    {account_id} (DeleteShare, DeleteTag, DeleteTask). Read as {account_id}.
+  - >-
+    The delete-tag page writes the collection segment singular (/tag/{tag_id}) while create, list and
+    update all use /tags. Treated here as /tags/{tag_id}.
+  - >-
+    "Fetch all tasks of a mention" and "Delete an Alert" appear in the navigation but describe no
+    endpoint: tasks come back inline on the mention resource, and an alert is deleted by deleting
+    its last share.
+
+cross_references:
+  authentication: authentication/mention-authentication.yml
+  errors: errors/mention-problem-types.yml
+  lifecycle: lifecycle/mention-lifecycle.yml
+  rate_limits: rate-limits/mention-rate-limits.yml
+  data_model: data-model/mention-data-model.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,392 @@
+{
+  "item": [
+    {
+      "id": "4967402c-6bc3-4d86-969f-55442fb49e7c",
+      "name": "Tasks",
+      "description": {
+        "content": "Assignments created on a mention for team mates.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "62975867-7bfb-495e-944c-d33a88f528a9",
+          "name": "Fetch all tasks of an alert",
+          "request": {
+            "name": "Fetch all tasks of an alert",
+            "description": {
+              "content": "Returns every mention task created on the alert, so open assignments can be reviewed in one call. There is no separate endpoint for the tasks of a single mention: those are returned inline by the mention resource.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "tasks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "5e61bac8-b236-486c-ac8c-fd801446274d",
+          "name": "Create a task on a mention",
+          "request": {
+            "name": "Create a task on a mention",
+            "description": {
+              "content": "Assigns a mention to a team mate. assigned_to_account_id is required and cannot be changed afterwards; type, comment and done are updatable. Valid task types come from the app/data reference endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                ":mention_id",
+                "tasks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mention_id",
+                  "description": "(Required) ID of the mention."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"read\",\n  \"assigned_to_account_id\": \"YOUR_TEAMMATE_ACCOUNT_ID\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "d078683a-515c-4fff-b249-23924831bb1b",
+          "name": "Fetch a task",
+          "request": {
+            "name": "Fetch a task",
+            "description": {
+              "content": "Retrieves a single mention task.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                ":mention_id",
+                "tasks",
+                ":task_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mention_id",
+                  "description": "(Required) ID of the mention."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "task_id",
+                  "description": "(Required) ID of the task."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "733b4616-77b1-45d8-9307-47456c94a8e3",
+          "name": "Update a task",
+          "request": {
+            "name": "Update a task",
+            "description": {
+              "content": "Updates a task \u2014 typically to mark it done, change its type, or add a comment. Only the properties marked updatable may be sent; assigned_to_account_id is fixed at creation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                ":mention_id",
+                "tasks",
+                ":task_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mention_id",
+                  "description": "(Required) ID of the mention."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "task_id",
+                  "description": "(Required) ID of the task."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"done\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "f6da3a15-a3a0-436a-bdb9-af53bdb8e543",
+          "name": "Delete a task",
+          "request": {
+            "name": "Delete a task",
+            "description": {
+              "content": "Deletes a mention task.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                ":mention_id",
+                "tasks",
+                ":task_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mention_id",
+                  "description": "(Required) ID of the mention."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "task_id",
+                  "description": "(Required) ID of the task."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mention.net/api",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "REDACTED_EXAMPLE_TOKEN",
+      "key": "access_token"
+    },
+    {
+      "type": "string",
+      "value": "1.21",
+      "key": "apiVersion"
+    }
+  ],
+  "info": {
+    "_postman_id": "3d0b546f-603d-49f6-b8be-2c5f4b9fde3c",
+    "name": "Mention Tasks API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation, tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client can do is available through this API.\n\nAuthentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header; without it, the version configured in the app's settings applies.\n\nThis description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/ \u2014 Mention does not publish a machine-readable OpenAPI definition.",
+      "type": "text/plain"
+    }
+  }
+}

@@ -4,7 +4,14 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Mention
 providerId: mention
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-08-13'
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://dev.mention.com/current/src/appendix/Ratelimits.html,
+  https://dev.mention.com/current/src/index.html (Rate limits) and
+  https://en.support.mention.com/en/articles/1904644-api-access-explained (API Limitations)
+docs: https://dev.mention.com/current/src/appendix/Ratelimits.html
 tags:
   - Alerts
   - Brand Monitoring
@@ -12,77 +19,104 @@ tags:
   - Social Listening
   - Rate Limiting
   - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the Mention API surface. Captures per-tier quotas,
-  burst behavior, response signaling, and recovery semantics. Defaults are scaffold values to be replaced
-  with published provider limits.
+description: >-
+  Published rate limits for the Mention API. This artifact REPLACES a 2026-05-04 scaffold whose
+  per-minute and per-month figures for Free / Professional / Enterprise tiers were invented — none
+  of those tiers exist and none of those numbers are published. Mention publishes two concrete
+  endpoint limits in its help center and one response header in its reference. Everything else is
+  stated only as "limits vary based on resource types and methods".
+limit_count: 2
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
-  retryAfter: Retry-After
-  policy: RateLimit-Policy
+  reset: X-Rate-Limit-Reset
+headers_not_returned:
+  - X-RateLimit-Limit
+  - X-RateLimit-Remaining
+  - RateLimit-Policy
+  - RateLimit
+  - Retry-After
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
+  quotaExceeded: 402
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Mention API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Mention API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Mention API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Mention API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Mention API
+  - name: Create alert
+    scope: per-account
+    operation: createAlert
+    path: POST /accounts/{account_id}/alerts
+    metric: requests
+    limit_expression: max(20, alertsQuota * 2)
+    timeFrame: 24 hours
+    note: >-
+      Verbatim from the help center: "Create alert: max(20, alertsQuota*2) calls per 24 hours." The
+      ceiling is derived from the account's own alert quota, so it is account-dependent and cannot be
+      resolved to a constant without knowing the plan.
+    source: https://en.support.mention.com/en/articles/1904644-api-access-explained
+  - name: List mentions
+    scope: per-alert
+    operation: listMentions
+    path: GET /accounts/{account_id}/alerts/{alert_id}/mentions
+    metric: requests
+    limit: 3600
+    timeFrame: 24 hours
+    note: >-
+      Verbatim from the help center: "List mentions: 3600 calls per alert per 24 hours." Works out to
+      an average of one call per alert every 24 seconds — which is why Mention points high-frequency
+      consumers at the streaming endpoint instead.
+    source: https://en.support.mention.com/en/articles/1904644-api-access-explained
+undocumented_limits:
+  statement: >-
+    "Access to some resources may be rate limited. Limits vary based on resource types and methods."
+  note: >-
+    No per-endpoint table exists. Every operation other than createAlert and listMentions has an
+    unpublished limit that can only be discovered by receiving a 429.
+account_quotas:
+  note: >-
+    "The Mention API is subject to the same quotas and features as the Mention account." Alert
+    creation is bounded by the account's allowed number of alerts; mention volume is bounded by the
+    plan. Those plan quotas are themselves unpublished — see plans/mention-plans-pricing.yml.
+  entitlement_gates:
+    - parameter: source
+      requires: a plan with search access
+    - parameter: sort
+      requires: a plan with search access
+    - parameter: q
+      requires: a plan with search access
+  content_limit: >-
+    "Only up to 250 characters of the most relevant parts of the mention are returned" — a payload
+    cap rather than a request cap, but it bounds what a consumer can extract per call.
+  resource_caps:
+    - resource: tags
+      cap: 100 per alert
+      source: https://dev.mention.com/current/src/account/alert/tag/PostTag.html
+    - resource: tag name length
+      cap: 20 characters
+      source: https://dev.mention.com/current/src/account/alert/tag/PostTag.html
+    - resource: auto-tagging keywords
+      cap: 5 per tag
+      source: https://dev.mention.com/current/src/account/alert/tag/PostTag.html
+    - resource: mentions per page
+      cap: 1000 maximum, 20 default
+      source: https://dev.mention.com/current/src/account/alert/mention/GetMentions.html
+    - resource: alert ids per request
+      cap: 50
+      source: https://dev.mention.com/current/src/account/alert/GetAlerts.html
+    - resource: concurrent streams
+      cap: 1 per account
+      source: https://dev.mention.com/current/src/account/alert/mention/StreamMentions.html
 policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
+  - name: Reset signalling
+    description: >-
+      On 429, the response carries X-Rate-Limit-Reset holding the unix timestamp at which the limit
+      resets. A client waits until that timestamp and retries.
+  - name: No budget signalling
+    description: >-
+      Mention returns no limit or remaining header, so a client cannot pace itself before exhaustion
+      — the only way to learn a limit is to hit it. This is the main runtime gap for an autonomous
+      consumer.
+  - name: Prefer streaming over polling
+    description: >-
+      The reference tells callers to follow _links.pull for new mentions and to "also consider using
+      the streaming API" at https://stream.mention.net/api, which is the documented way to stay under
+      the 3600/day listing limit.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

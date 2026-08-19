@@ -1,0 +1,329 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Mention Mentions API",
+    "version": "1.21"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Mentions",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch mentions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "since_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "not_before_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "unread",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "favorite",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "folder",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tone",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "countries",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include_children",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "languages",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Returns the mentions collected by an alert. The query string carries the filter surface; every filter is optional. Retrieve older mentions by following _links.more and poll for new ones by following _links.pull. The index_version attribute of the alert determines which filters are available to it."
+        },
+        {
+          "info": {
+            "name": "Fetch a mention",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/:mention_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mention_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Fetches a single mention by its ID, including its tasks, logs and children."
+        },
+        {
+          "info": {
+            "name": "Curate a mention",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/:mention_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mention_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "favorite": true,
+                "trashed": false,
+                "read": true,
+                "tags": [
+                  {
+                    "id": 123
+                  }
+                ],
+                "folder": "archive",
+                "tone": 1
+              }
+            }
+          },
+          "docs": "Updates the curation state of a mention: folder, tags, tone, read/favorite/trashed flags. The content and source of a mention cannot be modified. Any property may be omitted. Marking a mention favorite automatically marks it read. Tags must already exist on the alert."
+        },
+        {
+          "info": {
+            "name": "Fetch mention children",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/:mention_id/children",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mention_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Returns the child mentions grouped under a given mention, paginated through _links.more."
+        },
+        {
+          "info": {
+            "name": "Mark all mentions as read",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/markallread",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Marks every mention of the alert as read."
+        },
+        {
+          "info": {
+            "name": "Stream mentions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/mentions",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alerts[]",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Opens a long-lived HTTP connection that pushes each mention as soon as it is collected for the selected alerts. This operation is only available on the streaming endpoint https://stream.mention.net/api, and one stream at a time may be open per account."
+        }
+      ]
+    }
+  ]
+}

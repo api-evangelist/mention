@@ -1,0 +1,152 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://dev.mention.com/current/src/index.html,
+  https://dev.mention.com/current/src/appendix/OAuth2.html,
+  https://dev.mention.com/current/src/appendix/Errors.html,
+  https://mention.com/en/terms-and-conditions/#security-policy,
+  openapi/_original/mention-openapi.yml
+summary: >-
+  Mention conforms to OAuth 2.0's authorization-code grant and to the W3C date-time format, and it
+  runs a documented GDPR compliance program under French supervision. It conforms to none of the
+  machine-readable API conventions that agents rely on: no RFC 9457 problem details, no RFC 9116
+  security.txt, no RFC 8414 authorization-server metadata, no OpenID Connect, no RFC 8594 Sunset
+  headers, and no IETF RateLimit header fields.
+standards:
+  - id: oauth2
+    name: OAuth 2.0 (RFC 6749)
+    conforms: true
+    evidence: >-
+      Authorization-code grant documented at
+      https://dev.mention.com/current/src/appendix/OAuth2.html with authorize endpoint
+      https://web.mention.com/authorize and token endpoint https://web.mention.net/oauth/v2/token,
+      form-encoded token requests, and a {access_token, token_type: bearer} response. Live probes of
+      both endpoints returned conformant invalid_request errors.
+    deviations:
+      - >-
+        The documented response_type on the token exchange is "token" while grant_type is
+        "authorization_code"; RFC 6749 does not define a response_type parameter on the token
+        endpoint.
+      - No scopes are defined, so a granted token is all-or-nothing over the authorizing account.
+      - No refresh_token grant and no token lifetime are documented.
+  - id: oauth2-bearer
+    name: OAuth 2.0 Bearer Token Usage (RFC 6750)
+    conforms: true
+    evidence: >-
+      "Authorization: Bearer <token>" is the documented and preferred transport. The URI query
+      parameter form (access_token) is also supported — RFC 6750 permits it but discourages it, and
+      so does Mention.
+  - id: rfc8414-oauth-metadata
+    name: OAuth 2.0 Authorization Server Metadata (RFC 8414)
+    conforms: false
+    evidence: /.well-known/oauth-authorization-server returned 404 on mention.com and api.mention.com.
+  - id: oidc
+    name: OpenID Connect Discovery
+    conforms: false
+    evidence: /.well-known/openid-configuration returned 404 on mention.com and api.mention.com.
+  - id: rfc9457-problem-details
+    name: Problem Details for HTTP APIs (RFC 9457)
+    conforms: false
+    evidence: >-
+      Errors use a proprietary {form: {errors, children}} envelope on 400 and are documented as HTML
+      for other statuses. No application/problem+json anywhere.
+  - id: rfc9116-security-txt
+    name: security.txt (RFC 9116)
+    conforms: false
+    evidence: /.well-known/security.txt returned 404 on every host.
+  - id: rfc8594-sunset
+    name: The Sunset HTTP Header Field (RFC 8594)
+    conforms: false
+    evidence: No Sunset or Deprecation header is documented; deprecations are changelog prose only.
+  - id: ietf-ratelimit-headers
+    name: RateLimit header fields for HTTP
+    conforms: false
+    evidence: >-
+      Only a proprietary X-Rate-Limit-Reset is returned. No RateLimit-Limit, RateLimit-Remaining,
+      RateLimit-Policy or Retry-After.
+  - id: w3c-datetime
+    name: W3C Date and Time Formats (NOTE-datetime), level 6
+    conforms: true
+    evidence: >-
+      Named explicitly in the Overview: "Dates are formatted using the W3C date format level 6".
+      Fractional seconds are required so that date-based pagination can break ties.
+  - id: rfc5646-language-tags
+    name: Language tags / Accept-Language content negotiation
+    conforms: true
+    evidence: >-
+      Translated fields follow the Accept-Language request header; the account's language_code is the
+      value clients are told to send.
+  - id: json-api
+    name: 'JSON:API'
+    conforms: false
+    evidence: Envelopes are ad-hoc singular/plural keys with a _links object, not a JSON:API document.
+  - id: hal
+    name: HAL / hypermedia link relations
+    conforms: partial
+    evidence: >-
+      Collections carry a _links object with more and pull members, each holding an href and its
+      decoded params. The shape is HAL-flavoured but is not HAL — there is no _embedded, no curies,
+      and the media type is plain application/json.
+  - id: openapi
+    name: OpenAPI
+    conforms: false
+    evidence: >-
+      Mention publishes no machine-readable API description. The specs in openapi/ were reconstructed
+      by API Evangelist from Mention's own HTML reference at https://dev.mention.com/current/.
+  - id: asyncapi
+    name: AsyncAPI
+    conforms: false
+    evidence: >-
+      No AsyncAPI, no webhook catalog and no event schema. The only real-time surface is a long-lived
+      HTTP response from https://stream.mention.net/api.
+  - id: mcp
+    name: Model Context Protocol
+    conforms: false
+    evidence: No MCP server published; probes of four candidate endpoints returned 404 or did not resolve.
+  - id: a2a
+    name: A2A Agent Card
+    conforms: false
+    evidence: /.well-known/agent-card.json and /.well-known/agent.json returned 404 on every host.
+
+compliance:
+  published: true
+  url: https://mention.com/en/terms-and-conditions/#security-policy
+  document: Mention Security Policy, version Apr 22, 2022
+  first_party_certifications: []
+  note: >-
+    Mention holds and claims NO first-party certification. The ISO 27001 / SOC 1 / SOC 2 / PCI Level 1
+    / FISMA / SOX names that appear on the Security Policy are explicitly attributed to Amazon's data
+    centre operations, with OVH's and Scaleway's certifications linked out to those vendors. What
+    Mention does publish about itself is a governance program, recorded below.
+  program:
+    - item: Data residency
+      detail: All servers located within the EU, hosted on OVH, Scaleway and AWS.
+    - item: Data protection officer
+      detail: A Data Privacy Officer is assigned and governs the technical and organizational measures.
+    - item: Breach notification
+      detail: >-
+        Documented routine with an escalation program to report an incident within 72 hours to the
+        CNIL, the French data authority — the GDPR Article 33 obligation.
+    - item: Sub-processors
+      detail: >-
+        Processing regulated by data processing agreements; authorized personnel bound to
+        confidentiality. No sub-processor list is published.
+    - item: Access control
+      detail: Granular production-data access, two-factor authentication where applicable, change logging.
+    - item: Backups
+      detail: Customer-data backups retained 30 days for system recovery; application logs retained longer.
+    - item: Change management
+      detail: Automated tests, mandatory peer review before merge, manual QA before release, traceable daily releases.
+    - item: Group policy
+      detail: >-
+        The policy states Mention Solutions SAS is ultimately owned by NHST Media Group AS (Norway),
+        which governs group companies under an information security policy. The commercial terms are
+        now issued by Agorapulse SAS, so the two documents describe two different owners.
+  regimes:
+    - GDPR
+    - CNIL supervision (France)
+  contacts:
+    privacy: gdpr@mention.com
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

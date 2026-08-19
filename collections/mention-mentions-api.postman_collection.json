@@ -1,0 +1,493 @@
+{
+  "item": [
+    {
+      "id": "df48c707-11cf-47dc-9c11-0ed8d030c397",
+      "name": "Mentions",
+      "description": {
+        "content": "The results an alert collects, plus curation and streaming.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "39673bb1-e74d-4b67-9f90-d2b9c585bbff",
+          "name": "Fetch mentions",
+          "request": {
+            "name": "Fetch mentions",
+            "description": {
+              "content": "Returns the mentions collected by an alert. The query string carries the filter surface; every filter is optional. Retrieve older mentions by following _links.more and poll for new ones by following _links.pull. The index_version attribute of the alert determines which filters are available to it.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": true,
+                  "key": "since_id",
+                  "value": "<string>",
+                  "description": "Return mentions with an id greater (more recently found) than the given id. Cannot be combined with before_date, not_before_date or cursor."
+                },
+                {
+                  "disabled": true,
+                  "key": "before_date",
+                  "value": "<string>",
+                  "description": "Return mentions published before the provided date, ordered by publication date."
+                },
+                {
+                  "disabled": true,
+                  "key": "not_before_date",
+                  "value": "<string>",
+                  "description": "Ignore mentions older than the given date. Only allowed when before_date is provided."
+                },
+                {
+                  "disabled": true,
+                  "key": "limit",
+                  "value": "<string>",
+                  "description": "Number of mentions to return. Default 20, maximum 1000. A small limit gives faster responses."
+                },
+                {
+                  "disabled": true,
+                  "key": "source",
+                  "value": "<string>",
+                  "description": "Restrict to one of the available sources. Only available to plans with search access."
+                },
+                {
+                  "disabled": true,
+                  "key": "unread",
+                  "value": "<string>",
+                  "description": "Return only unread mentions. Cannot be combined with favorite, q or tone."
+                },
+                {
+                  "disabled": true,
+                  "key": "favorite",
+                  "value": "<string>",
+                  "description": "Return only favorite mentions. Cannot be combined with folder unless folder is inbox or archive."
+                },
+                {
+                  "disabled": true,
+                  "key": "folder",
+                  "value": "<string>",
+                  "description": "Filter by folder: inbox, archive, spam or trash. With spam and trash, include_children defaults to enabled."
+                },
+                {
+                  "disabled": true,
+                  "key": "tone",
+                  "value": "<string>",
+                  "description": "Filter by tone: -1 negative, 0 neutral, 1 positive. Accepts an array of values."
+                },
+                {
+                  "disabled": true,
+                  "key": "countries",
+                  "value": "<string>",
+                  "description": "Filter by country. Accepts an array of values."
+                },
+                {
+                  "disabled": true,
+                  "key": "include_children",
+                  "value": "<string>",
+                  "description": "Whether to include children mentions."
+                },
+                {
+                  "disabled": true,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort results by published_at, author_influence.score, direct_reach, cumulative_reach or domain_reach. Only allowed on plans with search access."
+                },
+                {
+                  "disabled": true,
+                  "key": "languages",
+                  "value": "<string>",
+                  "description": "Filter by language. Accepts an array of values."
+                },
+                {
+                  "disabled": true,
+                  "key": "timezone",
+                  "value": "<string>",
+                  "description": "Timezone used when parsing dates in the q parameter."
+                },
+                {
+                  "disabled": true,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "Keyword / compound filter expression, e.g. source:(facebook OR twitter) in:(inbox OR archive) is:favorite. Only accounts with search access can use it."
+                },
+                {
+                  "disabled": true,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Opaque pagination cursor supplied by the API."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "ee100ccf-99ca-4537-8e86-e1db1a7082ab",
+          "name": "Fetch a mention",
+          "request": {
+            "name": "Fetch a mention",
+            "description": {
+              "content": "Fetches a single mention by its ID, including its tasks, logs and children.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                ":mention_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mention_id",
+                  "description": "(Required) ID of the mention."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "139acf49-e277-4d27-9a0b-bd2f7dfb9927",
+          "name": "Curate a mention",
+          "request": {
+            "name": "Curate a mention",
+            "description": {
+              "content": "Updates the curation state of a mention: folder, tags, tone, read/favorite/trashed flags. The content and source of a mention cannot be modified. Any property may be omitted. Marking a mention favorite automatically marks it read. Tags must already exist on the alert.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                ":mention_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mention_id",
+                  "description": "(Required) ID of the mention."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"favorite\": true,\n  \"trashed\": false,\n  \"read\": true,\n  \"tags\": [\n    {\n      \"id\": 123\n    }\n  ],\n  \"folder\": \"archive\",\n  \"tone\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "67dfa5a3-c70a-40ee-ad8c-5ab36ba31890",
+          "name": "Fetch mention children",
+          "request": {
+            "name": "Fetch mention children",
+            "description": {
+              "content": "Returns the child mentions grouped under a given mention, paginated through _links.more.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                ":mention_id",
+                "children"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mention_id",
+                  "description": "(Required) ID of the mention."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "10f730a0-404f-46b1-b024-6e994e809321",
+          "name": "Mark all mentions as read",
+          "request": {
+            "name": "Mark all mentions as read",
+            "description": {
+              "content": "Marks every mention of the alert as read.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                "markallread"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "116592ec-bb9c-4680-be66-b4f5ae702454",
+          "name": "Stream mentions",
+          "request": {
+            "name": "Stream mentions",
+            "description": {
+              "content": "Opens a long-lived HTTP connection that pushes each mention as soon as it is collected for the selected alerts. This operation is only available on the streaming endpoint https://stream.mention.net/api, and one stream at a time may be open per account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "mentions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": true,
+                  "key": "alerts[]",
+                  "value": "<string>",
+                  "description": "(Required) IDs of the alerts to stream."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mention.net/api",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "REDACTED_EXAMPLE_TOKEN",
+      "key": "access_token"
+    },
+    {
+      "type": "string",
+      "value": "1.21",
+      "key": "apiVersion"
+    }
+  ],
+  "info": {
+    "_postman_id": "fb015a96-478c-4b38-9dee-f91ef9f958d8",
+    "name": "Mention Mentions API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation, tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client can do is available through this API.\n\nAuthentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header; without it, the version configured in the app's settings applies.\n\nThis description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/ \u2014 Mention does not publish a machine-readable OpenAPI definition.",
+      "type": "text/plain"
+    }
+  }
+}

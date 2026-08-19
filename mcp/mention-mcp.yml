@@ -1,0 +1,133 @@
+generated: '2026-08-13'
+method: derived
+status: candidate
+source: openapi/_original/mention-openapi.yml
+search_note: >-
+  No Model Context Protocol server is published by Mention. Searched the API reference
+  (https://dev.mention.com/current/), the product site, the help center, the Mention GitHub
+  organization (github.com/mentionapp — 22 public repos, none MCP-related), and probed
+  https://mcp.mention.com/mcp (DNS does not resolve), https://api.mention.com/mcp (404),
+  https://mention.com/mcp (404) and https://mcp.agorapulse.com/mcp (404, parent brand) with a
+  JSON-RPC tools/list POST. Nothing answered. The tool list below is a CANDIDATE derived from the
+  operations Mention documents; it is not a server anyone can call today.
+deployment:
+  mode: none
+  auth: unknown
+  verified: derived
+server:
+  name: mention
+  transport: null
+  url: null
+tools:
+  - name: list_alerts
+    description: List the alerts (keyword queries) configured on an account.
+    source_operation: openapi/mention-alerts-api-openapi.yml#listAlerts
+  - name: create_alert
+    description: Create an alert from a basic keyword set or an advanced boolean query string.
+    source_operation: openapi/mention-alerts-api-openapi.yml#createAlert
+  - name: get_alert
+    description: Fetch a single alert with its query, sources, languages and shares.
+    source_operation: openapi/mention-alerts-api-openapi.yml#getAlert
+  - name: update_alert
+    description: Update an alert's query criteria, sources or languages.
+    source_operation: openapi/mention-alerts-api-openapi.yml#updateAlert
+  - name: pause_alert
+    description: Pause an alert so it stops collecting mentions.
+    source_operation: openapi/mention-alerts-api-openapi.yml#pauseAlert
+  - name: unpause_alert
+    description: Resume collection on a paused alert.
+    source_operation: openapi/mention-alerts-api-openapi.yml#unpauseAlert
+  - name: get_alert_preferences
+    description: Read the notification preferences and weight for an alert.
+    source_operation: openapi/mention-alerts-api-openapi.yml#getAlertPreferences
+  - name: update_alert_preferences
+    description: Update notification frequencies and weight for an alert.
+    source_operation: openapi/mention-alerts-api-openapi.yml#updateAlertPreferences
+  - name: list_mentions
+    description: Search and filter the mentions an alert has collected.
+    source_operation: openapi/mention-mentions-api-openapi.yml#listMentions
+  - name: get_mention
+    description: Fetch a single mention with its tasks, logs and children.
+    source_operation: openapi/mention-mentions-api-openapi.yml#getMention
+  - name: curate_mention
+    description: Set folder, tags, tone, read/favorite/trashed state on a mention.
+    source_operation: openapi/mention-mentions-api-openapi.yml#curateMention
+  - name: get_mention_children
+    description: Fetch the child mentions grouped under a mention.
+    source_operation: openapi/mention-mentions-api-openapi.yml#getMentionChildren
+  - name: mark_all_mentions_read
+    description: Mark every mention on an alert as read.
+    source_operation: openapi/mention-mentions-api-openapi.yml#markAllMentionsRead
+  - name: stream_mentions
+    description: Open a long-lived stream of new mentions for one or more alerts.
+    source_operation: openapi/mention-mentions-api-openapi.yml#streamMentions
+    note: Streaming is served only from https://stream.mention.net/api and is a poor fit for a request/response MCP tool.
+  - name: list_alert_tags
+    description: List the tags defined on an alert.
+    source_operation: openapi/mention-tags-api-openapi.yml#listAlertTags
+  - name: create_alert_tag
+    description: Create a tag, optionally with auto-tagging keywords.
+    source_operation: openapi/mention-tags-api-openapi.yml#createAlertTag
+  - name: rename_tag
+    description: Rename a tag or change its auto-tagging keywords.
+    source_operation: openapi/mention-tags-api-openapi.yml#renameTag
+  - name: delete_tag
+    description: Delete a tag from an alert.
+    source_operation: openapi/mention-tags-api-openapi.yml#deleteTag
+  - name: list_alert_shares
+    description: List the accounts an alert is shared with.
+    source_operation: openapi/mention-shares-api-openapi.yml#listAlertShares
+  - name: create_alert_share
+    description: Share an alert with another account.
+    source_operation: openapi/mention-shares-api-openapi.yml#createAlertShare
+  - name: get_share
+    description: Fetch a single share object.
+    source_operation: openapi/mention-shares-api-openapi.yml#getShare
+  - name: update_share
+    description: Block or unblock an account's access to an alert.
+    source_operation: openapi/mention-shares-api-openapi.yml#updateShare
+  - name: delete_share
+    description: Remove an account's share; deleting the last share deletes the alert.
+    source_operation: openapi/mention-shares-api-openapi.yml#deleteShare
+  - name: list_alert_tasks
+    description: List every mention task open on an alert.
+    source_operation: openapi/mention-tasks-api-openapi.yml#listAlertTasks
+  - name: create_mention_task
+    description: Assign a mention to a team mate.
+    source_operation: openapi/mention-tasks-api-openapi.yml#createMentionTask
+  - name: get_task
+    description: Fetch a single mention task.
+    source_operation: openapi/mention-tasks-api-openapi.yml#getTask
+  - name: update_task
+    description: Mark a task done, change its type, or add a comment.
+    source_operation: openapi/mention-tasks-api-openapi.yml#updateTask
+  - name: delete_task
+    description: Delete a mention task.
+    source_operation: openapi/mention-tasks-api-openapi.yml#deleteTask
+  - name: list_authors
+    description: List authors and influencers behind an alert's mentions, ranked by influence score.
+    source_operation: openapi/mention-authors-api-openapi.yml#listAuthors
+  - name: get_stats
+    description: Fetch aggregate statistics for one or more alerts over a date range.
+    source_operation: openapi/mention-stats-api-openapi.yml#getStats
+  - name: get_account
+    description: Fetch an account.
+    source_operation: openapi/mention-accounts-api-openapi.yml#getAccount
+  - name: get_me
+    description: Resolve the account that owns the current access token.
+    source_operation: openapi/mention-accounts-api-openapi.yml#getMe
+  - name: create_account
+    description: Create a Mention account.
+    source_operation: openapi/mention-accounts-api-openapi.yml#createAccount
+  - name: update_account
+    description: Update an account.
+    source_operation: openapi/mention-accounts-api-openapi.yml#updateAccount
+  - name: delete_account
+    description: Delete an account.
+    source_operation: openapi/mention-accounts-api-openapi.yml#deleteAccount
+  - name: get_app_data
+    description: Fetch the reference vocabularies (sources, tones, folders, task types, languages).
+    source_operation: openapi/mention-app-api-openapi.yml#getAppData
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

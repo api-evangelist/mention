@@ -1,62 +1,408 @@
 openapi: 3.1.0
 info:
-  title: Mention Accounts Tasks API
-  description: Minimal OpenAPI 3.1 specification for the Mention API, covering alerts, mentions, accounts, shares, alert preferences, tags, authors, tasks, and statistics.
-  version: 1.0.0
+  title: Mention Tasks API
+  description: >-
+    The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social
+    listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation,
+    tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client
+    can do is available through this API.
+
+
+    Authentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through
+    the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json
+    header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format
+    level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are
+    cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header;
+    without it, the version configured in the app's settings applies.
+
+
+    This description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/
+    — Mention does not publish a machine-readable OpenAPI definition.
+  version: '1.21'
+  contact:
+    name: Mention Support
+    url: https://en.support.mention.com/
+  license:
+    name: Proprietary
+    url: https://mention.com/en/terms-and-conditions/
+externalDocs:
+  description: Mention API reference
+  url: https://dev.mention.com/current/
+x-generated-from: https://dev.mention.com/current/
+x-generated-by: api-evangelist-enrichment-2026-08-13
 servers:
+- url: https://api.mention.net/api
+  description: Mention API — the base URL named in Mention's own reference documentation.
 - url: https://api.mention.com/api
-  description: Mention API
+  description: Alternate host observed answering the same API (returns the same OAuth2 challenge).
+security:
+- bearerAuth: []
+- accessTokenQuery: []
+- oauth2: []
 tags:
 - name: Tasks
+  description: Assignments created on a mention for team mates.
 paths:
-  /tasks/{id}:
+  /accounts/{account_id}/alerts/{alert_id}/tasks:
+    get:
+      operationId: listAlertTasks
+      summary: Fetch all tasks of an alert
+      description: >-
+        Returns every mention task created on the alert, so open assignments can be reviewed in one call. There is
+        no separate endpoint for the tasks of a single mention: those are returned inline by the mention resource.
+      tags:
+      - Tasks
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/GetTasks.html
+      parameters:
+      - &id001
+        name: account_id
+        in: path
+        required: true
+        description: ID of the account.
+        schema:
+          type: string
+        example: 12345_69gjjsg4itgkcco040okwsck700o4w8gsco0k4kco0s4scw8o0
+      - &id002
+        name: alert_id
+        in: path
+        required: true
+        description: ID of the alert.
+        schema:
+          type: integer
+        example: 112233
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: A list of tasks.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskList'
+        '400': &id003
+          $ref: '#/components/responses/ValidationError'
+        '401': &id004
+          $ref: '#/components/responses/Unauthorized'
+        '402': &id005
+          $ref: '#/components/responses/PaymentRequired'
+        '403': &id006
+          $ref: '#/components/responses/Forbidden'
+        '404': &id007
+          $ref: '#/components/responses/NotFound'
+        '429': &id008
+          $ref: '#/components/responses/RateLimited'
+  /accounts/{account_id}/alerts/{alert_id}/mentions/{mention_id}/tasks:
+    post:
+      operationId: createMentionTask
+      summary: Create a task on a mention
+      description: >-
+        Assigns a mention to a team mate. assigned_to_account_id is required and cannot be changed afterwards; type,
+        comment and done are updatable. Valid task types come from the app/data reference endpoint.
+      tags:
+      - Tasks
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/task/PostTask.html
+      parameters:
+      - *id001
+      - *id002
+      - &id009
+        name: mention_id
+        in: path
+        required: true
+        description: ID of the mention.
+        schema:
+          type: integer
+        example: 527849933
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreate'
+            example:
+              type: read
+              assigned_to_account_id: YOUR_TEAMMATE_ACCOUNT_ID
+      responses:
+        '200':
+          description: The created task.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskEnvelope'
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
+  /accounts/{account_id}/alerts/{alert_id}/mentions/{mention_id}/tasks/{task_id}:
     get:
       operationId: getTask
       summary: Fetch a task
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Task object
-        default:
-          description: Error response
+      description: Retrieves a single mention task.
       tags:
       - Tasks
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/task/GetTask.html
+      parameters:
+      - *id001
+      - *id002
+      - *id009
+      - &id010
+        name: task_id
+        in: path
+        required: true
+        description: ID of the task.
+        schema:
+          type: integer
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: The task.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskEnvelope'
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
     put:
       operationId: updateTask
       summary: Update a task
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Task updated
-        default:
-          description: Error response
+      description: >-
+        Updates a task — typically to mark it done, change its type, or add a comment. Only the properties marked
+        updatable may be sent; assigned_to_account_id is fixed at creation.
       tags:
       - Tasks
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/task/PutTask.html
+      parameters:
+      - *id001
+      - *id002
+      - *id009
+      - *id010
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdate'
+            example:
+              done: true
+      responses:
+        '200':
+          description: The updated task.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskEnvelope'
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
     delete:
       operationId: deleteTask
       summary: Delete a task
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: Task deleted
-        default:
-          description: Error response
+      description: Deletes a mention task.
       tags:
       - Tasks
-x-generated-from: https://dev.mention.com/
-x-generated-by: claude-crawl-2026-05-08
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/task/DeleteTask.html
+      parameters:
+      - *id001
+      - *id002
+      - *id009
+      - *id010
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '204':
+          description: The task was deleted.
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Access token passed in the Authorization header, prefixed with 'Bearer '. This is the preferred method. A
+        token for your own account is available at the bottom of your app's settings page.
+    accessTokenQuery:
+      type: apiKey
+      in: query
+      name: access_token
+      description: >-
+        The same access token passed in the query string. Supported but discouraged, as it puts the credential in
+        the URL.
+    oauth2:
+      type: oauth2
+      description: >-
+        Authorization-code flow used to obtain an access token for a third party's Mention account. No scopes are
+        defined: a granted token carries full access to the authorizing account.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://web.mention.com/authorize
+          tokenUrl: https://web.mention.net/oauth/v2/token
+          scopes: {}
+  parameters:
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: >-
+        API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings
+        applies.
+      schema:
+        type: string
+      example: '1.21'
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      description: Language used for translated resource fields.
+      schema:
+        type: string
+      example: fr
+  responses:
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    RateLimited:
+      description: >-
+        Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit
+        resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+  schemas:
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          description: Relative URL to follow.
+        params:
+          type: object
+          description: The query string parameters encoded in href.
+          additionalProperties: true
+    Links:
+      type: object
+      title: Pagination links
+      description: >-
+        Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present
+        only when applicable.
+      properties:
+        more:
+          $ref: '#/components/schemas/Link'
+        pull:
+          $ref: '#/components/schemas/Link'
+    Task:
+      type: object
+      title: Mention task
+      properties:
+        id:
+          type: integer
+        assigned_to_account_id:
+          type: string
+        type:
+          type: string
+          description: Task type; valid values come from app/data.
+        comment:
+          type: string
+        done:
+          type: boolean
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    TaskCreate:
+      type: object
+      required:
+      - assigned_to_account_id
+      properties:
+        assigned_to_account_id:
+          type: string
+          description: Account id of the team mate assigned. Not updatable.
+        type:
+          type: string
+        comment:
+          type: string
+        done:
+          type: boolean
+    TaskEnvelope:
+      type: object
+      properties:
+        task:
+          $ref: '#/components/schemas/Task'
+    TaskList:
+      type: object
+      properties:
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        _links:
+          $ref: '#/components/schemas/Links'
+    TaskUpdate:
+      type: object
+      properties:
+        type:
+          type: string
+        comment:
+          type: string
+        done:
+          type: boolean

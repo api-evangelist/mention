@@ -1,0 +1,233 @@
+openapi: 3.1.0
+info:
+  title: Mention App API
+  description: >-
+    The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social
+    listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation,
+    tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client
+    can do is available through this API.
+
+
+    Authentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through
+    the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json
+    header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format
+    level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are
+    cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header;
+    without it, the version configured in the app's settings applies.
+
+
+    This description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/
+    — Mention does not publish a machine-readable OpenAPI definition.
+  version: '1.21'
+  contact:
+    name: Mention Support
+    url: https://en.support.mention.com/
+  license:
+    name: Proprietary
+    url: https://mention.com/en/terms-and-conditions/
+externalDocs:
+  description: Mention API reference
+  url: https://dev.mention.com/current/
+x-generated-from: https://dev.mention.com/current/
+x-generated-by: api-evangelist-enrichment-2026-08-13
+servers:
+- url: https://api.mention.net/api
+  description: Mention API — the base URL named in Mention's own reference documentation.
+- url: https://api.mention.com/api
+  description: Alternate host observed answering the same API (returns the same OAuth2 challenge).
+security:
+- bearerAuth: []
+- accessTokenQuery: []
+- oauth2: []
+tags:
+- name: App
+  description: Application reference data and vocabularies.
+paths:
+  /app/data:
+    get:
+      operationId: getAppData
+      summary: Fetch application data
+      description: >-
+        Retrieves reference data about the application: available app languages, alert languages, alert countries,
+        alert tones, alert sources, alert share roles, alert colors, task types, mention folders, mention log types,
+        social account types, week days and the notification frequency vocabularies. Several properties are translated
+        according to the Accept-Language request header. This endpoint is the source of the enumerated values used
+        by the alert, mention, task and preference resources.
+      tags:
+      - App
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/app/Appdata.html
+      responses:
+        '200':
+          description: Application reference data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppData'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+      parameters:
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Access token passed in the Authorization header, prefixed with 'Bearer '. This is the preferred method. A
+        token for your own account is available at the bottom of your app's settings page.
+    accessTokenQuery:
+      type: apiKey
+      in: query
+      name: access_token
+      description: >-
+        The same access token passed in the query string. Supported but discouraged, as it puts the credential in
+        the URL.
+    oauth2:
+      type: oauth2
+      description: >-
+        Authorization-code flow used to obtain an access token for a third party's Mention account. No scopes are
+        defined: a granted token carries full access to the authorizing account.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://web.mention.com/authorize
+          tokenUrl: https://web.mention.net/oauth/v2/token
+          scopes: {}
+  parameters:
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: >-
+        API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings
+        applies.
+      schema:
+        type: string
+      example: '1.21'
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      description: Language used for translated resource fields.
+      schema:
+        type: string
+      example: fr
+  responses:
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    RateLimited:
+      description: >-
+        Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit
+        resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+  schemas:
+    AppData:
+      type: object
+      title: Application data
+      description: Reference vocabularies used across the API.
+      properties:
+        app_languages:
+          type: object
+          additionalProperties: true
+        alert_languages:
+          type: object
+          additionalProperties: true
+        alert_countries:
+          type: object
+          additionalProperties: true
+        alert_tones:
+          type: object
+          additionalProperties: true
+        alert_sources:
+          type: object
+          additionalProperties: true
+        alert_share_roles:
+          type: object
+          additionalProperties: true
+        countries:
+          type: object
+          additionalProperties: true
+        task_types:
+          type: object
+          additionalProperties: true
+        mention_folders:
+          type: object
+          additionalProperties: true
+        mention_log_types:
+          type: object
+          additionalProperties: true
+        social_account_types:
+          type: object
+          additionalProperties: true
+        week_days:
+          type: object
+          additionalProperties: true
+        push_notification_frequencies:
+          type: object
+          additionalProperties: true
+        desktop_notification_frequencies:
+          type: object
+          additionalProperties: true
+        email_notification_frequencies:
+          type: object
+          additionalProperties: true
+        trending_email_notification_frequencies:
+          type: object
+          additionalProperties: true
+        trending_sms_notification_frequencies:
+          type: object
+          additionalProperties: true
+        alert_colors:
+          type: array
+          items:
+            type: string
+        locale:
+          type: string

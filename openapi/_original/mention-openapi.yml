@@ -2,500 +2,2423 @@ openapi: 3.1.0
 info:
   title: Mention API
   description: >-
-    Minimal OpenAPI 3.1 specification for the Mention API, covering
-    alerts, mentions, accounts, shares, alert preferences, tags,
-    authors, tasks, and statistics.
-  version: 1.0.0
-x-generated-from: https://dev.mention.com/
-x-generated-by: claude-crawl-2026-05-08
+    The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social
+    listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation,
+    tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client
+    can do is available through this API.
+
+
+    Authentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through
+    the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json
+    header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format
+    level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are
+    cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header;
+    without it, the version configured in the app's settings applies.
+
+
+    This description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/
+    — Mention does not publish a machine-readable OpenAPI definition.
+  version: '1.21'
+  contact:
+    name: Mention Support
+    url: https://en.support.mention.com/
+  license:
+    name: Proprietary
+    url: https://mention.com/en/terms-and-conditions/
+externalDocs:
+  description: Mention API reference
+  url: https://dev.mention.com/current/
+x-generated-from: https://dev.mention.com/current/
+x-generated-by: api-evangelist-enrichment-2026-08-13
 servers:
-  - url: https://api.mention.com/api
-    description: Mention API
+- url: https://api.mention.net/api
+  description: Mention API — the base URL named in Mention's own reference documentation.
+- url: https://api.mention.com/api
+  description: Alternate host observed answering the same API (returns the same OAuth2 challenge).
+security:
+- bearerAuth: []
+- accessTokenQuery: []
+- oauth2: []
+tags:
+- name: App
+  description: Application reference data and vocabularies.
+- name: Accounts
+  description: Mention accounts and the authenticated identity.
+- name: Alerts
+  description: The keyword queries Mention crawls the web and social media for.
+- name: Mentions
+  description: The results an alert collects, plus curation and streaming.
+- name: Shares
+  description: Which accounts an alert is shared with.
+- name: Tags
+  description: Tags and auto-tagging keywords on an alert.
+- name: Tasks
+  description: Assignments created on a mention for team mates.
+- name: Authors
+  description: Authors and influencers behind an alert's mentions.
+- name: Stats
+  description: Aggregate statistics across alerts.
 paths:
-  /alerts:
+  /app/data:
     get:
-      operationId: listAlerts
-      summary: Fetch all alerts of an account
+      operationId: getAppData
+      summary: Fetch application data
+      description: >-
+        Retrieves reference data about the application: available app languages, alert languages, alert countries,
+        alert tones, alert sources, alert share roles, alert colors, task types, mention folders, mention log types,
+        social account types, week days and the notification frequency vocabularies. Several properties are translated
+        according to the Accept-Language request header. This endpoint is the source of the enumerated values used
+        by the alert, mention, task and preference resources.
+      tags:
+      - App
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/app/Appdata.html
       responses:
         '200':
-          description: List of alerts
-        default:
-          description: Error response
-    post:
-      operationId: createAlert
-      summary: Create an alert
-      responses:
-        '201':
-          description: Alert created
-        default:
-          description: Error response
-  /alerts/{id}:
-    get:
-      operationId: getAlert
-      summary: Fetch an alert
+          description: Application reference data.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppData'
+        '400': &id001
+          $ref: '#/components/responses/ValidationError'
+        '401': &id002
+          $ref: '#/components/responses/Unauthorized'
+        '402': &id003
+          $ref: '#/components/responses/PaymentRequired'
+        '403': &id004
+          $ref: '#/components/responses/Forbidden'
+        '404': &id005
+          $ref: '#/components/responses/NotFound'
+        '429': &id006
+          $ref: '#/components/responses/RateLimited'
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Alert object
-        default:
-          description: Error response
-    put:
-      operationId: updateAlert
-      summary: Update an alert
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Alert updated
-        default:
-          description: Error response
-    delete:
-      operationId: deleteAlert
-      summary: Delete an alert
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Alert deleted
-        default:
-          description: Error response
-  /alerts/{id}/pause:
-    post:
-      operationId: pauseAlert
-      summary: Pause an alert
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Alert paused
-        default:
-          description: Error response
-  /alerts/{id}/unpause:
-    post:
-      operationId: unpauseAlert
-      summary: Unpause an alert
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Alert unpaused
-        default:
-          description: Error response
-  /mentions:
-    get:
-      operationId: listMentions
-      summary: Fetch mentions
-      responses:
-        '200':
-          description: List of mentions
-        default:
-          description: Error response
-  /mentions/{id}:
-    get:
-      operationId: getMention
-      summary: Fetch a mention
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Mention object
-        default:
-          description: Error response
-    put:
-      operationId: curateMention
-      summary: Curate a mention
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Mention curated
-        default:
-          description: Error response
-  /mentions/{id}/children:
-    get:
-      operationId: getMentionChildren
-      summary: Fetch mention children
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: List of mention children
-        default:
-          description: Error response
-  /mentions/stream:
-    get:
-      operationId: streamMentions
-      summary: Stream mentions
-      responses:
-        '200':
-          description: Stream of mentions
-        default:
-          description: Error response
-  /mentions/mark-all-read:
-    post:
-      operationId: markAllMentionsRead
-      summary: Mark all mentions as read
-      responses:
-        '204':
-          description: Marked as read
-        default:
-          description: Error response
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
   /accounts:
     post:
       operationId: createAccount
       summary: Create an account
-      responses:
-        '201':
-          description: Account created
-        default:
-          description: Error response
-  /accounts/{id}:
-    get:
-      operationId: getAccount
-      summary: Fetch an account
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Account object
-        default:
-          description: Error response
-    put:
-      operationId: updateAccount
-      summary: Update an account
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      description: >-
+        Creates a new Mention account. The password must be at least 6 characters long and mix letters and figures.
+        The optional client property records the name of the application registering the user.
+      tags:
+      - Accounts
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/PostAccount.html
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountCreate'
+            example:
+              name: John Smith
+              email: j.smith@nasa.com
+              password: REDACTED_EXAMPLE_PASSWORD
+              language_code: en
       responses:
         '200':
-          description: Account updated
-        default:
-          description: Error response
-    delete:
-      operationId: deleteAccount
-      summary: Delete an account
+          description: The created account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '204':
-          description: Account deleted
-        default:
-          description: Error response
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
   /accounts/me:
     get:
       operationId: getMe
-      summary: Get my account
+      summary: Fetch my account
+      description: >-
+        Fetches all account details for the account that owns the access token used on the request. This is the standard
+        way to resolve the account_id required by every other endpoint.
+      tags:
+      - Accounts
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/GetAccountMe.html
       responses:
         '200':
-          description: My account
-        default:
-          description: Error response
-  /alerts/{id}/shares:
+          description: The authenticated account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+      parameters:
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+  /accounts/{account_id}:
+    get:
+      operationId: getAccount
+      summary: Fetch an account
+      description: >-
+        Retrieves details for the given account. An access token cannot read another person's account, even when that
+        account was created through this API.
+      tags:
+      - Accounts
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/GetAccount.html
+      parameters:
+      - &id007
+        name: account_id
+        in: path
+        required: true
+        description: ID of the account.
+        schema:
+          type: string
+        example: 12345_69gjjsg4itgkcco040okwsck700o4w8gsco0k4kco0s4scw8o0
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: The account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+    put:
+      operationId: updateAccount
+      summary: Update an account
+      description: >-
+        Modifies an existing account. Only the account that owns the access token can be modified. Changing the password
+        requires sending both old_password and new_password rather than password.
+      tags:
+      - Accounts
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/PutAccount.html
+      parameters:
+      - *id007
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountUpdate'
+            example:
+              name: John Smith
+              email: j.smith@nasa.com
+      responses:
+        '200':
+          description: The updated account.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+    delete:
+      operationId: deleteAccount
+      summary: Delete an account
+      description: Deletes an account. As with GET and PUT, an access token cannot delete another person's account.
+      tags:
+      - Accounts
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/DeleteAccount.html
+      parameters:
+      - *id007
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '204':
+          description: The account was deleted.
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts:
+    get:
+      operationId: listAlerts
+      summary: Fetch all alerts of an account
+      description: >-
+        Returns the alerts visible to the account. The collection is paginated with an opaque cursor; follow _links.more
+        to page. Since API version 1.21 the stats field is empty by default — request counters explicitly with the
+        stats query string parameter.
+      tags:
+      - Alerts
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/GetAlerts.html
+      parameters:
+      - *id007
+      - name: limit
+        in: query
+        required: false
+        description: 'Number of alerts to return. Default: return all alerts.'
+        schema:
+          type: integer
+        example: 20
+      - name: cursor
+        in: query
+        required: false
+        description: Opaque pagination cursor supplied by the API in _links.more.
+        schema:
+          type: string
+        example: abc
+      - name: ids
+        in: query
+        required: false
+        explode: true
+        description: IDs of the alerts to fetch. Must not contain more than 50 ids.
+        schema:
+          type: array
+          maxItems: 50
+          items:
+            type: integer
+      - name: stats
+        in: query
+        required: false
+        description: >-
+          Comma-separated list of alert counters to include. One or more of mention_folders.inbox.total, mention_folders.archive.total,
+          mention_folders.spam.total, mention_folders.trash.total, unread_mentions.total, unseen_mentions.total, favorite_mentions.total,
+          tasks.total, todo_tasks, done_tasks, logs.total. Added in API version 1.21.
+        schema:
+          type: string
+        example: unread_mentions.total,mention_folders.inbox.total
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: A paginated list of alerts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertList'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+    post:
+      operationId: createAlert
+      summary: Create an alert
+      description: >-
+        Creates a new alert for the account. A query is either basic (included / required / excluded keyword arrays)
+        or advanced (a boolean query_string). At least one of included_keywords or required_keywords must carry a
+        keyword. Since API version 1.21 the group_id query string parameter is always mandatory.
+      tags:
+      - Alerts
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/PostAlert.html
+      parameters:
+      - *id007
+      - name: group_id
+        in: query
+        required: true
+        description: >-
+          Group the alert belongs to. Mandatory since API version 1.21; before 1.21 it could be omitted when the caller
+          had only one group.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertCreate'
+            example:
+              name: NASA and competitors
+              query:
+                type: basic
+                included_keywords:
+                - NASA
+                - Arianespace
+                - SpaceX
+              languages:
+              - en
+              sources:
+              - web
+      responses:
+        '200':
+          description: The created alert.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}:
+    get:
+      operationId: getAlert
+      summary: Fetch an alert
+      description: Retrieve details about a single alert, including its query, sources, languages, shares and permissions.
+      tags:
+      - Alerts
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/GetAlert.html
+      parameters:
+      - *id007
+      - &id008
+        name: alert_id
+        in: path
+        required: true
+        description: ID of the alert.
+        schema:
+          type: integer
+        example: 112233
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: The alert.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+    put:
+      operationId: updateAlert
+      summary: Update an alert
+      description: >-
+        Modifies an existing alert, usually to refine the query criteria and improve the search's efficiency. Omitted
+        properties are left unchanged; an alert fetched with GET may be sent back unchanged.
+      tags:
+      - Alerts
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/PutAlert.html
+      parameters:
+      - *id007
+      - *id008
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlertUpdate'
+            example:
+              name: Space innovation
+              query:
+                type: advanced
+                query_string: (space AND innovation)
+      responses:
+        '200':
+          description: The updated alert.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}/pause:
+    post:
+      operationId: pauseAlert
+      summary: Pause an alert
+      description: Pauses a single alert so that it stops collecting new mentions.
+      tags:
+      - Alerts
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/PostAlertPause.html
+      parameters:
+      - *id007
+      - *id008
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: The paused alert.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}/unpause:
+    post:
+      operationId: unpauseAlert
+      summary: Unpause an alert
+      description: Resumes collection on a previously paused alert.
+      tags:
+      - Alerts
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/PostAlertUnpause.html
+      parameters:
+      - *id007
+      - *id008
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: The resumed alert.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}/preferences:
+    get:
+      operationId: getAlertPreferences
+      summary: Fetch preferences of an alert
+      description: Retrieves the per-account notification preferences and display weight for the given alert.
+      tags:
+      - Alerts
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/preferences/GetPreferences.html
+      parameters:
+      - *id007
+      - *id008
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: The alert preferences.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreferencesEnvelope'
+              example:
+                preferences:
+                  email_notification_frequency: default
+                  push_notification_frequency: default
+                  desktop_notification_frequency: default
+                  trending_email_notification_frequency: default
+                  trending_sms_notification_frequency: default
+                  weight: 10000
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+    put:
+      operationId: updateAlertPreferences
+      summary: Update preferences of an alert
+      description: >-
+        Updates the alert preferences. Any attribute returned by the GET request can be updated, and any attribute
+        may be omitted. The weight attribute controls how important the alert is in the interface.
+      tags:
+      - Alerts
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/preferences/PutPreferences.html
+      parameters:
+      - *id007
+      - *id008
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Preferences'
+            example:
+              push_notification_frequency: never
+              weight: 1
+      responses:
+        '200':
+          description: The updated preferences.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PreferencesEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}/mentions:
+    get:
+      operationId: listMentions
+      summary: Fetch mentions
+      description: >-
+        Returns the mentions collected by an alert. The query string carries the filter surface; every filter is optional.
+        Retrieve older mentions by following _links.more and poll for new ones by following _links.pull. The index_version
+        attribute of the alert determines which filters are available to it.
+      tags:
+      - Mentions
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/GetMentions.html
+      parameters:
+      - *id007
+      - *id008
+      - name: since_id
+        in: query
+        required: false
+        description: >-
+          Return mentions with an id greater (more recently found) than the given id. Cannot be combined with before_date,
+          not_before_date or cursor.
+        schema:
+          type: integer
+      - name: before_date
+        in: query
+        required: false
+        description: Return mentions published before the provided date, ordered by publication date.
+        schema:
+          type: string
+      - name: not_before_date
+        in: query
+        required: false
+        description: Ignore mentions older than the given date. Only allowed when before_date is provided.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: Number of mentions to return. Default 20, maximum 1000. A small limit gives faster responses.
+        schema:
+          type: integer
+      - name: source
+        in: query
+        required: false
+        description: Restrict to one of the available sources. Only available to plans with search access.
+        schema:
+          type: string
+      - name: unread
+        in: query
+        required: false
+        description: Return only unread mentions. Cannot be combined with favorite, q or tone.
+        schema:
+          type: integer
+      - name: favorite
+        in: query
+        required: false
+        description: Return only favorite mentions. Cannot be combined with folder unless folder is inbox or archive.
+        schema:
+          type: integer
+      - name: folder
+        in: query
+        required: false
+        description: 'Filter by folder: inbox, archive, spam or trash. With spam and trash, include_children defaults
+          to enabled.'
+        schema:
+          type: string
+      - name: tone
+        in: query
+        required: false
+        description: 'Filter by tone: -1 negative, 0 neutral, 1 positive. Accepts an array of values.'
+        schema:
+          type: integer
+      - name: countries
+        in: query
+        required: false
+        description: Filter by country. Accepts an array of values.
+        schema:
+          type: string
+      - name: include_children
+        in: query
+        required: false
+        description: Whether to include children mentions.
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        required: false
+        description: >-
+          Sort results by published_at, author_influence.score, direct_reach, cumulative_reach or domain_reach. Only
+          allowed on plans with search access.
+        schema:
+          type: string
+      - name: languages
+        in: query
+        required: false
+        description: Filter by language. Accepts an array of values.
+        schema:
+          type: string
+      - name: timezone
+        in: query
+        required: false
+        description: Timezone used when parsing dates in the q parameter.
+        schema:
+          type: string
+      - name: q
+        in: query
+        required: false
+        description: >-
+          Keyword / compound filter expression, e.g. source:(facebook OR twitter) in:(inbox OR archive) is:favorite.
+          Only accounts with search access can use it.
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        required: false
+        description: Opaque pagination cursor supplied by the API.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: A paginated list of mentions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MentionList'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}/mentions/{mention_id}:
+    get:
+      operationId: getMention
+      summary: Fetch a mention
+      description: Fetches a single mention by its ID, including its tasks, logs and children.
+      tags:
+      - Mentions
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/GetMention.html
+      parameters:
+      - *id007
+      - *id008
+      - &id009
+        name: mention_id
+        in: path
+        required: true
+        description: ID of the mention.
+        schema:
+          type: integer
+        example: 527849933
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: The mention.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mention'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+    put:
+      operationId: curateMention
+      summary: Curate a mention
+      description: >-
+        Updates the curation state of a mention: folder, tags, tone, read/favorite/trashed flags. The content and
+        source of a mention cannot be modified. Any property may be omitted. Marking a mention favorite automatically
+        marks it read. Tags must already exist on the alert.
+      tags:
+      - Mentions
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/PutMention.html
+      parameters:
+      - *id007
+      - *id008
+      - *id009
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MentionCurate'
+            example:
+              favorite: true
+              trashed: false
+              read: true
+              tags:
+              - id: 123
+              folder: archive
+              tone: 1
+      responses:
+        '200':
+          description: The updated mention.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mention'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}/mentions/{mention_id}/children:
+    get:
+      operationId: getMentionChildren
+      summary: Fetch mention children
+      description: Returns the child mentions grouped under a given mention, paginated through _links.more.
+      tags:
+      - Mentions
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/GetMentionChildren.html
+      parameters:
+      - *id007
+      - *id008
+      - *id009
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: A paginated list of child mentions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MentionList'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}/mentions/markallread:
+    post:
+      operationId: markAllMentionsRead
+      summary: Mark all mentions as read
+      description: Marks every mention of the alert as read.
+      tags:
+      - Mentions
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/PostMentionsMarkallread.html
+      parameters:
+      - *id007
+      - *id008
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '204':
+          description: All mentions were marked as read.
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/mentions:
+    get:
+      operationId: streamMentions
+      summary: Stream mentions
+      description: >-
+        Opens a long-lived HTTP connection that pushes each mention as soon as it is collected for the selected alerts.
+        This operation is only available on the streaming endpoint https://stream.mention.net/api, and one stream
+        at a time may be open per account.
+      tags:
+      - Mentions
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/StreamMentions.html
+      parameters:
+      - *id007
+      - name: alerts[]
+        in: query
+        required: true
+        explode: true
+        description: IDs of the alerts to stream.
+        schema:
+          type: array
+          items:
+            type: integer
+        example:
+        - 112233
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: A long-lived stream of mention objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mention'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+      servers:
+      - url: https://stream.mention.net/api
+        description: Mention streaming endpoint
+  /accounts/{account_id}/alerts/{alert_id}/shares:
     get:
       operationId: listAlertShares
       summary: Fetch all shares of an alert
+      description: Lists every share object on the alert — that is, every account the alert is shared with.
+      tags:
+      - Shares
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/share/GetShares.html
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - *id007
+      - *id008
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
       responses:
         '200':
-          description: List of shares
-        default:
-          description: Error response
+          description: A list of shares.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareList'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
     post:
       operationId: createAlertShare
       summary: Create a share
+      description: >-
+        Creates a share object linking another account to this alert. The account_id in the body is the public id
+        of the account the alert is shared with.
+      tags:
+      - Shares
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/share/PostShare.html
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - *id007
+      - *id008
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShareCreate'
+            example:
+              account_id: 12345_69gjjsg4itgkcco040okwsck700o4w8gsco0k4kco0s4scw8o0
       responses:
-        '201':
-          description: Share created
-        default:
-          description: Error response
-  /shares/{id}:
+        '200':
+          description: The created share.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}/shares/{share_id}:
     get:
       operationId: getShare
       summary: Fetch a share
+      description: Retrieves a single share object on an alert.
+      tags:
+      - Shares
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/share/GetShare.html
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - *id007
+      - *id008
+      - &id010
+        name: share_id
+        in: path
+        required: true
+        description: ID of the share object.
+        schema:
+          type: integer
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
       responses:
         '200':
-          description: Share object
-        default:
-          description: Error response
+          description: The share.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
     put:
       operationId: updateShare
       summary: Update a share
+      description: Updates an existing share, typically to block an account's access to the alert.
+      tags:
+      - Shares
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/share/PutShare.html
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - *id007
+      - *id008
+      - *id010
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShareUpdate'
+            example:
+              blocked: false
       responses:
         '200':
-          description: Share updated
-        default:
-          description: Error response
+          description: The updated share.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
     delete:
       operationId: deleteShare
       summary: Delete a share
+      description: >-
+        Deletes the share object linking an account to an alert. Team admin rights are required to delete someone
+        else's share. There is no delete-alert operation: when the last share on an alert is deleted, the alert itself
+        is deleted.
+      tags:
+      - Shares
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/share/DeleteShare.html
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - *id007
+      - *id008
+      - *id010
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
       responses:
         '204':
-          description: Share deleted
-        default:
-          description: Error response
-  /alerts/{id}/preferences:
-    get:
-      operationId: getAlertPreferences
-      summary: Fetch alert preferences
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Preferences object
-        default:
-          description: Error response
-    put:
-      operationId: updateAlertPreferences
-      summary: Update alert preferences
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Preferences updated
-        default:
-          description: Error response
-  /alerts/{id}/tags:
+          description: The share was deleted.
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}/tags:
     get:
       operationId: listAlertTags
       summary: Fetch all tags of an alert
+      description: Lists the tags defined on an alert, with the number of mentions carrying each tag.
+      tags:
+      - Tags
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/tag/GetTags.html
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - *id007
+      - *id008
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
       responses:
         '200':
-          description: List of tags
-        default:
-          description: Error response
+          description: A list of tags.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagList'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
     post:
       operationId: createAlertTag
-      summary: Create a tag for an alert
+      summary: Create a tag
+      description: >-
+        Creates a tag available to every mention of the alert. An alert is limited to 100 tags, a tag name to 20 characters,
+        and the auto-tagging keywords list to 5 keywords.
+      tags:
+      - Tags
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/tag/PostTag.html
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - *id007
+      - *id008
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagWrite'
+            example:
+              name: space innovation
       responses:
-        '201':
-          description: Tag created
-        default:
-          description: Error response
-  /tags/{id}:
+        '200':
+          description: The created tag.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}/tags/{tag_id}:
     put:
       operationId: renameTag
       summary: Rename a tag
+      description: >-
+        Modifies an existing tag's label or auto-tagging keywords. Mentions stay linked to the tag by id, so renaming
+        a tag does not detach it from the mentions already carrying it.
+      tags:
+      - Tags
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/tag/PutTag.html
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - *id007
+      - *id008
+      - &id011
+        name: tag_id
+        in: path
+        required: true
+        description: ID of the tag.
+        schema:
+          type: integer
+        example: 46468
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagWrite'
+            example:
+              name: space new technos
       responses:
         '200':
-          description: Tag renamed
-        default:
-          description: Error response
+          description: The updated tag.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
     delete:
       operationId: deleteTag
       summary: Delete a tag
+      description: Deletes a tag from the alert.
+      tags:
+      - Tags
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/tag/DeleteTag.html
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - *id007
+      - *id008
+      - *id011
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
       responses:
         '204':
-          description: Tag deleted
-        default:
-          description: Error response
-  /authors:
+          description: The tag was deleted.
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}/authors:
     get:
       operationId: listAuthors
-      summary: Fetch authors
+      summary: Fetch authors and influencers of an alert
+      description: >-
+        Returns the authors behind an alert's mentions, with their influence score, reach and social profiles. The
+        query string must be URL encoded.
+      tags:
+      - Authors
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/author/GetAuthors.html
+      parameters:
+      - *id007
+      - *id008
+      - name: kind
+        in: query
+        required: false
+        description: Restrict to authors of a given source kind, e.g. twitter.
+        schema:
+          type: string
+        example: twitter
+      - name: from
+        in: query
+        required: false
+        description: Only consider mentions retrieved after this date.
+        schema:
+          type: string
+        example: '2016-01-14T00:00:00.0'
+      - name: to
+        in: query
+        required: false
+        description: Only consider mentions retrieved before this date.
+        schema:
+          type: string
+        example: '2016-01-20T23:59:59.0'
+      - name: sort
+        in: query
+        required: false
+        description: Field to sort authors by, e.g. score.
+        schema:
+          type: string
+        example: score
+      - name: order
+        in: query
+        required: false
+        description: Sort direction.
+        schema:
+          type: string
+          enum:
+          - asc
+          - desc
+        example: desc
+      - name: limit
+        in: query
+        required: false
+        description: Number of authors to return.
+        schema:
+          type: integer
+        example: 3
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
       responses:
         '200':
-          description: List of authors
-        default:
-          description: Error response
-  /mentions/{id}/tasks:
-    get:
-      operationId: listMentionTasks
-      summary: Fetch all tasks of a mention
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: List of tasks
-        default:
-          description: Error response
-    post:
-      operationId: createMentionTask
-      summary: Create a task on a mention
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '201':
-          description: Task created
-        default:
-          description: Error response
-  /alerts/{id}/tasks:
+          description: A list of authors.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorList'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}/tasks:
     get:
       operationId: listAlertTasks
       summary: Fetch all tasks of an alert
+      description: >-
+        Returns every mention task created on the alert, so open assignments can be reviewed in one call. There is
+        no separate endpoint for the tasks of a single mention: those are returned inline by the mention resource.
+      tags:
+      - Tasks
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/GetTasks.html
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - *id007
+      - *id008
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
       responses:
         '200':
-          description: List of tasks
-        default:
-          description: Error response
-  /tasks/{id}:
+          description: A list of tasks.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskList'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}/mentions/{mention_id}/tasks:
+    post:
+      operationId: createMentionTask
+      summary: Create a task on a mention
+      description: >-
+        Assigns a mention to a team mate. assigned_to_account_id is required and cannot be changed afterwards; type,
+        comment and done are updatable. Valid task types come from the app/data reference endpoint.
+      tags:
+      - Tasks
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/task/PostTask.html
+      parameters:
+      - *id007
+      - *id008
+      - *id009
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskCreate'
+            example:
+              type: read
+              assigned_to_account_id: YOUR_TEAMMATE_ACCOUNT_ID
+      responses:
+        '200':
+          description: The created task.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/alerts/{alert_id}/mentions/{mention_id}/tasks/{task_id}:
     get:
       operationId: getTask
       summary: Fetch a task
+      description: Retrieves a single mention task.
+      tags:
+      - Tasks
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/task/GetTask.html
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - *id007
+      - *id008
+      - *id009
+      - &id012
+        name: task_id
+        in: path
+        required: true
+        description: ID of the task.
+        schema:
+          type: integer
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
       responses:
         '200':
-          description: Task object
-        default:
-          description: Error response
+          description: The task.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
     put:
       operationId: updateTask
       summary: Update a task
+      description: >-
+        Updates a task — typically to mark it done, change its type, or add a comment. Only the properties marked
+        updatable may be sent; assigned_to_account_id is fixed at creation.
+      tags:
+      - Tasks
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/task/PutTask.html
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - *id007
+      - *id008
+      - *id009
+      - *id012
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TaskUpdate'
+            example:
+              done: true
       responses:
         '200':
-          description: Task updated
-        default:
-          description: Error response
+          description: The updated task.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TaskEnvelope'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
     delete:
       operationId: deleteTask
       summary: Delete a task
+      description: Deletes a mention task.
+      tags:
+      - Tasks
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/task/DeleteTask.html
       parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: string
+      - *id007
+      - *id008
+      - *id009
+      - *id012
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
       responses:
         '204':
-          description: Task deleted
-        default:
-          description: Error response
-  /stats:
+          description: The task was deleted.
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+  /accounts/{account_id}/stats:
     get:
       operationId: getStats
       summary: Fetch statistics
+      description: >-
+        Returns aggregate statistics alert by alert over a date range, with an extensive filter surface expressed
+        entirely in the query string: date bounds and timezone, interval, folder flags, tone / language / source /
+        country / tag filters, and switches for the week-day, per-interval tone, country and influencer breakdowns.
+      tags:
+      - Stats
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/stats/GetStats.html
+      parameters:
+      - *id007
+      - name: alerts[]
+        in: query
+        required: true
+        explode: true
+        description: IDs of the alerts statistics are fetched for.
+        schema:
+          type: array
+          items:
+            type: integer
+        example:
+        - 112233
+      - name: from
+        in: query
+        required: false
+        description: Statistics are fetched for mentions retrieved after this date.
+        schema:
+          type: string
+        example: '2015-03-27T00:00:00.0'
+      - name: to
+        in: query
+        required: false
+        description: Statistics are fetched for mentions retrieved before this date.
+        schema:
+          type: string
+        example: '2016-01-10T00:00:00.0'
+      - name: timezone
+        in: query
+        required: false
+        description: Timezone applied to the from and to bounds.
+        schema:
+          type: string
+        example: Europe/Berlin
+      - name: interval
+        in: query
+        required: false
+        description: 'Periodicity of the series: P1D daily, P1W weekly, P1M monthly.'
+        schema:
+          type: string
+        example: P1D
+      - name: favorite
+        in: query
+        required: false
+        description: Only count mentions in the favorite folder. May be combined with important.
+        schema:
+          type: boolean
+        example: true
+      - name: important
+        in: query
+        required: false
+        description: Only count mentions in the important folder. May be combined with favorite.
+        schema:
+          type: boolean
+        example: true
+      - name: week_day_stats
+        in: query
+        required: false
+        description: Classify mentions by week day. Cannot coexist with week_day_by_hour_stats.
+        schema:
+          type: boolean
+        example: true
+      - name: week_day_by_hour_stats
+        in: query
+        required: false
+        description: Classify mentions by hour of each week day. Cannot coexist with week_day_stats.
+        schema:
+          type: boolean
+        example: true
+      - name: tones_per_interval_stats
+        in: query
+        required: false
+        description: Break tones down per interval.
+        schema:
+          type: boolean
+        example: true
+      - name: country_stats
+        in: query
+        required: false
+        description: Break mentions down by country.
+        schema:
+          type: boolean
+        example: true
+      - name: influencers
+        in: query
+        required: false
+        description: Include influencer statistics.
+        schema:
+          type: boolean
+        example: true
+      - name: tones[]
+        in: query
+        required: false
+        explode: true
+        description: Only count mentions of the given tones.
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: languages[]
+        in: query
+        required: false
+        explode: true
+        description: Only count mentions in the given language codes.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: sources[]
+        in: query
+        required: false
+        explode: true
+        description: Only count mentions from the given sources.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: countries[]
+        in: query
+        required: false
+        explode: true
+        description: Only count mentions from the given countries.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: tags[]
+        in: query
+        required: false
+        explode: true
+        description: Only count mentions carrying the given tags.
+        schema:
+          type: array
+          items:
+            type: string
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
       responses:
         '200':
-          description: Statistics
-        default:
-          description: Error response
-components: {}
+          description: Aggregate statistics for the requested alerts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stats'
+        '400': *id001
+        '401': *id002
+        '402': *id003
+        '403': *id004
+        '404': *id005
+        '429': *id006
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Access token passed in the Authorization header, prefixed with 'Bearer '. This is the preferred method. A
+        token for your own account is available at the bottom of your app's settings page.
+    accessTokenQuery:
+      type: apiKey
+      in: query
+      name: access_token
+      description: >-
+        The same access token passed in the query string. Supported but discouraged, as it puts the credential in
+        the URL.
+    oauth2:
+      type: oauth2
+      description: >-
+        Authorization-code flow used to obtain an access token for a third party's Mention account. No scopes are
+        defined: a granted token carries full access to the authorizing account.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://web.mention.com/authorize
+          tokenUrl: https://web.mention.net/oauth/v2/token
+          scopes: {}
+  parameters:
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: >-
+        API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings
+        applies.
+      schema:
+        type: string
+      example: '1.21'
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      description: Language used for translated resource fields.
+      schema:
+        type: string
+      example: fr
+  responses:
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    RateLimited:
+      description: >-
+        Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit
+        resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+  schemas:
+    ValidationError:
+      type: object
+      title: Validation error
+      description: >-
+        Validation errors on POST and PUT requests are returned with a 400 status code. Field-level messages are keyed
+        by field name under form.children and are intended to be displayed directly to the end user when they result
+        from a form submission.
+      properties:
+        form:
+          type: object
+          properties:
+            errors:
+              type: array
+              items:
+                type: string
+              description: Request-wide error messages.
+            children:
+              type: object
+              description: Field-specific error messages, keyed by field name.
+              additionalProperties:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+    OAuthError:
+      type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      properties:
+        error:
+          type: string
+          example: access_denied
+        error_description:
+          type: string
+          example: OAuth2 authentication required
+    Links:
+      type: object
+      title: Pagination links
+      description: >-
+        Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present
+        only when applicable.
+      properties:
+        more:
+          $ref: '#/components/schemas/Link'
+        pull:
+          $ref: '#/components/schemas/Link'
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          description: Relative URL to follow.
+        params:
+          type: object
+          description: The query string parameters encoded in href.
+          additionalProperties: true
+    AlertQuery:
+      type: object
+      title: Alert query
+      description: >-
+        Either a basic keyword query or an advanced boolean query_string, discriminated by type. Keywords may contain
+        alphanumerics, whitespace and ._@#'&, plus - when preceded by an alphanumeric. At least one of included_keywords
+        or required_keywords must be non-empty.
+      required:
+      - type
+      properties:
+        type:
+          type: string
+          enum:
+          - basic
+          - advanced
+        included_keywords:
+          type: array
+          items:
+            type: string
+          description: At least one must appear in a mention.
+        required_keywords:
+          type: array
+          items:
+            type: string
+          description: All must appear in a mention.
+        excluded_keywords:
+          type: array
+          items:
+            type: string
+          description: None may appear in a mention.
+        monitored_website:
+          $ref: '#/components/schemas/MonitoredWebsite'
+        query_string:
+          type: string
+          description: >-
+            Advanced boolean expression, e.g. (NASA AND Discovery) OR (Arianespace AND Ariane). A single clause may
+            not mix AND and OR without parentheses.
+    MonitoredWebsite:
+      type: object
+      title: Monitored website
+      description: >-
+        The domain acts as an included keyword; when block_self is true it also acts as a blocked url. A full URL
+        is stripped down to its domain.
+      required:
+      - domain
+      - block_self
+      properties:
+        domain:
+          type: string
+          example: www.nasa.gov
+        block_self:
+          type: boolean
+          example: true
+    AlertCreate:
+      type: object
+      title: Alert create
+      required:
+      - name
+      - query
+      - languages
+      properties:
+        name:
+          type: string
+          description: Human readable identifier of the alert.
+          example: NASA and competitors
+        query:
+          $ref: '#/components/schemas/AlertQuery'
+        languages:
+          type: array
+          items:
+            type: string
+          description: Language codes to track.
+          example:
+          - en
+          - fr
+          - ru
+        countries:
+          type: array
+          items:
+            type: string
+          example:
+          - US
+          - RU
+        sources:
+          type: array
+          items:
+            type: string
+          description: Sources to crawl. Valid values come from app/data.
+          example:
+          - web
+          - twitter
+        blocked_sites:
+          type: array
+          items:
+            type: string
+        noise_detection:
+          type: boolean
+        reviews_pages:
+          type: array
+          items:
+            type: string
+    AlertUpdate:
+      allOf:
+      - $ref: '#/components/schemas/AlertCreate'
+      title: Alert update
+      description: Any property may be omitted; omitted properties are left unchanged.
+    Alert:
+      type: object
+      title: Alert
+      properties:
+        id:
+          type: string
+          example: '112233'
+        name:
+          type: string
+        query:
+          $ref: '#/components/schemas/AlertQuery'
+        languages:
+          type: array
+          items:
+            type: string
+        countries:
+          type: array
+          items:
+            type: string
+        sources:
+          type: array
+          items:
+            type: string
+        blocked_sites:
+          type: array
+          items:
+            type: string
+        role:
+          type: string
+        stats:
+          type: object
+          additionalProperties: true
+          description: >-
+            Alert counters. Empty by default since API version 1.21 — request counters with the stats query string
+            parameter.
+        shares:
+          type: array
+          items:
+            $ref: '#/components/schemas/Share'
+        noise_detection:
+          type: boolean
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        quota_used:
+          type: integer
+        index_version:
+          type: integer
+          description: Search index version of the alert; determines which mention filters are available to it.
+        permissions:
+          type: object
+          additionalProperties:
+            type: boolean
+        description:
+          type: string
+        color:
+          type: string
+          example: '#05e363'
+        connection_type:
+          type: string
+          enum:
+          - main
+          - related
+          - independent
+          description: >-
+            main is the first alert created at onboarding, related is a competitor alert created alongside it, independent
+            is any later unrelated alert.
+        connection_id:
+          type: string
+          description: 'Set only on related alerts: the id of the main alert.'
+    AlertEnvelope:
+      type: object
+      properties:
+        alert:
+          $ref: '#/components/schemas/Alert'
+    AlertList:
+      type: object
+      properties:
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alert'
+        _links:
+          $ref: '#/components/schemas/Links'
+    Mention:
+      type: object
+      title: Mention
+      properties:
+        id:
+          type: string
+        alert_id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        original_url:
+          type: string
+        clickable_url:
+          type: string
+        displayable_url:
+          type: string
+        unique_id:
+          type: string
+        published_at:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        country:
+          type: string
+        favorite:
+          type: boolean
+        folder:
+          type: string
+          enum:
+          - inbox
+          - archive
+          - spam
+          - trash
+        folder_set_by_user:
+          type: boolean
+        read:
+          type: boolean
+        tone:
+          type: integer
+          enum:
+          - -1
+          - 0
+          - 1
+        source_type:
+          type: string
+        source_name:
+          type: string
+        source_url:
+          type: string
+        language_code:
+          type: string
+        picture_url:
+          type: string
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        logs:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        children:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+            total:
+              type: integer
+            _links:
+              $ref: '#/components/schemas/Links'
+    MentionList:
+      type: object
+      properties:
+        mentions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mention'
+        _links:
+          $ref: '#/components/schemas/Links'
+    MentionCurate:
+      type: object
+      title: Mention curation
+      description: All properties are optional; send only what changes.
+      properties:
+        favorite:
+          type: boolean
+          description: Admin only. Marking a mention favorite also marks it read.
+        trashed:
+          type: boolean
+          description: Admin only.
+        read:
+          type: boolean
+        tags:
+          type: array
+          description: Tags to attach. Each entry needs at least an id, and the tag must already exist on the alert.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+        folder:
+          type: string
+          enum:
+          - inbox
+          - archive
+          - spam
+          - trash
+        tone:
+          type: integer
+          enum:
+          - -1
+          - 0
+          - 1
+          description: Tone key. Valid keys come from app/data.
+    AccountCreate:
+      type: object
+      title: Account create
+      required:
+      - name
+      - email
+      - password
+      - language_code
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+          minLength: 2
+          maxLength: 255
+        phone:
+          type: string
+        password:
+          type: string
+          minLength: 6
+          description: At least 6 characters, mixing letters and figures.
+        language_code:
+          type: string
+          description: Two character language code; valid values come from app/data.
+        client:
+          type: string
+          description: Name of the application registering the user. Not updatable.
+    AccountUpdate:
+      type: object
+      title: Account update
+      description: >-
+        Any property may be omitted. Changing the password requires old_password and new_password rather than password.
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        language_code:
+          type: string
+        old_password:
+          type: string
+        new_password:
+          type: string
+    Account:
+      type: object
+      title: Account
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        language_code:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        avatar_url:
+          type: string
+        timezone:
+          type: string
+        grouped_email_notification:
+          type: boolean
+        default_email_notification_frequency:
+          type: string
+        default_desktop_notification_frequency:
+          type: string
+        default_push_notification_frequency:
+          type: string
+        permissions:
+          type: object
+          additionalProperties: true
+    AccountEnvelope:
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/Account'
+    Share:
+      type: object
+      title: Alert share
+      description: The link between an account and an alert. Deleting the last share deletes the alert.
+      properties:
+        id:
+          type: string
+        account:
+          $ref: '#/components/schemas/Account'
+        role:
+          type: string
+        blocked:
+          type: boolean
+        permissions:
+          type: object
+          additionalProperties:
+            type: boolean
+        created_at:
+          type: string
+        weight:
+          type: integer
+    ShareCreate:
+      type: object
+      required:
+      - account_id
+      properties:
+        account_id:
+          type: string
+          description: Public id of the account the alert is shared with.
+    ShareUpdate:
+      type: object
+      properties:
+        blocked:
+          type: boolean
+          description: Blocks the account's access to the alert.
+    ShareEnvelope:
+      type: object
+      properties:
+        share:
+          $ref: '#/components/schemas/Share'
+    ShareList:
+      type: object
+      properties:
+        shares:
+          type: array
+          items:
+            $ref: '#/components/schemas/Share'
+        _links:
+          $ref: '#/components/schemas/Links'
+    Tag:
+      type: object
+      title: Tag
+      properties:
+        id:
+          type: integer
+          example: 46468
+        name:
+          type: string
+          maxLength: 20
+          example: space innovation
+        mention_count:
+          type: integer
+        keywords:
+          type: array
+          maxItems: 5
+          items:
+            type: string
+          description: Auto-tagging keywords; new mentions containing them are tagged automatically.
+    TagWrite:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 20
+        keywords:
+          type: array
+          maxItems: 5
+          items:
+            type: string
+    TagEnvelope:
+      type: object
+      properties:
+        tag:
+          $ref: '#/components/schemas/Tag'
+    TagList:
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        _links:
+          $ref: '#/components/schemas/Links'
+    Task:
+      type: object
+      title: Mention task
+      properties:
+        id:
+          type: integer
+        assigned_to_account_id:
+          type: string
+        type:
+          type: string
+          description: Task type; valid values come from app/data.
+        comment:
+          type: string
+        done:
+          type: boolean
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    TaskCreate:
+      type: object
+      required:
+      - assigned_to_account_id
+      properties:
+        assigned_to_account_id:
+          type: string
+          description: Account id of the team mate assigned. Not updatable.
+        type:
+          type: string
+        comment:
+          type: string
+        done:
+          type: boolean
+    TaskUpdate:
+      type: object
+      properties:
+        type:
+          type: string
+        comment:
+          type: string
+        done:
+          type: boolean
+    TaskEnvelope:
+      type: object
+      properties:
+        task:
+          $ref: '#/components/schemas/Task'
+    TaskList:
+      type: object
+      properties:
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        _links:
+          $ref: '#/components/schemas/Links'
+    Preferences:
+      type: object
+      title: Alert preferences
+      description: Notification frequency vocabularies come from app/data and may change without notice.
+      properties:
+        email_notification_frequency:
+          type: string
+        push_notification_frequency:
+          type: string
+        desktop_notification_frequency:
+          type: string
+        trending_email_notification_frequency:
+          type: string
+        trending_sms_notification_frequency:
+          type: string
+        weight:
+          type: integer
+          description: How important the alert is.
+    PreferencesEnvelope:
+      type: object
+      properties:
+        preferences:
+          $ref: '#/components/schemas/Preferences'
+    Author:
+      type: object
+      title: Author
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+        avatar:
+          type: string
+        name:
+          type: string
+        gender:
+          type: string
+          description: Deprecated as a chart dimension from API version 1.19; soft-deprecated before that.
+        influencer_score:
+          type: number
+        email_fetched:
+          type: boolean
+        enriched:
+          type: boolean
+        main_author:
+          type: object
+          additionalProperties: true
+          description: 'The primary social profile behind the author: kind, url, name, realname, score, picture and
+            followers_count.'
+    AuthorList:
+      type: object
+      properties:
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
+    Stats:
+      type: object
+      title: Statistics
+      description: Aggregate counters per alert over the requested range and interval.
+      additionalProperties: true
+    AppData:
+      type: object
+      title: Application data
+      description: Reference vocabularies used across the API.
+      properties:
+        app_languages:
+          type: object
+          additionalProperties: true
+        alert_languages:
+          type: object
+          additionalProperties: true
+        alert_countries:
+          type: object
+          additionalProperties: true
+        alert_tones:
+          type: object
+          additionalProperties: true
+        alert_sources:
+          type: object
+          additionalProperties: true
+        alert_share_roles:
+          type: object
+          additionalProperties: true
+        countries:
+          type: object
+          additionalProperties: true
+        task_types:
+          type: object
+          additionalProperties: true
+        mention_folders:
+          type: object
+          additionalProperties: true
+        mention_log_types:
+          type: object
+          additionalProperties: true
+        social_account_types:
+          type: object
+          additionalProperties: true
+        week_days:
+          type: object
+          additionalProperties: true
+        push_notification_frequencies:
+          type: object
+          additionalProperties: true
+        desktop_notification_frequencies:
+          type: object
+          additionalProperties: true
+        email_notification_frequencies:
+          type: object
+          additionalProperties: true
+        trending_email_notification_frequencies:
+          type: object
+          additionalProperties: true
+        trending_sms_notification_frequencies:
+          type: object
+          additionalProperties: true
+        alert_colors:
+          type: array
+          items:
+            type: string
+        locale:
+          type: string

@@ -2,612 +2,1653 @@
   "opencollection": "1.0.0",
   "info": {
     "name": "Mention API",
-    "version": "1.0.0"
+    "version": "1.21"
   },
   "items": [
     {
       "info": {
-        "name": "Fetch all alerts of an account",
-        "type": "http"
+        "name": "Accounts",
+        "type": "folder"
       },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/alerts"
-      },
-      "docs": "Fetch all alerts of an account"
+      "items": [
+        {
+          "info": {
+            "name": "Create an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mention.net/api/accounts",
+            "params": [],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "name": "John Smith",
+                "email": "j.smith@nasa.com",
+                "password": "REDACTED_EXAMPLE_PASSWORD",
+                "language_code": "en"
+              }
+            }
+          },
+          "docs": "Creates a new Mention account. The password must be at least 6 characters long and mix letters and figures. The optional client property records the name of the application registering the user."
+        },
+        {
+          "info": {
+            "name": "Fetch my account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/me",
+            "params": [],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Fetches all account details for the account that owns the access token used on the request. This is the standard way to resolve the account_id required by every other endpoint."
+        },
+        {
+          "info": {
+            "name": "Fetch an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Retrieves details for the given account. An access token cannot read another person's account, even when that account was created through this API."
+        },
+        {
+          "info": {
+            "name": "Update an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mention.net/api/accounts/:account_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "name": "John Smith",
+                "email": "j.smith@nasa.com"
+              }
+            }
+          },
+          "docs": "Modifies an existing account. Only the account that owns the access token can be modified. Changing the password requires sending both old_password and new_password rather than password."
+        },
+        {
+          "info": {
+            "name": "Delete an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.mention.net/api/accounts/:account_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Deletes an account. As with GET and PUT, an access token cannot delete another person's account."
+        }
+      ]
     },
     {
       "info": {
-        "name": "Create an alert",
-        "type": "http"
+        "name": "Alerts",
+        "type": "folder"
       },
-      "http": {
-        "method": "POST",
-        "url": "https://api.mention.com/api/alerts"
-      },
-      "docs": "Create an alert"
+      "items": [
+        {
+          "info": {
+            "name": "Fetch all alerts of an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "stats",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Returns the alerts visible to the account. The collection is paginated with an opaque cursor; follow _links.more to page. Since API version 1.21 the stats field is empty by default \u2014 request counters explicitly with the stats query string parameter."
+        },
+        {
+          "info": {
+            "name": "Create an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "name": "NASA and competitors",
+                "query": {
+                  "type": "basic",
+                  "included_keywords": [
+                    "NASA",
+                    "Arianespace",
+                    "SpaceX"
+                  ]
+                },
+                "languages": [
+                  "en"
+                ],
+                "sources": [
+                  "web"
+                ]
+              }
+            }
+          },
+          "docs": "Creates a new alert for the account. A query is either basic (included / required / excluded keyword arrays) or advanced (a boolean query_string). At least one of included_keywords or required_keywords must carry a keyword. Since API version 1.21 the group_id query string parameter is always mandatory."
+        },
+        {
+          "info": {
+            "name": "Fetch an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Retrieve details about a single alert, including its query, sources, languages, shares and permissions."
+        },
+        {
+          "info": {
+            "name": "Update an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "name": "Space innovation",
+                "query": {
+                  "type": "advanced",
+                  "query_string": "(space AND innovation)"
+                }
+              }
+            }
+          },
+          "docs": "Modifies an existing alert, usually to refine the query criteria and improve the search's efficiency. Omitted properties are left unchanged; an alert fetched with GET may be sent back unchanged."
+        },
+        {
+          "info": {
+            "name": "Pause an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/pause",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Pauses a single alert so that it stops collecting new mentions."
+        },
+        {
+          "info": {
+            "name": "Unpause an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/unpause",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Resumes collection on a previously paused alert."
+        },
+        {
+          "info": {
+            "name": "Fetch preferences of an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/preferences",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Retrieves the per-account notification preferences and display weight for the given alert."
+        },
+        {
+          "info": {
+            "name": "Update preferences of an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/preferences",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "push_notification_frequency": "never",
+                "weight": 1
+              }
+            }
+          },
+          "docs": "Updates the alert preferences. Any attribute returned by the GET request can be updated, and any attribute may be omitted. The weight attribute controls how important the alert is in the interface."
+        }
+      ]
     },
     {
       "info": {
-        "name": "Fetch an alert",
-        "type": "http"
+        "name": "App",
+        "type": "folder"
       },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/alerts/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Fetch an alert"
+      "items": [
+        {
+          "info": {
+            "name": "Fetch application data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/app/data",
+            "params": [],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Retrieves reference data about the application: available app languages, alert languages, alert countries, alert tones, alert sources, alert share roles, alert colors, task types, mention folders, mention log types, social account types, week days and the notification frequency vocabularies. Several properties are translated according to the Accept-Language request header. This endpoint is the source of the enumerated values used by the alert, mention, task and preference resources."
+        }
+      ]
     },
     {
       "info": {
-        "name": "Update an alert",
-        "type": "http"
+        "name": "Authors",
+        "type": "folder"
       },
-      "http": {
-        "method": "PUT",
-        "url": "https://api.mention.com/api/alerts/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Update an alert"
+      "items": [
+        {
+          "info": {
+            "name": "Fetch authors and influencers of an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/authors",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "kind",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Returns the authors behind an alert's mentions, with their influence score, reach and social profiles. The query string must be URL encoded."
+        }
+      ]
     },
     {
       "info": {
-        "name": "Delete an alert",
-        "type": "http"
+        "name": "Mentions",
+        "type": "folder"
       },
-      "http": {
-        "method": "DELETE",
-        "url": "https://api.mention.com/api/alerts/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Delete an alert"
+      "items": [
+        {
+          "info": {
+            "name": "Fetch mentions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "since_id",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "before_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "not_before_date",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "source",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "unread",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "favorite",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "folder",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tone",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "countries",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "include_children",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "languages",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "q",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Returns the mentions collected by an alert. The query string carries the filter surface; every filter is optional. Retrieve older mentions by following _links.more and poll for new ones by following _links.pull. The index_version attribute of the alert determines which filters are available to it."
+        },
+        {
+          "info": {
+            "name": "Fetch a mention",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/:mention_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mention_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Fetches a single mention by its ID, including its tasks, logs and children."
+        },
+        {
+          "info": {
+            "name": "Curate a mention",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/:mention_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mention_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "favorite": true,
+                "trashed": false,
+                "read": true,
+                "tags": [
+                  {
+                    "id": 123
+                  }
+                ],
+                "folder": "archive",
+                "tone": 1
+              }
+            }
+          },
+          "docs": "Updates the curation state of a mention: folder, tags, tone, read/favorite/trashed flags. The content and source of a mention cannot be modified. Any property may be omitted. Marking a mention favorite automatically marks it read. Tags must already exist on the alert."
+        },
+        {
+          "info": {
+            "name": "Fetch mention children",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/:mention_id/children",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mention_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Returns the child mentions grouped under a given mention, paginated through _links.more."
+        },
+        {
+          "info": {
+            "name": "Mark all mentions as read",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/markallread",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Marks every mention of the alert as read."
+        },
+        {
+          "info": {
+            "name": "Stream mentions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/mentions",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alerts[]",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Opens a long-lived HTTP connection that pushes each mention as soon as it is collected for the selected alerts. This operation is only available on the streaming endpoint https://stream.mention.net/api, and one stream at a time may be open per account."
+        }
+      ]
     },
     {
       "info": {
-        "name": "Pause an alert",
-        "type": "http"
+        "name": "Shares",
+        "type": "folder"
       },
-      "http": {
-        "method": "POST",
-        "url": "https://api.mention.com/api/alerts/:id/pause",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Pause an alert"
+      "items": [
+        {
+          "info": {
+            "name": "Fetch all shares of an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/shares",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Lists every share object on the alert \u2014 that is, every account the alert is shared with."
+        },
+        {
+          "info": {
+            "name": "Create a share",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/shares",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "account_id": "12345_69gjjsg4itgkcco040okwsck700o4w8gsco0k4kco0s4scw8o0"
+              }
+            }
+          },
+          "docs": "Creates a share object linking another account to this alert. The account_id in the body is the public id of the account the alert is shared with."
+        },
+        {
+          "info": {
+            "name": "Fetch a share",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/shares/:share_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "share_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Retrieves a single share object on an alert."
+        },
+        {
+          "info": {
+            "name": "Update a share",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/shares/:share_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "share_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "blocked": false
+              }
+            }
+          },
+          "docs": "Updates an existing share, typically to block an account's access to the alert."
+        },
+        {
+          "info": {
+            "name": "Delete a share",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/shares/:share_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "share_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Deletes the share object linking an account to an alert. Team admin rights are required to delete someone else's share. There is no delete-alert operation: when the last share on an alert is deleted, the alert itself is deleted."
+        }
+      ]
     },
     {
       "info": {
-        "name": "Unpause an alert",
-        "type": "http"
+        "name": "Stats",
+        "type": "folder"
       },
-      "http": {
-        "method": "POST",
-        "url": "https://api.mention.com/api/alerts/:id/unpause",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Unpause an alert"
+      "items": [
+        {
+          "info": {
+            "name": "Fetch statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/stats",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alerts[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "favorite",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "important",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "week_day_stats",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "week_day_by_hour_stats",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tones_per_interval_stats",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "country_stats",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "influencers",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tones[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "languages[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sources[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "countries[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tags[]",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Returns aggregate statistics alert by alert over a date range, with an extensive filter surface expressed entirely in the query string: date bounds and timezone, interval, folder flags, tone / language / source / country / tag filters, and switches for the week-day, per-interval tone, country and influencer breakdowns."
+        }
+      ]
     },
     {
       "info": {
-        "name": "Fetch mentions",
-        "type": "http"
+        "name": "Tags",
+        "type": "folder"
       },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/mentions"
-      },
-      "docs": "Fetch mentions"
+      "items": [
+        {
+          "info": {
+            "name": "Fetch all tags of an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/tags",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Lists the tags defined on an alert, with the number of mentions carrying each tag."
+        },
+        {
+          "info": {
+            "name": "Create a tag",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/tags",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "name": "space innovation"
+              }
+            }
+          },
+          "docs": "Creates a tag available to every mention of the alert. An alert is limited to 100 tags, a tag name to 20 characters, and the auto-tagging keywords list to 5 keywords."
+        },
+        {
+          "info": {
+            "name": "Rename a tag",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/tags/:tag_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "tag_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "name": "space new technos"
+              }
+            }
+          },
+          "docs": "Modifies an existing tag's label or auto-tagging keywords. Mentions stay linked to the tag by id, so renaming a tag does not detach it from the mentions already carrying it."
+        },
+        {
+          "info": {
+            "name": "Delete a tag",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/tags/:tag_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "tag_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Deletes a tag from the alert."
+        }
+      ]
     },
     {
       "info": {
-        "name": "Fetch a mention",
-        "type": "http"
+        "name": "Tasks",
+        "type": "folder"
       },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/mentions/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Fetch a mention"
-    },
-    {
-      "info": {
-        "name": "Curate a mention",
-        "type": "http"
-      },
-      "http": {
-        "method": "PUT",
-        "url": "https://api.mention.com/api/mentions/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Curate a mention"
-    },
-    {
-      "info": {
-        "name": "Fetch mention children",
-        "type": "http"
-      },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/mentions/:id/children",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Fetch mention children"
-    },
-    {
-      "info": {
-        "name": "Stream mentions",
-        "type": "http"
-      },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/mentions/stream"
-      },
-      "docs": "Stream mentions"
-    },
-    {
-      "info": {
-        "name": "Mark all mentions as read",
-        "type": "http"
-      },
-      "http": {
-        "method": "POST",
-        "url": "https://api.mention.com/api/mentions/mark-all-read"
-      },
-      "docs": "Mark all mentions as read"
-    },
-    {
-      "info": {
-        "name": "Create an account",
-        "type": "http"
-      },
-      "http": {
-        "method": "POST",
-        "url": "https://api.mention.com/api/accounts"
-      },
-      "docs": "Create an account"
-    },
-    {
-      "info": {
-        "name": "Fetch an account",
-        "type": "http"
-      },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/accounts/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Fetch an account"
-    },
-    {
-      "info": {
-        "name": "Update an account",
-        "type": "http"
-      },
-      "http": {
-        "method": "PUT",
-        "url": "https://api.mention.com/api/accounts/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Update an account"
-    },
-    {
-      "info": {
-        "name": "Delete an account",
-        "type": "http"
-      },
-      "http": {
-        "method": "DELETE",
-        "url": "https://api.mention.com/api/accounts/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Delete an account"
-    },
-    {
-      "info": {
-        "name": "Get my account",
-        "type": "http"
-      },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/accounts/me"
-      },
-      "docs": "Get my account"
-    },
-    {
-      "info": {
-        "name": "Fetch all shares of an alert",
-        "type": "http"
-      },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/alerts/:id/shares",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Fetch all shares of an alert"
-    },
-    {
-      "info": {
-        "name": "Create a share",
-        "type": "http"
-      },
-      "http": {
-        "method": "POST",
-        "url": "https://api.mention.com/api/alerts/:id/shares",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Create a share"
-    },
-    {
-      "info": {
-        "name": "Fetch a share",
-        "type": "http"
-      },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/shares/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Fetch a share"
-    },
-    {
-      "info": {
-        "name": "Update a share",
-        "type": "http"
-      },
-      "http": {
-        "method": "PUT",
-        "url": "https://api.mention.com/api/shares/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Update a share"
-    },
-    {
-      "info": {
-        "name": "Delete a share",
-        "type": "http"
-      },
-      "http": {
-        "method": "DELETE",
-        "url": "https://api.mention.com/api/shares/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Delete a share"
-    },
-    {
-      "info": {
-        "name": "Fetch alert preferences",
-        "type": "http"
-      },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/alerts/:id/preferences",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Fetch alert preferences"
-    },
-    {
-      "info": {
-        "name": "Update alert preferences",
-        "type": "http"
-      },
-      "http": {
-        "method": "PUT",
-        "url": "https://api.mention.com/api/alerts/:id/preferences",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Update alert preferences"
-    },
-    {
-      "info": {
-        "name": "Fetch all tags of an alert",
-        "type": "http"
-      },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/alerts/:id/tags",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Fetch all tags of an alert"
-    },
-    {
-      "info": {
-        "name": "Create a tag for an alert",
-        "type": "http"
-      },
-      "http": {
-        "method": "POST",
-        "url": "https://api.mention.com/api/alerts/:id/tags",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Create a tag for an alert"
-    },
-    {
-      "info": {
-        "name": "Rename a tag",
-        "type": "http"
-      },
-      "http": {
-        "method": "PUT",
-        "url": "https://api.mention.com/api/tags/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Rename a tag"
-    },
-    {
-      "info": {
-        "name": "Delete a tag",
-        "type": "http"
-      },
-      "http": {
-        "method": "DELETE",
-        "url": "https://api.mention.com/api/tags/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Delete a tag"
-    },
-    {
-      "info": {
-        "name": "Fetch authors",
-        "type": "http"
-      },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/authors"
-      },
-      "docs": "Fetch authors"
-    },
-    {
-      "info": {
-        "name": "Fetch all tasks of a mention",
-        "type": "http"
-      },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/mentions/:id/tasks",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Fetch all tasks of a mention"
-    },
-    {
-      "info": {
-        "name": "Create a task on a mention",
-        "type": "http"
-      },
-      "http": {
-        "method": "POST",
-        "url": "https://api.mention.com/api/mentions/:id/tasks",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Create a task on a mention"
-    },
-    {
-      "info": {
-        "name": "Fetch all tasks of an alert",
-        "type": "http"
-      },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/alerts/:id/tasks",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Fetch all tasks of an alert"
-    },
-    {
-      "info": {
-        "name": "Fetch a task",
-        "type": "http"
-      },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/tasks/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Fetch a task"
-    },
-    {
-      "info": {
-        "name": "Update a task",
-        "type": "http"
-      },
-      "http": {
-        "method": "PUT",
-        "url": "https://api.mention.com/api/tasks/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Update a task"
-    },
-    {
-      "info": {
-        "name": "Delete a task",
-        "type": "http"
-      },
-      "http": {
-        "method": "DELETE",
-        "url": "https://api.mention.com/api/tasks/:id",
-        "params": [
-          {
-            "name": "id",
-            "value": "",
-            "type": "path"
-          }
-        ]
-      },
-      "docs": "Delete a task"
-    },
-    {
-      "info": {
-        "name": "Fetch statistics",
-        "type": "http"
-      },
-      "http": {
-        "method": "GET",
-        "url": "https://api.mention.com/api/stats"
-      },
-      "docs": "Fetch statistics"
+      "items": [
+        {
+          "info": {
+            "name": "Fetch all tasks of an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/tasks",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Returns every mention task created on the alert, so open assignments can be reviewed in one call. There is no separate endpoint for the tasks of a single mention: those are returned inline by the mention resource."
+        },
+        {
+          "info": {
+            "name": "Create a task on a mention",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/:mention_id/tasks",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mention_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "type": "read",
+                "assigned_to_account_id": "YOUR_TEAMMATE_ACCOUNT_ID"
+              }
+            }
+          },
+          "docs": "Assigns a mention to a team mate. assigned_to_account_id is required and cannot be changed afterwards; type, comment and done are updatable. Valid task types come from the app/data reference endpoint."
+        },
+        {
+          "info": {
+            "name": "Fetch a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/:mention_id/tasks/:task_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mention_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Retrieves a single mention task."
+        },
+        {
+          "info": {
+            "name": "Update a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/:mention_id/tasks/:task_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mention_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "done": true
+              }
+            }
+          },
+          "docs": "Updates a task \u2014 typically to mark it done, change its type, or add a comment. Only the properties marked updatable may be sent; assigned_to_account_id is fixed at creation."
+        },
+        {
+          "info": {
+            "name": "Delete a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/:mention_id/tasks/:task_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mention_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Deletes a mention task."
+        }
+      ]
     }
-  ],
-  "bundled": true
+  ]
 }

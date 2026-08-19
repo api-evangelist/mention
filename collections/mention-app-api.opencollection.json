@@ -1,0 +1,39 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Mention App API",
+    "version": "1.21"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "App",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch application data",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/app/data",
+            "params": [],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Retrieves reference data about the application: available app languages, alert languages, alert countries, alert tones, alert sources, alert share roles, alert colors, task types, mention folders, mention log types, social account types, week days and the notification frequency vocabularies. Several properties are translated according to the Accept-Language request header. This endpoint is the source of the enumerated values used by the alert, mention, task and preference resources."
+        }
+      ]
+    }
+  ]
+}

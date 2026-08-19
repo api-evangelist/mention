@@ -1,0 +1,80 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Mention Authors API",
+    "version": "1.21"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Authors",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch authors and influencers of an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/authors",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "kind",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sort",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "order",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Returns the authors behind an alert's mentions, with their influence score, reach and social profiles. The query string must be URL encoded."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,51 @@
+generated: '2026-08-13'
+method: searched
+source: openapi/_original/mention-openapi.yml
+docs: https://dev.mention.com/current/src/appendix/OAuth2.html
+scope_count: 0
+summary: >-
+  Mention runs an OAuth 2.0 authorization-code flow but defines NO scopes. There is no scope
+  parameter on the authorize request, no scopes list in the token response, and no permissions or
+  scopes reference page anywhere in the documentation. A granted token carries full access to the
+  authorizing account — the same access the account's own token has. This file records that as a
+  measured zero rather than omitting the artifact.
+schemes:
+  - name: oauth2
+    type: oauth2
+    source: openapi/_original/mention-openapi.yml
+    docs: https://dev.mention.com/current/src/appendix/OAuth2.html
+    flows:
+      - flow: authorizationCode
+        authorizationUrl: https://web.mention.com/authorize
+        tokenUrl: https://web.mention.net/oauth/v2/token
+        scopes: {}
+    request_parameters:
+      authorize: [client_id, redirect_uri, response_type]
+      token: [client_id, client_secret, redirect_uri, response_type, code, grant_type]
+    note: >-
+      Neither parameter list includes scope. The token response is
+      {"access_token": "...", "token_type": "bearer"} with no scope member.
+scopes: []
+authorization_model:
+  granularity: account
+  note: >-
+    Authorization in Mention is expressed through resources, not scopes. The Share object decides
+    which accounts can see which alert and carries a per-share permissions map (edit, delete) and a
+    role; the Alert carries its own permissions map (edit, share, list_tasks, list_logs); the Account
+    carries a permissions map and a team-member kind of admin, user or restricted. Some actions are
+    marked admin-only in the reference (setting a mention favorite or trashed, deleting another
+    account's share). None of that is exposed to the OAuth layer, so a client cannot request reduced
+    access — it is all-or-nothing at the token, then filtered per resource at the server.
+  vocabulary_source: GET /app/data — alert_share_roles
+  cross_reference: data-model/mention-data-model.yml
+agent_implications:
+  - >-
+    An agent given a Mention token has full read AND write authority over the authorizing account:
+    it can delete accounts, delete shares (which destroys alerts), and create or modify anything.
+    There is no least-privilege token to issue instead.
+  - >-
+    Constrain at the agent layer rather than the token layer. See
+    agentic-access/mention-agentic-access.yml for the per-operation execution contracts.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

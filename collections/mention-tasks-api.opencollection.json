@@ -1,0 +1,238 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Mention Tasks API",
+    "version": "1.21"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Tasks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch all tasks of an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/tasks",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Returns every mention task created on the alert, so open assignments can be reviewed in one call. There is no separate endpoint for the tasks of a single mention: those are returned inline by the mention resource."
+        },
+        {
+          "info": {
+            "name": "Create a task on a mention",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/:mention_id/tasks",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mention_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "type": "read",
+                "assigned_to_account_id": "YOUR_TEAMMATE_ACCOUNT_ID"
+              }
+            }
+          },
+          "docs": "Assigns a mention to a team mate. assigned_to_account_id is required and cannot be changed afterwards; type, comment and done are updatable. Valid task types come from the app/data reference endpoint."
+        },
+        {
+          "info": {
+            "name": "Fetch a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/:mention_id/tasks/:task_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mention_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Retrieves a single mention task."
+        },
+        {
+          "info": {
+            "name": "Update a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/:mention_id/tasks/:task_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mention_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "done": true
+              }
+            }
+          },
+          "docs": "Updates a task \u2014 typically to mark it done, change its type, or add a comment. Only the properties marked updatable may be sent; assigned_to_account_id is fixed at creation."
+        },
+        {
+          "info": {
+            "name": "Delete a task",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/mentions/:mention_id/tasks/:task_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "mention_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "task_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Deletes a mention task."
+        }
+      ]
+    }
+  ]
+}

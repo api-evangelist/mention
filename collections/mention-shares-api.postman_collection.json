@@ -1,0 +1,356 @@
+{
+  "item": [
+    {
+      "id": "b8d4522d-c798-432b-9f53-db720d698096",
+      "name": "Shares",
+      "description": {
+        "content": "Which accounts an alert is shared with.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "821af216-dd6b-4011-a42f-1c5d48703ce8",
+          "name": "Fetch all shares of an alert",
+          "request": {
+            "name": "Fetch all shares of an alert",
+            "description": {
+              "content": "Lists every share object on the alert \u2014 that is, every account the alert is shared with.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "shares"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "cef36611-215a-41ad-a760-352451d4a220",
+          "name": "Create a share",
+          "request": {
+            "name": "Create a share",
+            "description": {
+              "content": "Creates a share object linking another account to this alert. The account_id in the body is the public id of the account the alert is shared with.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "shares"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"account_id\": \"12345_69gjjsg4itgkcco040okwsck700o4w8gsco0k4kco0s4scw8o0\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "cbbc8984-97c2-420f-bfe9-27cf9f419ff7",
+          "name": "Fetch a share",
+          "request": {
+            "name": "Fetch a share",
+            "description": {
+              "content": "Retrieves a single share object on an alert.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "shares",
+                ":share_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "share_id",
+                  "description": "(Required) ID of the share object."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "e85aeaed-9992-4a4f-841d-07cf98186b85",
+          "name": "Update a share",
+          "request": {
+            "name": "Update a share",
+            "description": {
+              "content": "Updates an existing share, typically to block an account's access to the alert.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "shares",
+                ":share_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "share_id",
+                  "description": "(Required) ID of the share object."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"blocked\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "dca75445-6501-4aa4-b31d-2d87e5ae8e60",
+          "name": "Delete a share",
+          "request": {
+            "name": "Delete a share",
+            "description": {
+              "content": "Deletes the share object linking an account to an alert. Team admin rights are required to delete someone else's share. There is no delete-alert operation: when the last share on an alert is deleted, the alert itself is deleted.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "shares",
+                ":share_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "share_id",
+                  "description": "(Required) ID of the share object."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mention.net/api",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "REDACTED_EXAMPLE_TOKEN",
+      "key": "access_token"
+    },
+    {
+      "type": "string",
+      "value": "1.21",
+      "key": "apiVersion"
+    }
+  ],
+  "info": {
+    "_postman_id": "bd1ae65d-b5eb-47ee-93e5-bb8341af09a4",
+    "name": "Mention Shares API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation, tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client can do is available through this API.\n\nAuthentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header; without it, the version configured in the app's settings applies.\n\nThis description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/ \u2014 Mention does not publish a machine-readable OpenAPI definition.",
+      "type": "text/plain"
+    }
+  }
+}

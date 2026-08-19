@@ -1,0 +1,72 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  Registry searches against npm (registry.npmjs.org), PyPI, RubyGems, Packagist and
+  Maven Central; the Mention GitHub organization https://github.com/mentionapp; and the
+  Mention API reference https://dev.mention.com/current/
+summary:
+  official_count: 0
+  community_count: 2
+  note: >-
+    Mention publishes NO first-party client library in any package registry. The API reference at
+    dev.mention.com documents raw curl only — there is no SDK page, no "libraries" section, and no
+    client repository in the company GitHub organization (github.com/mentionapp, 22 public repos,
+    all of them PHP/Go infrastructure forks such as Doctrine, Valinor, php-rdkafka and a fork of
+    kmyacc; none of them a Mention API client). The only installable wrappers are two abandoned
+    community packages, both of which predate the current API version (1.21, 2023) by years.
+official_packages: []
+community_packages:
+  - language: python
+    registry: pypi
+    name: mention
+    url: https://pypi.org/project/mention/
+    install: pip install mention
+    official: false
+    version: '0.1'
+    published: '2018-12-21'
+    repository: https://github.com/mazi76erX2/mention-python
+    author: Xolani Mazibuko
+    note: >-
+      Third-party wrapper, not affiliated with Mention. Single 0.1 release from 2018; five API
+      versions behind the 1.21 contract documented today.
+  - language: ruby
+    registry: rubygems
+    name: mention-api
+    url: https://rubygems.org/gems/mention-api
+    install: gem install mention-api
+    official: false
+    version: 0.1.0
+    published: '2014-05-20'
+    repository: https://github.com/hqmq/mention-api
+    author: Michael Ries
+    note: >-
+      Third-party wrapper, not affiliated with Mention. Its own description targets "the mention.net
+      API"; single 0.1.0 release from 2014, twelve years stale.
+registries_checked:
+  - registry: npm
+    result: no first-party package
+    note: >-
+      A search for "mention" on npm returns only rich-text-editor @mention plugins (quill-mention,
+      @tiptap/extension-mention, @ckeditor/ckeditor5-mention) — unrelated to this provider.
+  - registry: pypi
+    result: one third-party wrapper (mention 0.1)
+  - registry: rubygems
+    result: one third-party wrapper (mention-api 0.1.0)
+  - registry: packagist
+    result: no package
+  - registry: maven-central
+    result: no package
+  - registry: nuget
+    result: no package
+  - registry: crates.io
+    result: no package
+github_organization:
+  url: https://github.com/mentionapp
+  public_repos: 22
+  api_client_repos: 0
+  note: >-
+    Confirmed via api.github.com/orgs/mentionapp. The org exists and is first-party, but it carries
+    no client library, no .proto, and no OpenAPI definition for the Mention API.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

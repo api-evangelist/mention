@@ -1,0 +1,146 @@
+generated: '2026-08-13'
+method: searched
+source: https://dev.mention.com/current/src/Changelog.html and https://headwayapp.co/mention-release-notes
+summary: >-
+  Mention keeps two dated changelogs on two different surfaces. The API changelog lives inside the
+  reference and tracks the Accept-Version line; its most recent entry is 1.21 from September 2023.
+  The product release notes live on Headway behind whatsnew.mention.com and track the web app; the
+  most recent entry is February 2025. Neither has moved since.
+
+changelogs:
+  - id: api
+    name: API Change Log
+    url: https://dev.mention.com/current/src/Changelog.html
+    scheme: major.minor version with a release date
+    current_version: '1.21'
+    current_date: '2023-09-06'
+    entry_count_published: 14
+    covers: the REST API contract
+    note: >-
+      "Only the 2 first figures are used to define the version you want to use in requests. Indeed,
+      third figure indicates bug fixes and are automatically applied to their major.minor version."
+    entries:
+      - version: '1.21'
+        date: '2023-09-06'
+        breaking: true
+        highlights:
+          - group_id is now always mandatory on POST /accounts/{account_id}/alerts and POST /accounts/{account_id}/dashboards; previously omissible when the caller had a single group.
+          - The alert resource now exposes an empty stats field by default; counters must be requested with the stats query parameter (mention_folders.*.total, unread_mentions.total, unseen_mentions.total, favorite_mentions.total, tasks.total, todo_tasks, done_tasks, logs.total).
+      - version: '1.19'
+        date: '2020-03-31'
+        breaking: false
+        deprecations:
+          - Gender chart dimension deprecated for the API from version 19.
+          - Gender dimension soft-deprecated for all prior versions.
+      - version: '1.18'
+        date: '2018-12-19'
+        breaking: false
+        highlights:
+          - Internal changes.
+      - version: '1.17'
+        date: '2018-07-31'
+        breaking: true
+        highlights:
+          - FacebookAccount resource gains a business_management_permission attribute.
+          - InstagramBusinessAccount resource gains a business_management_permission attribute.
+      - version: '1.16'
+        date: '2018-05-24'
+        breaking: true
+        highlights:
+          - Plan resource drops influencer_dashboard_access and adds influence_access and influence_advanced.
+      - version: '1.15'
+        date: '2017-07-05'
+        breaking: true
+        highlights:
+          - The color attribute moved from the Alert Share to the Alert.
+      - version: '1.14'
+        date: '2017-03-14'
+        breaking: false
+        highlights:
+          - The source filter is now limited to plans with search access.
+      - version: '1.13'
+        date: '2016-11-09'
+        breaking: true
+        highlights:
+          - Twitter interactions add full_text and remove text.
+      - version: '1.12'
+        date: '2016-09-08'
+        breaking: true
+        highlights:
+          - Account resource adds permissions.
+          - TeamMember resource removes admin and adds kind (admin|user|restricted) plus permissions.
+      - version: '1.11'
+        date: '2016-04-29'
+        breaking: true
+        highlights:
+          - Multiple monitored Facebook pages and Twitter accounts replace the single-page/single-account attributes.
+      - version: '1.9'
+        date: '2016-03-10'
+        breaking: true
+        highlights:
+          - The alerts endpoint became paginated and returns 20 alerts by default.
+      - version: '1.8'
+        date: '2016-01-22'
+        breaking: true
+        highlights:
+          - Introduces mention folders (inbox, archive, spam, trash) plus a folder attribute and filter.
+          - Alert resource gains query and drops primary_keyword; keyword arrays move inside query when query.type is basic.
+          - Mention resource drops url in favour of clickable_url, displayable_url and original_url; children become paginatable.
+      - version: '1.1'
+        date: null
+        breaking: false
+        highlights:
+          - First version of Mention.
+  - id: product
+    name: Mention release notes
+    url: https://whatsnew.mention.com
+    resolves_to: https://headwayapp.co/mention-release-notes
+    scheme: dated posts categorised New / Improvement / Update / All plans
+    current_date: '2025-02-10'
+    covers: the Mention web application, not the API contract
+    entries:
+      - date: '2025-02-10'
+        category: New / Improvement
+        title: Easily share tags across multiple alerts
+      - date: '2025-01-27'
+        category: New / All plans
+        title: Streamlined invoice management with custom billing email address
+      - date: '2025-01-22'
+        category: Update
+        title: Sentiment update for grouped mentions
+      - date: '2025-01-14'
+        category: New / All plans
+        title: Monitor your G2 reviews directly in Mention
+      - date: '2024-12-16'
+        category: New / All plans
+        title: Guide tab for basic alerts
+      - date: '2024-12-05'
+        category: New / Improvement
+        title: Simplified alert deletion option
+      - date: '2024-11-13'
+        category: Improvement / All plans
+        title: Enhanced mention blocking feature
+      - date: '2024-11-12'
+        category: New / All plans
+        title: Emotion analysis feature release
+      - date: '2024-10-28'
+        category: New / All plans
+        title: Filters apply instantly in the feed
+      - date: '2024-10-17'
+        category: Improvement / All plans
+        title: Share alerts directly from the alert page
+    note: >-
+      No RSS, Atom or JSON feed is exposed by the Headway board — .rss, .atom and .json all return
+      404, so the only machine-readable read is the dated <time> elements in the page itself.
+
+observations:
+  - >-
+    Nothing in either changelog announces an API change after September 2023, and the product notes
+    stop in February 2025. Read together with the pricing page — where API access is a paid add-on
+    rather than an included capability — the API reads as maintained-but-static rather than active.
+  - >-
+    Every breaking change on record is version-gated behind Accept-Version, which is the right
+    mechanism; the gap is that no removal date is ever attached to a deprecation.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

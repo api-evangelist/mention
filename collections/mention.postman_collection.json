@@ -1,1352 +1,22 @@
 {
   "item": [
     {
-      "id": "f2fcae62-d9ef-4c46-979e-9face2ecd44f",
-      "name": "Fetch all alerts of an account",
-      "request": {
-        "name": "Fetch all alerts of an account",
-        "description": {},
-        "url": {
-          "path": [
-            "alerts"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": []
-        },
-        "method": "GET",
-        "auth": null
+      "id": "bc796b64-14d5-4c0f-884e-5ad01dc0d4e8",
+      "name": "Accounts",
+      "description": {
+        "content": "Mention accounts and the authenticated identity.",
+        "type": "text/plain"
       },
-      "response": [
+      "item": [
         {
-          "id": "de9fcb64-6da3-4290-b842-f45b3f8cfc32",
-          "name": "List of alerts",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
+          "id": "2813c787-95cb-40dc-9fe7-bf6ed3b47442",
+          "name": "Create an account",
+          "request": {
+            "name": "Create an account",
+            "description": {
+              "content": "Creates a new Mention account. The password must be at least 6 characters long and mix letters and figures. The optional client property records the name of the application registering the user.",
+              "type": "text/plain"
             },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "b8459444-2f60-4b8e-a700-c5207404dca3",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "6b6d8f6b-55b0-4761-b571-c1970ec16754",
-      "name": "Create an alert",
-      "request": {
-        "name": "Create an alert",
-        "description": {},
-        "url": {
-          "path": [
-            "alerts"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": []
-        },
-        "method": "POST",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "7880fce9-a90f-4254-8cc5-01e7a0e3ebc6",
-          "name": "Alert created",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "Created",
-          "code": 201,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "743fef76-c604-43e0-a22d-75ea1533c2ca",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "d6633415-8a0b-40f0-974c-0924de8ed991",
-      "name": "Fetch an alert",
-      "request": {
-        "name": "Fetch an alert",
-        "description": {},
-        "url": {
-          "path": [
-            "alerts",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "198566be-3795-40be-8779-47e1f2e0de8d",
-          "name": "Alert object",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "42077116-0c44-4233-ae06-0365c845257a",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "8f1ee4c2-dd69-4e05-a0a8-29ac519a8990",
-      "name": "Update an alert",
-      "request": {
-        "name": "Update an alert",
-        "description": {},
-        "url": {
-          "path": [
-            "alerts",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "PUT",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "d421f0d4-ca05-42f7-91f3-d1c6a28237d6",
-          "name": "Alert updated",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "PUT",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "27ebf909-5105-4bf0-b010-0ed09a45e3b1",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "PUT",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "9ddc645f-8eaf-4868-acec-27ff225ef5f7",
-      "name": "Delete an alert",
-      "request": {
-        "name": "Delete an alert",
-        "description": {},
-        "url": {
-          "path": [
-            "alerts",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "DELETE",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "f381b9c2-f3e5-4be8-bd90-260b19ef5482",
-          "name": "Alert deleted",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "DELETE",
-            "body": {}
-          },
-          "status": "No Content",
-          "code": 204,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "0bd3eff4-d36a-4f58-8a22-6b9c989c7b49",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "DELETE",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "032cc949-207e-406c-889d-d24037708cdf",
-      "name": "Pause an alert",
-      "request": {
-        "name": "Pause an alert",
-        "description": {},
-        "url": {
-          "path": [
-            "alerts",
-            ":id",
-            "pause"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "POST",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "6a51523b-7d3d-4919-a695-2f60108c8231",
-          "name": "Alert paused",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "pause"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "2b517040-ba90-40a1-96d5-dd231a9c562c",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "pause"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "a81b3396-b973-4aab-ac21-8843c10f469b",
-      "name": "Unpause an alert",
-      "request": {
-        "name": "Unpause an alert",
-        "description": {},
-        "url": {
-          "path": [
-            "alerts",
-            ":id",
-            "unpause"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "POST",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "fc04da56-29f4-407a-b226-73018185686b",
-          "name": "Alert unpaused",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "unpause"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "e660f366-3f54-4ee8-8c70-5fac19f4340c",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "unpause"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "51d5406f-4bbb-426e-aa5b-0839e8c9c626",
-      "name": "Fetch mentions",
-      "request": {
-        "name": "Fetch mentions",
-        "description": {},
-        "url": {
-          "path": [
-            "mentions"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": []
-        },
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "3ce8c3ef-cc25-4756-81bf-c4bc5fb5dc25",
-          "name": "List of mentions",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "6bacf940-3c63-4002-bdf3-c9dde4fa6851",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "54e8774b-5b68-4e29-b9ff-fa31beb17a65",
-      "name": "Fetch a mention",
-      "request": {
-        "name": "Fetch a mention",
-        "description": {},
-        "url": {
-          "path": [
-            "mentions",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "d6d48cd1-461c-4728-94f9-5ba022ffa46e",
-          "name": "Mention object",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "e372949e-a9a0-4b0e-b4b2-cb730c6ae671",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "8eedd886-80a9-4b00-805c-39915c4d1821",
-      "name": "Curate a mention",
-      "request": {
-        "name": "Curate a mention",
-        "description": {},
-        "url": {
-          "path": [
-            "mentions",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "PUT",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "497838d1-59f5-4107-93f3-04d7988d63d2",
-          "name": "Mention curated",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "PUT",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "68e4e830-3300-4e9b-9ea4-be8fdfe517f5",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "PUT",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "3a331dda-9428-4d17-b85a-6ec205f2d749",
-      "name": "Fetch mention children",
-      "request": {
-        "name": "Fetch mention children",
-        "description": {},
-        "url": {
-          "path": [
-            "mentions",
-            ":id",
-            "children"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "bb81d34c-1d3d-4982-a811-9cfded628e7e",
-          "name": "List of mention children",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions",
-                ":id",
-                "children"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "706bb8c9-9efb-4e96-8c23-9d5bb4e05b52",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions",
-                ":id",
-                "children"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "8f6ccc6d-6e7b-4a19-98f6-aac0ed11bdbe",
-      "name": "Stream mentions",
-      "request": {
-        "name": "Stream mentions",
-        "description": {},
-        "url": {
-          "path": [
-            "mentions",
-            "stream"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": []
-        },
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "e564386b-9a2d-409a-969c-8dc6377d0c95",
-          "name": "Stream of mentions",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions",
-                "stream"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "0d68b648-52a9-42f0-b888-5b6e8809152d",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions",
-                "stream"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "5ecd2334-e247-4ce3-9d1d-4e4bb9ad0b6e",
-      "name": "Mark all mentions as read",
-      "request": {
-        "name": "Mark all mentions as read",
-        "description": {},
-        "url": {
-          "path": [
-            "mentions",
-            "mark-all-read"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": []
-        },
-        "method": "POST",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "4ba14ea2-f8e2-4a81-8856-1823f81a8429",
-          "name": "Marked as read",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions",
-                "mark-all-read"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "No Content",
-          "code": 204,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "26d7f56c-ca01-4887-be5c-1b73d3aa5fb4",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions",
-                "mark-all-read"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "f6972c87-9629-4ba3-9aa3-c0956c646110",
-      "name": "Create an account",
-      "request": {
-        "name": "Create an account",
-        "description": {},
-        "url": {
-          "path": [
-            "accounts"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": []
-        },
-        "method": "POST",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "13bb1514-f01f-4eea-9da1-5784c740f740",
-          "name": "Account created",
-          "originalRequest": {
             "url": {
               "path": [
                 "accounts"
@@ -1357,414 +27,43 @@
               "query": [],
               "variable": []
             },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "method": "POST",
-            "body": {}
-          },
-          "status": "Created",
-          "code": 201,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "e7b20b66-e9d0-4125-9f59-7d94b1fab26f",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "accounts"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "e8b73ac0-dc69-4576-adce-bdefb533a335",
-      "name": "Fetch an account",
-      "request": {
-        "name": "Fetch an account",
-        "description": {},
-        "url": {
-          "path": [
-            "accounts",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "d78d044a-5363-476b-b76b-d61ee907fb96",
-          "name": "Account object",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "accounts",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Smith\",\n  \"email\": \"j.smith@nasa.com\",\n  \"password\": \"REDACTED_EXAMPLE_PASSWORD\",\n  \"language_code\": \"en\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
                 }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
+              }
             }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
+          },
+          "response": []
         },
         {
-          "id": "cfd4ea64-ee3f-41ce-b29a-2f78757751a2",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "accounts",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
+          "id": "f3509ee5-0af1-4787-9266-7b63cda7442c",
+          "name": "Fetch my account",
+          "request": {
+            "name": "Fetch my account",
+            "description": {
+              "content": "Fetches all account details for the account that owns the access token used on the request. This is the standard way to resolve the account_id required by every other endpoint.",
+              "type": "text/plain"
             },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "93bd847f-4097-4fcc-a498-3876b539ba2e",
-      "name": "Update an account",
-      "request": {
-        "name": "Update an account",
-        "description": {},
-        "url": {
-          "path": [
-            "accounts",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "PUT",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "a4f47c94-5f2e-4098-b5d1-eecf0e8935a3",
-          "name": "Account updated",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "accounts",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "PUT",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "71db5e40-2492-41eb-a936-951c8b7dc67b",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "accounts",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "PUT",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "7ae99e20-d4ec-4ee5-becf-ce8586300ee2",
-      "name": "Delete an account",
-      "request": {
-        "name": "Delete an account",
-        "description": {},
-        "url": {
-          "path": [
-            "accounts",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "DELETE",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "c242a53f-ee49-4eb8-9b64-28ecf13d0b1a",
-          "name": "Account deleted",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "accounts",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "DELETE",
-            "body": {}
-          },
-          "status": "No Content",
-          "code": 204,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "73b52ef8-4f96-45a8-9264-73416d30ed36",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "accounts",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "DELETE",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "48269b52-0b19-4a8b-bdce-3e15b8f28dec",
-      "name": "Get my account",
-      "request": {
-        "name": "Get my account",
-        "description": {},
-        "url": {
-          "path": [
-            "accounts",
-            "me"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": []
-        },
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "eef83586-2d50-4308-baba-13b56b04ee11",
-          "name": "My account",
-          "originalRequest": {
             "url": {
               "path": [
                 "accounts",
@@ -1776,29 +75,671 @@
               "query": [],
               "variable": []
             },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
             "method": "GET",
-            "body": {}
+            "auth": null
           },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
+          "response": []
         },
         {
-          "id": "fc62da33-9b11-4569-9aed-a036b566fe1a",
-          "name": "Error response",
-          "originalRequest": {
+          "id": "3e7d2bf2-a99f-4579-956e-df1cf9d28c99",
+          "name": "Fetch an account",
+          "request": {
+            "name": "Fetch an account",
+            "description": {
+              "content": "Retrieves details for the given account. An access token cannot read another person's account, even when that account was created through this API.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
                 "accounts",
-                "me"
+                ":account_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "ad74e24f-27cf-40bb-95c0-144d59c97e69",
+          "name": "Update an account",
+          "request": {
+            "name": "Update an account",
+            "description": {
+              "content": "Modifies an existing account. Only the account that owns the access token can be modified. Changing the password requires sending both old_password and new_password rather than password.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Smith\",\n  \"email\": \"j.smith@nasa.com\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "25d870ab-9d0d-4642-bd80-a70e5d77ad83",
+          "name": "Delete an account",
+          "request": {
+            "name": "Delete an account",
+            "description": {
+              "content": "Deletes an account. As with GET and PUT, an access token cannot delete another person's account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "530bb98b-5e45-4df5-b4ee-793e14a845df",
+      "name": "Alerts",
+      "description": {
+        "content": "The keyword queries Mention crawls the web and social media for.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ff08f6e8-7d71-45f0-bf99-66f44cd4423e",
+          "name": "Fetch all alerts of an account",
+          "request": {
+            "name": "Fetch all alerts of an account",
+            "description": {
+              "content": "Returns the alerts visible to the account. The collection is paginated with an opaque cursor; follow _links.more to page. Since API version 1.21 the stats field is empty by default \u2014 request counters explicitly with the stats query string parameter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": true,
+                  "key": "limit",
+                  "value": "<string>",
+                  "description": "Number of alerts to return. Default: return all alerts."
+                },
+                {
+                  "disabled": true,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Opaque pagination cursor supplied by the API in _links.more."
+                },
+                {
+                  "disabled": true,
+                  "key": "ids",
+                  "value": "<string>",
+                  "description": "IDs of the alerts to fetch. Must not contain more than 50 ids."
+                },
+                {
+                  "disabled": true,
+                  "key": "stats",
+                  "value": "<string>",
+                  "description": "Comma-separated list of alert counters to include. One or more of mention_folders.inbox.total, mention_folders.archive.total, mention_folders.spam.total, mention_folders.trash.total, unread_mentions.total, unseen_mentions.total, favorite_mentions.total, tasks.total, todo_tasks, done_tasks, logs.total. Added in API version 1.21."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "948dfd8f-4489-4b8c-8bb3-b0cc7546eeee",
+          "name": "Create an alert",
+          "request": {
+            "name": "Create an alert",
+            "description": {
+              "content": "Creates a new alert for the account. A query is either basic (included / required / excluded keyword arrays) or advanced (a boolean query_string). At least one of included_keywords or required_keywords must carry a keyword. Since API version 1.21 the group_id query string parameter is always mandatory.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": true,
+                  "key": "group_id",
+                  "value": "<string>",
+                  "description": "(Required) Group the alert belongs to. Mandatory since API version 1.21; before 1.21 it could be omitted when the caller had only one group."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"NASA and competitors\",\n  \"query\": {\n    \"type\": \"basic\",\n    \"included_keywords\": [\n      \"NASA\",\n      \"Arianespace\",\n      \"SpaceX\"\n    ]\n  },\n  \"languages\": [\n    \"en\"\n  ],\n  \"sources\": [\n    \"web\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "99803a68-f0f6-48b6-94f9-bf8cfbdb1053",
+          "name": "Fetch an alert",
+          "request": {
+            "name": "Fetch an alert",
+            "description": {
+              "content": "Retrieve details about a single alert, including its query, sources, languages, shares and permissions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "04f6b320-a775-4c54-af9c-0417b767d581",
+          "name": "Update an alert",
+          "request": {
+            "name": "Update an alert",
+            "description": {
+              "content": "Modifies an existing alert, usually to refine the query criteria and improve the search's efficiency. Omitted properties are left unchanged; an alert fetched with GET may be sent back unchanged.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Space innovation\",\n  \"query\": {\n    \"type\": \"advanced\",\n    \"query_string\": \"(space AND innovation)\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "76d60e9f-15cb-49e3-b0ab-75a769ba7bca",
+          "name": "Pause an alert",
+          "request": {
+            "name": "Pause an alert",
+            "description": {
+              "content": "Pauses a single alert so that it stops collecting new mentions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "pause"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "27cf57a8-fdd4-4835-937a-8535484986a2",
+          "name": "Unpause an alert",
+          "request": {
+            "name": "Unpause an alert",
+            "description": {
+              "content": "Resumes collection on a previously paused alert.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "unpause"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "6248bb9d-604d-40dd-9d6c-e486d88da91b",
+          "name": "Fetch preferences of an alert",
+          "request": {
+            "name": "Fetch preferences of an alert",
+            "description": {
+              "content": "Retrieves the per-account notification preferences and display weight for the given alert.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "preferences"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "ddfdec11-3144-44ce-84ef-03ae8586a411",
+          "name": "Update preferences of an alert",
+          "request": {
+            "name": "Update preferences of an alert",
+            "description": {
+              "content": "Updates the alert preferences. Any attribute returned by the GET request can be updated, and any attribute may be omitted. The weight attribute controls how important the alert is in the interface.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "preferences"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"push_notification_frequency\": \"never\",\n  \"weight\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "eeb17223-c367-4603-993a-9f762c9e48b1",
+      "name": "App",
+      "description": {
+        "content": "Application reference data and vocabularies.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c3aa0b2b-103c-44e2-9a5e-1caa1f040c65",
+          "name": "Fetch application data",
+          "request": {
+            "name": "Fetch application data",
+            "description": {
+              "content": "Retrieves reference data about the application: available app languages, alert languages, alert countries, alert tones, alert sources, alert share roles, alert colors, task types, mention folders, mention log types, social account types, week days and the notification frequency vocabularies. Several properties are translated according to the Accept-Language request header. This endpoint is the source of the enumerated values used by the alert, mention, task and preference resources.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "data"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -1806,1656 +747,298 @@
               "query": [],
               "variable": []
             },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
             "method": "GET",
-            "body": {}
+            "auth": null
           },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
+          "response": []
         }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
+      ]
     },
     {
-      "id": "1f992c10-ef23-447b-8006-90e38d30a9b7",
-      "name": "Fetch all shares of an alert",
-      "request": {
-        "name": "Fetch all shares of an alert",
-        "description": {},
-        "url": {
-          "path": [
-            "alerts",
-            ":id",
-            "shares"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "GET",
-        "auth": null
+      "id": "ee9f0348-25ee-41a4-ae9b-e93a0d4d1712",
+      "name": "Authors",
+      "description": {
+        "content": "Authors and influencers behind an alert's mentions.",
+        "type": "text/plain"
       },
-      "response": [
+      "item": [
         {
-          "id": "47a9247d-430f-489e-add1-3633a25426d9",
-          "name": "List of shares",
-          "originalRequest": {
+          "id": "2566261f-d11c-4988-ad98-de18a2a84c90",
+          "name": "Fetch authors and influencers of an alert",
+          "request": {
+            "name": "Fetch authors and influencers of an alert",
+            "description": {
+              "content": "Returns the authors behind an alert's mentions, with their influence score, reach and social profiles. The query string must be URL encoded.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
+                "accounts",
+                ":account_id",
                 "alerts",
-                ":id",
-                "shares"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "9e11e8e8-11d7-4dea-9d3d-871e83b880d4",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "shares"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "2e84c1a4-1b93-42ae-a633-d941c5b7978a",
-      "name": "Create a share",
-      "request": {
-        "name": "Create a share",
-        "description": {},
-        "url": {
-          "path": [
-            "alerts",
-            ":id",
-            "shares"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "POST",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "342f4156-4599-49c6-ab3a-5924096a1e2c",
-          "name": "Share created",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "shares"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "Created",
-          "code": 201,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "87cca582-b9ca-4e87-a6fb-6b2ac0ecf63d",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "shares"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "95b55418-166c-4fb9-ac03-8316155a2ff2",
-      "name": "Fetch a share",
-      "request": {
-        "name": "Fetch a share",
-        "description": {},
-        "url": {
-          "path": [
-            "shares",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "a30100f8-b862-4ca2-b4d0-33aeb7a86fc7",
-          "name": "Share object",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "shares",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "f716f84f-d53f-46d6-bf91-634f6be8e330",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "shares",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "e8d5b3e1-bad7-46ee-9c65-5a6f17107cd9",
-      "name": "Update a share",
-      "request": {
-        "name": "Update a share",
-        "description": {},
-        "url": {
-          "path": [
-            "shares",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "PUT",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "7c246ecb-be44-41fe-80ef-11de0c5e64bd",
-          "name": "Share updated",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "shares",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "PUT",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "0957397b-974d-4d02-ae08-6e96174f5382",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "shares",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "PUT",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "a3428e80-f96f-4a20-a91f-9287a03b4402",
-      "name": "Delete a share",
-      "request": {
-        "name": "Delete a share",
-        "description": {},
-        "url": {
-          "path": [
-            "shares",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "DELETE",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "c7ef8f9b-4765-459d-b61b-e969dce0ffc2",
-          "name": "Share deleted",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "shares",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "DELETE",
-            "body": {}
-          },
-          "status": "No Content",
-          "code": 204,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "fd3cf3cb-8ef5-41e6-bd89-190f54a65965",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "shares",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "DELETE",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "bc9ca08a-eb98-4df3-8e9d-0df736255d36",
-      "name": "Fetch alert preferences",
-      "request": {
-        "name": "Fetch alert preferences",
-        "description": {},
-        "url": {
-          "path": [
-            "alerts",
-            ":id",
-            "preferences"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "b2d4dd05-656e-4cb6-9704-eca7d4f4b530",
-          "name": "Preferences object",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "preferences"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "bcd5d8c4-09a0-420a-b9d8-ab3f0a76fee4",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "preferences"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "c954f42c-13c9-4404-b9f6-7e8d1a8f867e",
-      "name": "Update alert preferences",
-      "request": {
-        "name": "Update alert preferences",
-        "description": {},
-        "url": {
-          "path": [
-            "alerts",
-            ":id",
-            "preferences"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "PUT",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "2137347f-4df4-4e5f-b04b-1a48ec1da35e",
-          "name": "Preferences updated",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "preferences"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "PUT",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "3a0482b6-bf35-4a8d-abf5-c83dc19ba52e",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "preferences"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "PUT",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "a3655fbb-ad8d-46d2-9e24-f7ea79fc421f",
-      "name": "Fetch all tags of an alert",
-      "request": {
-        "name": "Fetch all tags of an alert",
-        "description": {},
-        "url": {
-          "path": [
-            "alerts",
-            ":id",
-            "tags"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "2240c4e6-318a-451a-9559-e961f7b4291d",
-          "name": "List of tags",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "tags"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "77c55f7e-d99b-479f-8f2b-442ef9ac7f9b",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "tags"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "bdfa6fe8-876d-4348-983d-3e3886824a2c",
-      "name": "Create a tag for an alert",
-      "request": {
-        "name": "Create a tag for an alert",
-        "description": {},
-        "url": {
-          "path": [
-            "alerts",
-            ":id",
-            "tags"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "POST",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "6d69a10b-fc40-450d-8085-481dbce87d53",
-          "name": "Tag created",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "tags"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "Created",
-          "code": 201,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "7beefa51-72ba-466a-a567-2e03f5a69869",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "alerts",
-                ":id",
-                "tags"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "c4086ceb-c4d7-4ee1-89c9-832b0eb345d8",
-      "name": "Rename a tag",
-      "request": {
-        "name": "Rename a tag",
-        "description": {},
-        "url": {
-          "path": [
-            "tags",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "PUT",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "07d7e4a9-55fd-449d-b387-ab9d2984313a",
-          "name": "Tag renamed",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "tags",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "PUT",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "9309d0da-e433-49a0-a706-2465b05fad68",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "tags",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "PUT",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "fd528fb3-e1aa-4cff-8566-d497fb9e6f01",
-      "name": "Delete a tag",
-      "request": {
-        "name": "Delete a tag",
-        "description": {},
-        "url": {
-          "path": [
-            "tags",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "DELETE",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "e6abafaa-3fa3-4813-97d6-529139b48f90",
-          "name": "Tag deleted",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "tags",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "DELETE",
-            "body": {}
-          },
-          "status": "No Content",
-          "code": 204,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "eb413b76-8a0e-45d2-bb55-406950f4a270",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "tags",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "DELETE",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "f1b03363-befe-42e9-a723-c8d125391483",
-      "name": "Fetch authors",
-      "request": {
-        "name": "Fetch authors",
-        "description": {},
-        "url": {
-          "path": [
-            "authors"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": []
-        },
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "aa8490f1-edb6-4366-8537-07723ec841c1",
-          "name": "List of authors",
-          "originalRequest": {
-            "url": {
-              "path": [
+                ":alert_id",
                 "authors"
               ],
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
-              "variable": []
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "f8d02ab8-958c-498b-aa98-a4c5f3dabeb0",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "authors"
+              "query": [
+                {
+                  "disabled": true,
+                  "key": "kind",
+                  "value": "<string>",
+                  "description": "Restrict to authors of a given source kind, e.g. twitter."
+                },
+                {
+                  "disabled": true,
+                  "key": "from",
+                  "value": "<string>",
+                  "description": "Only consider mentions retrieved after this date."
+                },
+                {
+                  "disabled": true,
+                  "key": "to",
+                  "value": "<string>",
+                  "description": "Only consider mentions retrieved before this date."
+                },
+                {
+                  "disabled": true,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Field to sort authors by, e.g. score."
+                },
+                {
+                  "disabled": true,
+                  "key": "order",
+                  "value": "<string>",
+                  "description": "Sort direction."
+                },
+                {
+                  "disabled": true,
+                  "key": "limit",
+                  "value": "<string>",
+                  "description": "Number of authors to return."
+                }
               ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": []
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
             },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
             "method": "GET",
-            "body": {}
+            "auth": null
           },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
+          "response": []
         }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
+      ]
     },
     {
-      "id": "6f6e059f-eb6e-4304-96f6-e3798f8e2e28",
-      "name": "Fetch all tasks of a mention",
-      "request": {
-        "name": "Fetch all tasks of a mention",
-        "description": {},
-        "url": {
-          "path": [
-            "mentions",
-            ":id",
-            "tasks"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "GET",
-        "auth": null
+      "id": "df48c707-11cf-47dc-9c11-0ed8d030c397",
+      "name": "Mentions",
+      "description": {
+        "content": "The results an alert collects, plus curation and streaming.",
+        "type": "text/plain"
       },
-      "response": [
+      "item": [
         {
-          "id": "500a0ee8-4dd4-4d54-90ed-dc622f53f551",
-          "name": "List of tasks",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions",
-                ":id",
-                "tasks"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
+          "id": "39673bb1-e74d-4b67-9f90-d2b9c585bbff",
+          "name": "Fetch mentions",
+          "request": {
+            "name": "Fetch mentions",
+            "description": {
+              "content": "Returns the mentions collected by an alert. The query string carries the filter surface; every filter is optional. Retrieve older mentions by following _links.more and poll for new ones by following _links.pull. The index_version attribute of the alert determines which filters are available to it.",
+              "type": "text/plain"
             },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "9878b69f-585c-4821-97d2-f7ea577815d3",
-          "name": "Error response",
-          "originalRequest": {
             "url": {
               "path": [
-                "mentions",
-                ":id",
-                "tasks"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "70c2c7c0-389b-41c6-a625-8042790a944f",
-      "name": "Create a task on a mention",
-      "request": {
-        "name": "Create a task on a mention",
-        "description": {},
-        "url": {
-          "path": [
-            "mentions",
-            ":id",
-            "tasks"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "POST",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "a93ed455-5722-419e-917f-e63ec786968a",
-          "name": "Task created",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions",
-                ":id",
-                "tasks"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "Created",
-          "code": 201,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "72320b76-87a4-4e34-99fb-dde1cbc43609",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "mentions",
-                ":id",
-                "tasks"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
-                {
-                  "disabled": false,
-                  "type": "any",
-                  "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "POST",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "5f4f6583-6f8f-450b-809a-b187223cb240",
-      "name": "Fetch all tasks of an alert",
-      "request": {
-        "name": "Fetch all tasks of an alert",
-        "description": {},
-        "url": {
-          "path": [
-            "alerts",
-            ":id",
-            "tasks"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "ece54393-3d15-407d-8ae9-8b26cdb9ba64",
-          "name": "List of tasks",
-          "originalRequest": {
-            "url": {
-              "path": [
+                "accounts",
+                ":account_id",
                 "alerts",
-                ":id",
-                "tasks"
+                ":alert_id",
+                "mentions"
               ],
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
+              "query": [
+                {
+                  "disabled": true,
+                  "key": "since_id",
+                  "value": "<string>",
+                  "description": "Return mentions with an id greater (more recently found) than the given id. Cannot be combined with before_date, not_before_date or cursor."
+                },
+                {
+                  "disabled": true,
+                  "key": "before_date",
+                  "value": "<string>",
+                  "description": "Return mentions published before the provided date, ordered by publication date."
+                },
+                {
+                  "disabled": true,
+                  "key": "not_before_date",
+                  "value": "<string>",
+                  "description": "Ignore mentions older than the given date. Only allowed when before_date is provided."
+                },
+                {
+                  "disabled": true,
+                  "key": "limit",
+                  "value": "<string>",
+                  "description": "Number of mentions to return. Default 20, maximum 1000. A small limit gives faster responses."
+                },
+                {
+                  "disabled": true,
+                  "key": "source",
+                  "value": "<string>",
+                  "description": "Restrict to one of the available sources. Only available to plans with search access."
+                },
+                {
+                  "disabled": true,
+                  "key": "unread",
+                  "value": "<string>",
+                  "description": "Return only unread mentions. Cannot be combined with favorite, q or tone."
+                },
+                {
+                  "disabled": true,
+                  "key": "favorite",
+                  "value": "<string>",
+                  "description": "Return only favorite mentions. Cannot be combined with folder unless folder is inbox or archive."
+                },
+                {
+                  "disabled": true,
+                  "key": "folder",
+                  "value": "<string>",
+                  "description": "Filter by folder: inbox, archive, spam or trash. With spam and trash, include_children defaults to enabled."
+                },
+                {
+                  "disabled": true,
+                  "key": "tone",
+                  "value": "<string>",
+                  "description": "Filter by tone: -1 negative, 0 neutral, 1 positive. Accepts an array of values."
+                },
+                {
+                  "disabled": true,
+                  "key": "countries",
+                  "value": "<string>",
+                  "description": "Filter by country. Accepts an array of values."
+                },
+                {
+                  "disabled": true,
+                  "key": "include_children",
+                  "value": "<string>",
+                  "description": "Whether to include children mentions."
+                },
+                {
+                  "disabled": true,
+                  "key": "sort",
+                  "value": "<string>",
+                  "description": "Sort results by published_at, author_influence.score, direct_reach, cumulative_reach or domain_reach. Only allowed on plans with search access."
+                },
+                {
+                  "disabled": true,
+                  "key": "languages",
+                  "value": "<string>",
+                  "description": "Filter by language. Accepts an array of values."
+                },
+                {
+                  "disabled": true,
+                  "key": "timezone",
+                  "value": "<string>",
+                  "description": "Timezone used when parsing dates in the q parameter."
+                },
+                {
+                  "disabled": true,
+                  "key": "q",
+                  "value": "<string>",
+                  "description": "Keyword / compound filter expression, e.g. source:(facebook OR twitter) in:(inbox OR archive) is:favorite. Only accounts with search access can use it."
+                },
+                {
+                  "disabled": true,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Opaque pagination cursor supplied by the API."
+                }
+              ],
               "variable": [
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
                 }
               ]
             },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
             "method": "GET",
-            "body": {}
+            "auth": null
           },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
+          "response": []
         },
         {
-          "id": "2ec4e735-a75a-4fde-b9c1-f82fe83e05a2",
-          "name": "Error response",
-          "originalRequest": {
+          "id": "ee100ccf-99ca-4537-8e86-e1db1a7082ab",
+          "name": "Fetch a mention",
+          "request": {
+            "name": "Fetch a mention",
+            "description": {
+              "content": "Fetches a single mention by its ID, including its tasks, logs and children.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
+                "accounts",
+                ":account_id",
                 "alerts",
-                ":id",
-                "tasks"
+                ":alert_id",
+                "mentions",
+                ":mention_id"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -3466,107 +1049,57 @@
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "b476aa44-de3a-4562-b3ba-3c8c0fcad6b4",
-      "name": "Fetch a task",
-      "request": {
-        "name": "Fetch a task",
-        "description": {},
-        "url": {
-          "path": [
-            "tasks",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "GET",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "5a1eb4ae-7cff-4490-9ed3-6315efac4b3d",
-          "name": "Task object",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "tasks",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mention_id",
+                  "description": "(Required) ID of the mention."
                 }
               ]
             },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
             "method": "GET",
-            "body": {}
+            "auth": null
           },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
+          "response": []
         },
         {
-          "id": "0030e21b-a0dd-4813-80bb-ec82ca576dce",
-          "name": "Error response",
-          "originalRequest": {
+          "id": "139acf49-e277-4d27-9a0b-bd2f7dfb9927",
+          "name": "Curate a mention",
+          "request": {
+            "name": "Curate a mention",
+            "description": {
+              "content": "Updates the curation state of a mention: folder, tags, tone, read/favorite/trashed flags. The content and source of a mention cannot be modified. Any property may be omitted. Marking a mention favorite automatically marks it read. Tags must already exist on the alert.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
-                "tasks",
-                ":id"
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                ":mention_id"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -3577,107 +1110,71 @@
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "GET",
-            "body": {}
-          },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "a6287e32-98ba-4ace-be6d-3c4bc617f883",
-      "name": "Update a task",
-      "request": {
-        "name": "Update a task",
-        "description": {},
-        "url": {
-          "path": [
-            "tasks",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
-        },
-        "method": "PUT",
-        "auth": null
-      },
-      "response": [
-        {
-          "id": "f8f842ba-e842-41c9-83b8-a1764dc65dda",
-          "name": "Task updated",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "tasks",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mention_id",
+                  "description": "(Required) ID of the mention."
                 }
               ]
             },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "method": "PUT",
-            "body": {}
-          },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"favorite\": true,\n  \"trashed\": false,\n  \"read\": true,\n  \"tags\": [\n    {\n      \"id\": 123\n    }\n  ],\n  \"folder\": \"archive\",\n  \"tone\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
+          },
+          "response": []
         },
         {
-          "id": "4f0fa0f0-cb3f-49c4-89d6-e9540ef5f52b",
-          "name": "Error response",
-          "originalRequest": {
+          "id": "67dfa5a3-c70a-40ee-ad8c-5ab36ba31890",
+          "name": "Fetch mention children",
+          "request": {
+            "name": "Fetch mention children",
+            "description": {
+              "content": "Returns the child mentions grouped under a given mention, paginated through _links.more.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
-                "tasks",
-                ":id"
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                ":mention_id",
+                "children"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -3688,69 +1185,426 @@
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mention_id",
+                  "description": "(Required) ID of the mention."
                 }
               ]
             },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "10f730a0-404f-46b1-b024-6e994e809321",
+          "name": "Mark all mentions as read",
+          "request": {
+            "name": "Mark all mentions as read",
+            "description": {
+              "content": "Marks every mention of the alert as read.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                "markallread"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "116592ec-bb9c-4680-be66-b4f5ae702454",
+          "name": "Stream mentions",
+          "request": {
+            "name": "Stream mentions",
+            "description": {
+              "content": "Opens a long-lived HTTP connection that pushes each mention as soon as it is collected for the selected alerts. This operation is only available on the streaming endpoint https://stream.mention.net/api, and one stream at a time may be open per account.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "mentions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": true,
+                  "key": "alerts[]",
+                  "value": "<string>",
+                  "description": "(Required) IDs of the alerts to stream."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "b8d4522d-c798-432b-9f53-db720d698096",
+      "name": "Shares",
+      "description": {
+        "content": "Which accounts an alert is shared with.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "821af216-dd6b-4011-a42f-1c5d48703ce8",
+          "name": "Fetch all shares of an alert",
+          "request": {
+            "name": "Fetch all shares of an alert",
+            "description": {
+              "content": "Lists every share object on the alert \u2014 that is, every account the alert is shared with.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "shares"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "cef36611-215a-41ad-a760-352451d4a220",
+          "name": "Create a share",
+          "request": {
+            "name": "Create a share",
+            "description": {
+              "content": "Creates a share object linking another account to this alert. The account_id in the body is the public id of the account the alert is shared with.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "shares"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"account_id\": \"12345_69gjjsg4itgkcco040okwsck700o4w8gsco0k4kco0s4scw8o0\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "cbbc8984-97c2-420f-bfe9-27cf9f419ff7",
+          "name": "Fetch a share",
+          "request": {
+            "name": "Fetch a share",
+            "description": {
+              "content": "Retrieves a single share object on an alert.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "shares",
+                ":share_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "share_id",
+                  "description": "(Required) ID of the share object."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "e85aeaed-9992-4a4f-841d-07cf98186b85",
+          "name": "Update a share",
+          "request": {
+            "name": "Update a share",
+            "description": {
+              "content": "Updates an existing share, typically to block an account's access to the alert.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "shares",
+                ":share_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "share_id",
+                  "description": "(Required) ID of the share object."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
             "method": "PUT",
-            "body": {}
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"blocked\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
           },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
-    },
-    {
-      "id": "278e59ce-8a2f-4101-b819-9c59b5c7a3c6",
-      "name": "Delete a task",
-      "request": {
-        "name": "Delete a task",
-        "description": {},
-        "url": {
-          "path": [
-            "tasks",
-            ":id"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": [
-            {
-              "disabled": false,
-              "type": "any",
-              "value": "<string>",
-              "key": "id",
-              "description": "(Required) "
-            }
-          ]
+          "response": []
         },
-        "method": "DELETE",
-        "auth": null
-      },
-      "response": [
         {
-          "id": "8fc8dff6-5301-4672-8eb3-f7c21496ecce",
-          "name": "Task deleted",
-          "originalRequest": {
+          "id": "dca75445-6501-4aa4-b31d-2d87e5ae8e60",
+          "name": "Delete a share",
+          "request": {
+            "name": "Delete a share",
+            "description": {
+              "content": "Deletes the share object linking an account to an alert. Team admin rights are required to delete someone else's share. There is no delete-alert operation: when the last share on an alert is deleted, the alert itself is deleted.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
-                "tasks",
-                ":id"
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "shares",
+                ":share_id"
               ],
               "host": [
                 "{{baseUrl}}"
@@ -3761,169 +1615,849 @@
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
-                }
-              ]
-            },
-            "method": "DELETE",
-            "body": {}
-          },
-          "status": "No Content",
-          "code": 204,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
-        {
-          "id": "04a83924-1031-4947-94fc-cc6c84c835f7",
-          "name": "Error response",
-          "originalRequest": {
-            "url": {
-              "path": [
-                "tasks",
-                ":id"
-              ],
-              "host": [
-                "{{baseUrl}}"
-              ],
-              "query": [],
-              "variable": [
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
                 {
                   "disabled": false,
                   "type": "any",
                   "value": "<string>",
-                  "key": "id",
-                  "description": "(Required) "
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "share_id",
+                  "description": "(Required) ID of the share object."
                 }
               ]
             },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
             "method": "DELETE",
-            "body": {}
+            "auth": null
           },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
+          "response": []
         }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
+      ]
     },
     {
-      "id": "86831f42-2cd1-47a2-ac63-d834ccc373b1",
-      "name": "Fetch statistics",
-      "request": {
-        "name": "Fetch statistics",
-        "description": {},
-        "url": {
-          "path": [
-            "stats"
-          ],
-          "host": [
-            "{{baseUrl}}"
-          ],
-          "query": [],
-          "variable": []
-        },
-        "method": "GET",
-        "auth": null
+      "id": "938bc0ea-7c38-40fa-b831-c79047fde520",
+      "name": "Stats",
+      "description": {
+        "content": "Aggregate statistics across alerts.",
+        "type": "text/plain"
       },
-      "response": [
+      "item": [
         {
-          "id": "25b35f0d-4df5-470e-b760-a18a0e151855",
-          "name": "Statistics",
-          "originalRequest": {
+          "id": "c773a6a1-4b23-4a75-8a6e-98d2bbe57219",
+          "name": "Fetch statistics",
+          "request": {
+            "name": "Fetch statistics",
+            "description": {
+              "content": "Returns aggregate statistics alert by alert over a date range, with an extensive filter surface expressed entirely in the query string: date bounds and timezone, interval, folder flags, tone / language / source / country / tag filters, and switches for the week-day, per-interval tone, country and influencer breakdowns.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
+                "accounts",
+                ":account_id",
                 "stats"
               ],
               "host": [
                 "{{baseUrl}}"
               ],
-              "query": [],
-              "variable": []
+              "query": [
+                {
+                  "disabled": true,
+                  "key": "alerts[]",
+                  "value": "<string>",
+                  "description": "(Required) IDs of the alerts statistics are fetched for."
+                },
+                {
+                  "disabled": true,
+                  "key": "from",
+                  "value": "<string>",
+                  "description": "Statistics are fetched for mentions retrieved after this date."
+                },
+                {
+                  "disabled": true,
+                  "key": "to",
+                  "value": "<string>",
+                  "description": "Statistics are fetched for mentions retrieved before this date."
+                },
+                {
+                  "disabled": true,
+                  "key": "timezone",
+                  "value": "<string>",
+                  "description": "Timezone applied to the from and to bounds."
+                },
+                {
+                  "disabled": true,
+                  "key": "interval",
+                  "value": "<string>",
+                  "description": "Periodicity of the series: P1D daily, P1W weekly, P1M monthly."
+                },
+                {
+                  "disabled": true,
+                  "key": "favorite",
+                  "value": "<string>",
+                  "description": "Only count mentions in the favorite folder. May be combined with important."
+                },
+                {
+                  "disabled": true,
+                  "key": "important",
+                  "value": "<string>",
+                  "description": "Only count mentions in the important folder. May be combined with favorite."
+                },
+                {
+                  "disabled": true,
+                  "key": "week_day_stats",
+                  "value": "<string>",
+                  "description": "Classify mentions by week day. Cannot coexist with week_day_by_hour_stats."
+                },
+                {
+                  "disabled": true,
+                  "key": "week_day_by_hour_stats",
+                  "value": "<string>",
+                  "description": "Classify mentions by hour of each week day. Cannot coexist with week_day_stats."
+                },
+                {
+                  "disabled": true,
+                  "key": "tones_per_interval_stats",
+                  "value": "<string>",
+                  "description": "Break tones down per interval."
+                },
+                {
+                  "disabled": true,
+                  "key": "country_stats",
+                  "value": "<string>",
+                  "description": "Break mentions down by country."
+                },
+                {
+                  "disabled": true,
+                  "key": "influencers",
+                  "value": "<string>",
+                  "description": "Include influencer statistics."
+                },
+                {
+                  "disabled": true,
+                  "key": "tones[]",
+                  "value": "<string>",
+                  "description": "Only count mentions of the given tones."
+                },
+                {
+                  "disabled": true,
+                  "key": "languages[]",
+                  "value": "<string>",
+                  "description": "Only count mentions in the given language codes."
+                },
+                {
+                  "disabled": true,
+                  "key": "sources[]",
+                  "value": "<string>",
+                  "description": "Only count mentions from the given sources."
+                },
+                {
+                  "disabled": true,
+                  "key": "countries[]",
+                  "value": "<string>",
+                  "description": "Only count mentions from the given countries."
+                },
+                {
+                  "disabled": true,
+                  "key": "tags[]",
+                  "value": "<string>",
+                  "description": "Only count mentions carrying the given tags."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                }
+              ]
             },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
             "method": "GET",
-            "body": {}
+            "auth": null
           },
-          "status": "OK",
-          "code": 200,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
-            }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
-        },
+          "response": []
+        }
+      ]
+    },
+    {
+      "id": "e7260436-0fca-4ad8-876c-d9aa2b16f781",
+      "name": "Tags",
+      "description": {
+        "content": "Tags and auto-tagging keywords on an alert.",
+        "type": "text/plain"
+      },
+      "item": [
         {
-          "id": "e1712db8-687d-4e22-b303-c922ce17a964",
-          "name": "Error response",
-          "originalRequest": {
+          "id": "2a3daf63-2c7b-4500-bcf6-b11c1736dad4",
+          "name": "Fetch all tags of an alert",
+          "request": {
+            "name": "Fetch all tags of an alert",
+            "description": {
+              "content": "Lists the tags defined on an alert, with the number of mentions carrying each tag.",
+              "type": "text/plain"
+            },
             "url": {
               "path": [
-                "stats"
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "tags"
               ],
               "host": [
                 "{{baseUrl}}"
               ],
               "query": [],
-              "variable": []
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
             },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
             "method": "GET",
-            "body": {}
+            "auth": null
           },
-          "status": "Internal Server Error",
-          "code": 500,
-          "header": [
-            {
-              "key": "Content-Type",
-              "value": "text/plain"
+          "response": []
+        },
+        {
+          "id": "31fe44cf-aa0d-492e-b636-a9347629c2b3",
+          "name": "Create a tag",
+          "request": {
+            "name": "Create a tag",
+            "description": {
+              "content": "Creates a tag available to every mention of the alert. An alert is limited to 100 tags, a tag name to 20 characters, and the auto-tagging keywords list to 5 keywords.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "tags"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"space innovation\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
             }
-          ],
-          "body": "",
-          "cookie": [],
-          "_postman_previewlanguage": "text"
+          },
+          "response": []
+        },
+        {
+          "id": "489f86fb-2979-49e2-ba0f-83d310fdbb57",
+          "name": "Rename a tag",
+          "request": {
+            "name": "Rename a tag",
+            "description": {
+              "content": "Modifies an existing tag's label or auto-tagging keywords. Mentions stay linked to the tag by id, so renaming a tag does not detach it from the mentions already carrying it.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "tags",
+                ":tag_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tag_id",
+                  "description": "(Required) ID of the tag."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"space new technos\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "a125c704-2fa4-4213-99f7-c3227ba4fa47",
+          "name": "Delete a tag",
+          "request": {
+            "name": "Delete a tag",
+            "description": {
+              "content": "Deletes a tag from the alert.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "tags",
+                ":tag_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "tag_id",
+                  "description": "(Required) ID of the tag."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": []
         }
-      ],
-      "event": [],
-      "protocolProfileBehavior": {
-        "disableBodyPruning": true
-      }
+      ]
+    },
+    {
+      "id": "4967402c-6bc3-4d86-969f-55442fb49e7c",
+      "name": "Tasks",
+      "description": {
+        "content": "Assignments created on a mention for team mates.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "62975867-7bfb-495e-944c-d33a88f528a9",
+          "name": "Fetch all tasks of an alert",
+          "request": {
+            "name": "Fetch all tasks of an alert",
+            "description": {
+              "content": "Returns every mention task created on the alert, so open assignments can be reviewed in one call. There is no separate endpoint for the tasks of a single mention: those are returned inline by the mention resource.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "tasks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "5e61bac8-b236-486c-ac8c-fd801446274d",
+          "name": "Create a task on a mention",
+          "request": {
+            "name": "Create a task on a mention",
+            "description": {
+              "content": "Assigns a mention to a team mate. assigned_to_account_id is required and cannot be changed afterwards; type, comment and done are updatable. Valid task types come from the app/data reference endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                ":mention_id",
+                "tasks"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mention_id",
+                  "description": "(Required) ID of the mention."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"read\",\n  \"assigned_to_account_id\": \"YOUR_TEAMMATE_ACCOUNT_ID\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "d078683a-515c-4fff-b249-23924831bb1b",
+          "name": "Fetch a task",
+          "request": {
+            "name": "Fetch a task",
+            "description": {
+              "content": "Retrieves a single mention task.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                ":mention_id",
+                "tasks",
+                ":task_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mention_id",
+                  "description": "(Required) ID of the mention."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "task_id",
+                  "description": "(Required) ID of the task."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "733b4616-77b1-45d8-9307-47456c94a8e3",
+          "name": "Update a task",
+          "request": {
+            "name": "Update a task",
+            "description": {
+              "content": "Updates a task \u2014 typically to mark it done, change its type, or add a comment. Only the properties marked updatable may be sent; assigned_to_account_id is fixed at creation.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                ":mention_id",
+                "tasks",
+                ":task_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mention_id",
+                  "description": "(Required) ID of the mention."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "task_id",
+                  "description": "(Required) ID of the task."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"done\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "f6da3a15-a3a0-436a-bdb9-af53bdb8e543",
+          "name": "Delete a task",
+          "request": {
+            "name": "Delete a task",
+            "description": {
+              "content": "Deletes a mention task.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "mentions",
+                ":mention_id",
+                "tasks",
+                ":task_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "mention_id",
+                  "description": "(Required) ID of the mention."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "task_id",
+                  "description": "(Required) ID of the task."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "DELETE",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
     }
   ],
   "event": [],
   "variable": [
     {
       "type": "string",
-      "value": "https://api.mention.com/api",
+      "value": "https://api.mention.net/api",
       "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "REDACTED_EXAMPLE_TOKEN",
+      "key": "access_token"
+    },
+    {
+      "type": "string",
+      "value": "1.21",
+      "key": "apiVersion"
     }
   ],
   "info": {
-    "_postman_id": "b4bb0ce5-c4d0-46e5-953c-a9d6a914f2db",
+    "_postman_id": "146a1db9-8516-4645-904c-fd2b6d3b8a28",
     "name": "Mention API",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "description": {
-      "content": "Minimal OpenAPI 3.1 specification for the Mention API, covering alerts, mentions, accounts, shares, alert preferences, tags, authors, tasks, and statistics.",
+      "content": "The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation, tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client can do is available through this API.\n\nAuthentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header; without it, the version configured in the app's settings applies.\n\nThis description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/ \u2014 Mention does not publish a machine-readable OpenAPI definition.",
       "type": "text/plain"
     }
   }

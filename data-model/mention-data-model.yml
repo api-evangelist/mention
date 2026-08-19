@@ -1,0 +1,247 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  openapi/_original/mention-openapi.yml ($ref graph and id-reference fields), enriched from the
+  object descriptions in https://dev.mention.com/current/
+docs: https://dev.mention.com/current/
+summary: >-
+  Mention's data core is a four-level containment tree — Account owns Alerts, an Alert collects
+  Mentions, a Mention carries Tasks — crossed by two many-to-many joins: Share (which accounts see
+  which alert) and Tag (which mentions are labelled how). Every path in the API is a literal walk of
+  that tree, which is why account_id and alert_id appear on almost every operation. AppData sits
+  outside the tree as the vocabulary service every enumerated field resolves against.
+identifiers:
+  - entity: Account
+    field: id
+    format: >-
+      Opaque composite string, e.g. 12345_69gjjsg4itgkcco040okwsck700o4w8gsco0k4kco0s4scw8o0 — a
+      numeric prefix and a long token joined by an underscore. Mention calls this "the public id of
+      the account".
+    note: >-
+      Not a bare integer. This is the only identifier in the API that is a string by design, and the
+      one most often got wrong by integrators.
+  - entity: Alert
+    field: id
+    format: numeric string, e.g. "112233"
+  - entity: Mention
+    field: id
+    format: numeric string, e.g. "527849933"
+  - entity: Tag
+    field: id
+    format: integer, e.g. 46468
+  - entity: Task
+    field: id
+    format: integer
+  - entity: Share
+    field: id
+    format: >-
+      Carries the shared account's id, so a share is identified by the account it links rather than by
+      an independent key.
+entities:
+  - name: Account
+    schema: '#/components/schemas/Account'
+    description: >-
+      A Mention user. Resolves itself through GET /accounts/me. Carries name, email, language_code,
+      timezone, avatar_url, notification defaults and a permissions map.
+    operations: [createAccount, getAccount, updateAccount, deleteAccount, getMe]
+    relationships:
+      - kind: has_many
+        target: Share
+        via: shares
+        note: An account reaches alerts only through share objects.
+      - kind: has_many
+        target: Task
+        via: assigned_to_account_id
+        note: Tasks assigned to this account.
+    access_rule: >-
+      An access token can only read, update or delete its own account — even accounts it created
+      through POST /accounts. Cross-account reads return 403.
+  - name: Alert
+    schema: '#/components/schemas/Alert'
+    description: >-
+      A standing keyword query Mention crawls the web and social media for. Owns its query, language,
+      country, source and blocked-site configuration, plus a permissions map and an index_version.
+    operations: [listAlerts, createAlert, getAlert, updateAlert, pauseAlert, unpauseAlert]
+    relationships:
+      - kind: belongs_to
+        target: Account
+        via: path segment account_id
+      - kind: has_one
+        target: AlertQuery
+        via: query
+      - kind: has_many
+        target: Share
+        via: shares
+      - kind: has_many
+        target: Mention
+        via: nested collection /alerts/{alert_id}/mentions
+      - kind: has_many
+        target: Tag
+        via: nested collection /alerts/{alert_id}/tags
+      - kind: has_one
+        target: Preferences
+        via: nested singleton /alerts/{alert_id}/preferences
+      - kind: has_many
+        target: Task
+        via: nested collection /alerts/{alert_id}/tasks
+      - kind: has_one
+        target: Alert
+        via: connection_id
+        note: >-
+          Self-reference. connection_type is main, related or independent; a related alert's
+          connection_id names the main alert it was created alongside at onboarding.
+    lifecycle_note: >-
+      There is no delete operation. An alert is destroyed as a side effect of deleting its last
+      Share, which makes Share the true lifecycle owner of an Alert.
+  - name: AlertQuery
+    schema: '#/components/schemas/AlertQuery'
+    description: >-
+      A discriminated union on type. basic carries included/required/excluded keyword arrays plus an
+      optional monitored_website; advanced carries a single boolean query_string.
+    relationships:
+      - kind: has_one
+        target: MonitoredWebsite
+        via: monitored_website
+    constraint: At least one of included_keywords or required_keywords must be non-empty.
+  - name: Mention
+    schema: '#/components/schemas/Mention'
+    description: >-
+      A single result an alert found: title, description, the three URL forms (original_url,
+      clickable_url, displayable_url), publication and collection timestamps, country, language,
+      source type/name/url, tone, folder, read/favorite flags and a picture.
+    operations: [listMentions, getMention, curateMention, getMentionChildren, markAllMentionsRead, streamMentions]
+    relationships:
+      - kind: belongs_to
+        target: Alert
+        via: alert_id
+      - kind: has_many
+        target: Tag
+        via: tags
+        note: Many-to-many. A mention may only be tagged with a tag that already exists on its alert.
+      - kind: has_many
+        target: Task
+        via: tasks
+        note: Returned inline; there is no separate endpoint for a mention's tasks.
+      - kind: has_many
+        target: Mention
+        via: children
+        note: Self-reference. Duplicate and syndicated copies group under a parent mention and paginate independently.
+  - name: Share
+    schema: '#/components/schemas/Share'
+    description: >-
+      The join between an Account and an Alert, carrying role, blocked flag, a permissions map and a
+      weight. This is the authorization object of the whole model.
+    operations: [listAlertShares, createAlertShare, getShare, updateShare, deleteShare]
+    relationships:
+      - kind: belongs_to
+        target: Alert
+        via: path segment alert_id
+      - kind: has_one
+        target: Account
+        via: account
+    note: >-
+      Deleting the last share deletes the alert. Deleting someone else's share requires team-admin
+      rights.
+  - name: Tag
+    schema: '#/components/schemas/Tag'
+    description: >-
+      A label scoped to one alert, with a mention_count and up to five auto-tagging keywords that
+      label incoming mentions automatically.
+    operations: [listAlertTags, createAlertTag, renameTag, deleteTag]
+    relationships:
+      - kind: belongs_to
+        target: Alert
+        via: path segment alert_id
+      - kind: has_many
+        target: Mention
+        via: mention_count
+    constraints:
+      - 100 tags per alert
+      - 20 characters per tag name
+      - 5 auto-tagging keywords per tag
+    note: >-
+      Mentions bind to a tag by id, not by name, so renaming a tag preserves every existing
+      association.
+  - name: Task
+    schema: '#/components/schemas/Task'
+    description: >-
+      An assignment on a mention: who it is for, what type of work, an optional comment and a done
+      flag.
+    operations: [listAlertTasks, createMentionTask, getTask, updateTask, deleteTask]
+    relationships:
+      - kind: belongs_to
+        target: Mention
+        via: path segment mention_id
+      - kind: belongs_to
+        target: Account
+        via: assigned_to_account_id
+    note: >-
+      assigned_to_account_id is required at creation and is NOT updatable — reassigning means
+      deleting and recreating the task.
+  - name: Preferences
+    schema: '#/components/schemas/Preferences'
+    description: >-
+      A per-account, per-alert singleton holding the five notification frequencies and a display
+      weight.
+    operations: [getAlertPreferences, updateAlertPreferences]
+    relationships:
+      - kind: belongs_to
+        target: Alert
+        via: path segment alert_id
+  - name: Author
+    schema: '#/components/schemas/Author'
+    description: >-
+      A person or outlet behind an alert's mentions, with an influencer_score, an enrichment flag and
+      a main_author social profile carrying kind, url, score and followers_count.
+    operations: [listAuthors]
+    relationships:
+      - kind: belongs_to
+        target: Alert
+        via: path segment alert_id
+    note: The gender field is deprecated as a chart dimension from API version 1.19.
+  - name: AppData
+    schema: '#/components/schemas/AppData'
+    description: >-
+      The vocabulary service. Returns app_languages, alert_languages, alert_countries, alert_tones,
+      alert_sources, alert_share_roles, alert_colors, countries, task_types, mention_folders,
+      mention_log_types, social_account_types, week_days and the four notification-frequency maps.
+    operations: [getAppData]
+    note: >-
+      Every enumerated field elsewhere in the model — a mention's tone and folder, a task's type, an
+      alert's sources and languages, a share's role — resolves against this one endpoint. An
+      integration that hard-codes those values instead of reading app/data will drift.
+  - name: Stats
+    schema: '#/components/schemas/Stats'
+    description: >-
+      Aggregate counters computed across one or more alerts over a date range and interval, with
+      week-day, per-interval tone, country and influencer breakdowns.
+    operations: [getStats]
+    note: Not a stored entity — a computed projection over Mention.
+containment_tree: |
+  Account
+   └── Share ──(joins)── Alert
+                          ├── AlertQuery
+                          ├── Preferences        (per account, per alert)
+                          ├── Tag  ──(labels)──┐
+                          ├── Author           │
+                          └── Mention ─────────┘
+                               ├── Mention (children)
+                               └── Task ──(assigned to)── Account
+  AppData   (vocabulary service, outside the tree)
+  Stats     (computed projection over Mention)
+observations:
+  - >-
+    Account id is a composite string while every other id is numeric. Treating it as an integer is
+    the most likely integration failure in this model.
+  - >-
+    Share is the authorization primitive AND the lifecycle owner of Alert. There is no separate
+    permission resource and no delete-alert operation.
+  - >-
+    Tag and Mention form the only true many-to-many relationship, and it is asymmetric: a mention can
+    be tagged, but only with a tag that already exists on its alert.
+  - >-
+    index_version on Alert is a capability flag, not metadata — it decides which mention filters an
+    alert supports.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

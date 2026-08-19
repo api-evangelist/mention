@@ -1,0 +1,49 @@
+generated: '2026-08-13'
+method: generated
+source: >-
+  openapi/_original/mention-openapi.yml plus the Mention API reference at
+  https://dev.mention.com/current/. Mention publishes no skills, no AGENTS.md and no llms.txt of its
+  own; these were authored by API Evangelist and every operationId referenced is verified present in
+  the specs in openapi/.
+provider: Mention
+providerId: mention
+base_url: https://api.mention.net/api
+skills:
+  - name: mention-monitor-a-brand
+    file: mention-monitor-a-brand.md
+    description: >-
+      Stand up brand monitoring from nothing: resolve the account, read the vocabularies, create an
+      alert with a basic or advanced query, confirm it is collecting, and read the first mentions.
+    operations: [getMe, getAppData, createAlert, getAlert, listMentions]
+  - name: mention-triage-and-curate-mentions
+    file: mention-triage-and-curate-mentions.md
+    description: >-
+      Work an alert's inbox: page it, tag and classify each mention by folder and tone, assign the
+      ones needing a human, and clear the rest.
+    operations: [getAppData, listMentions, getMention, createAlertTag, listAlertTags, curateMention, createMentionTask, updateTask, listAlertTasks, markAllMentionsRead]
+  - name: mention-stream-and-report
+    file: mention-stream-and-report.md
+    description: >-
+      Hold a live stream of new mentions on stream.mention.net instead of burning the polling quota,
+      then pull aggregate statistics and the influencer list for a reporting period.
+    operations: [getMe, listAlerts, streamMentions, listMentions, getStats, listAuthors]
+  - name: mention-share-an-alert-with-a-team
+    file: mention-share-an-alert-with-a-team.md
+    description: >-
+      Grant, tune and revoke team access to an alert — including the guard rail that stops an agent
+      destroying an alert by deleting its last share.
+    operations: [getMe, getAppData, listAlertShares, createAlertShare, getShare, updateShare, deleteShare, getAlertPreferences, updateAlertPreferences]
+shared_rules:
+  - Base URL is https://api.mention.net/api. The streaming operation is served only from https://stream.mention.net/api.
+  - Send Accept-Version 1.21 on every request; without it the version comes from the app's settings.
+  - Authorization is 'Bearer <access_token>'; the access_token query parameter works but is discouraged.
+  - Resolve account_id with GET /accounts/me. It is a composite string, never an integer.
+  - Resolve every enumerated value (sources, languages, tones, folders, task types, share roles, notification frequencies) from GET /app/data.
+  - PUT is a partial update; omitted properties are left unchanged and server-managed fields are ignored.
+  - No idempotency key exists. Before retrying a write that timed out, list the collection and check.
+  - Collections page with _links.more (older) and _links.pull (newer); cursors are opaque.
+  - On 429, sleep until the unix timestamp in X-Rate-Limit-Reset. There is no Retry-After and no remaining-budget header.
+  - Outside 200 and 400, error bodies are HTML by design — do not parse them.
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

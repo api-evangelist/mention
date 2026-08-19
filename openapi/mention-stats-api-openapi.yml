@@ -1,24 +1,314 @@
 openapi: 3.1.0
 info:
-  title: Mention Accounts Stats API
-  description: Minimal OpenAPI 3.1 specification for the Mention API, covering alerts, mentions, accounts, shares, alert preferences, tags, authors, tasks, and statistics.
-  version: 1.0.0
+  title: Mention Stats API
+  description: >-
+    The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social
+    listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation,
+    tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client
+    can do is available through this API.
+
+
+    Authentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through
+    the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json
+    header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format
+    level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are
+    cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header;
+    without it, the version configured in the app's settings applies.
+
+
+    This description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/
+    — Mention does not publish a machine-readable OpenAPI definition.
+  version: '1.21'
+  contact:
+    name: Mention Support
+    url: https://en.support.mention.com/
+  license:
+    name: Proprietary
+    url: https://mention.com/en/terms-and-conditions/
+externalDocs:
+  description: Mention API reference
+  url: https://dev.mention.com/current/
+x-generated-from: https://dev.mention.com/current/
+x-generated-by: api-evangelist-enrichment-2026-08-13
 servers:
+- url: https://api.mention.net/api
+  description: Mention API — the base URL named in Mention's own reference documentation.
 - url: https://api.mention.com/api
-  description: Mention API
+  description: Alternate host observed answering the same API (returns the same OAuth2 challenge).
+security:
+- bearerAuth: []
+- accessTokenQuery: []
+- oauth2: []
 tags:
 - name: Stats
+  description: Aggregate statistics across alerts.
 paths:
-  /stats:
+  /accounts/{account_id}/stats:
     get:
       operationId: getStats
       summary: Fetch statistics
-      responses:
-        '200':
-          description: Statistics
-        default:
-          description: Error response
+      description: >-
+        Returns aggregate statistics alert by alert over a date range, with an extensive filter surface expressed
+        entirely in the query string: date bounds and timezone, interval, folder flags, tone / language / source /
+        country / tag filters, and switches for the week-day, per-interval tone, country and influencer breakdowns.
       tags:
       - Stats
-x-generated-from: https://dev.mention.com/
-x-generated-by: claude-crawl-2026-05-08
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/stats/GetStats.html
+      parameters:
+      - name: account_id
+        in: path
+        required: true
+        description: ID of the account.
+        schema:
+          type: string
+        example: 12345_69gjjsg4itgkcco040okwsck700o4w8gsco0k4kco0s4scw8o0
+      - name: alerts[]
+        in: query
+        required: true
+        explode: true
+        description: IDs of the alerts statistics are fetched for.
+        schema:
+          type: array
+          items:
+            type: integer
+        example:
+        - 112233
+      - name: from
+        in: query
+        required: false
+        description: Statistics are fetched for mentions retrieved after this date.
+        schema:
+          type: string
+        example: '2015-03-27T00:00:00.0'
+      - name: to
+        in: query
+        required: false
+        description: Statistics are fetched for mentions retrieved before this date.
+        schema:
+          type: string
+        example: '2016-01-10T00:00:00.0'
+      - name: timezone
+        in: query
+        required: false
+        description: Timezone applied to the from and to bounds.
+        schema:
+          type: string
+        example: Europe/Berlin
+      - name: interval
+        in: query
+        required: false
+        description: 'Periodicity of the series: P1D daily, P1W weekly, P1M monthly.'
+        schema:
+          type: string
+        example: P1D
+      - name: favorite
+        in: query
+        required: false
+        description: Only count mentions in the favorite folder. May be combined with important.
+        schema:
+          type: boolean
+        example: true
+      - name: important
+        in: query
+        required: false
+        description: Only count mentions in the important folder. May be combined with favorite.
+        schema:
+          type: boolean
+        example: true
+      - name: week_day_stats
+        in: query
+        required: false
+        description: Classify mentions by week day. Cannot coexist with week_day_by_hour_stats.
+        schema:
+          type: boolean
+        example: true
+      - name: week_day_by_hour_stats
+        in: query
+        required: false
+        description: Classify mentions by hour of each week day. Cannot coexist with week_day_stats.
+        schema:
+          type: boolean
+        example: true
+      - name: tones_per_interval_stats
+        in: query
+        required: false
+        description: Break tones down per interval.
+        schema:
+          type: boolean
+        example: true
+      - name: country_stats
+        in: query
+        required: false
+        description: Break mentions down by country.
+        schema:
+          type: boolean
+        example: true
+      - name: influencers
+        in: query
+        required: false
+        description: Include influencer statistics.
+        schema:
+          type: boolean
+        example: true
+      - name: tones[]
+        in: query
+        required: false
+        explode: true
+        description: Only count mentions of the given tones.
+        schema:
+          type: array
+          items:
+            type: integer
+      - name: languages[]
+        in: query
+        required: false
+        explode: true
+        description: Only count mentions in the given language codes.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: sources[]
+        in: query
+        required: false
+        explode: true
+        description: Only count mentions from the given sources.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: countries[]
+        in: query
+        required: false
+        explode: true
+        description: Only count mentions from the given countries.
+        schema:
+          type: array
+          items:
+            type: string
+      - name: tags[]
+        in: query
+        required: false
+        explode: true
+        description: Only count mentions carrying the given tags.
+        schema:
+          type: array
+          items:
+            type: string
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: Aggregate statistics for the requested alerts.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stats'
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '402':
+          $ref: '#/components/responses/PaymentRequired'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/RateLimited'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Access token passed in the Authorization header, prefixed with 'Bearer '. This is the preferred method. A
+        token for your own account is available at the bottom of your app's settings page.
+    accessTokenQuery:
+      type: apiKey
+      in: query
+      name: access_token
+      description: >-
+        The same access token passed in the query string. Supported but discouraged, as it puts the credential in
+        the URL.
+    oauth2:
+      type: oauth2
+      description: >-
+        Authorization-code flow used to obtain an access token for a third party's Mention account. No scopes are
+        defined: a granted token carries full access to the authorizing account.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://web.mention.com/authorize
+          tokenUrl: https://web.mention.net/oauth/v2/token
+          scopes: {}
+  parameters:
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: >-
+        API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings
+        applies.
+      schema:
+        type: string
+      example: '1.21'
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      description: Language used for translated resource fields.
+      schema:
+        type: string
+      example: fr
+  responses:
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    RateLimited:
+      description: >-
+        Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit
+        resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+  schemas:
+    Stats:
+      type: object
+      title: Statistics
+      description: Aggregate counters per alert over the requested range and interval.
+      additionalProperties: true

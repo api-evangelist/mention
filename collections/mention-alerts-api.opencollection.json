@@ -1,0 +1,345 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Mention Alerts API",
+    "version": "1.21"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Alerts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch all alerts of an account",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cursor",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "ids",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "stats",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Returns the alerts visible to the account. The collection is paginated with an opaque cursor; follow _links.more to page. Since API version 1.21 the stats field is empty by default \u2014 request counters explicitly with the stats query string parameter."
+        },
+        {
+          "info": {
+            "name": "Create an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "group_id",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "name": "NASA and competitors",
+                "query": {
+                  "type": "basic",
+                  "included_keywords": [
+                    "NASA",
+                    "Arianespace",
+                    "SpaceX"
+                  ]
+                },
+                "languages": [
+                  "en"
+                ],
+                "sources": [
+                  "web"
+                ]
+              }
+            }
+          },
+          "docs": "Creates a new alert for the account. A query is either basic (included / required / excluded keyword arrays) or advanced (a boolean query_string). At least one of included_keywords or required_keywords must carry a keyword. Since API version 1.21 the group_id query string parameter is always mandatory."
+        },
+        {
+          "info": {
+            "name": "Fetch an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Retrieve details about a single alert, including its query, sources, languages, shares and permissions."
+        },
+        {
+          "info": {
+            "name": "Update an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "name": "Space innovation",
+                "query": {
+                  "type": "advanced",
+                  "query_string": "(space AND innovation)"
+                }
+              }
+            }
+          },
+          "docs": "Modifies an existing alert, usually to refine the query criteria and improve the search's efficiency. Omitted properties are left unchanged; an alert fetched with GET may be sent back unchanged."
+        },
+        {
+          "info": {
+            "name": "Pause an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/pause",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Pauses a single alert so that it stops collecting new mentions."
+        },
+        {
+          "info": {
+            "name": "Unpause an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/unpause",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Resumes collection on a previously paused alert."
+        },
+        {
+          "info": {
+            "name": "Fetch preferences of an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/preferences",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Retrieves the per-account notification preferences and display weight for the given alert."
+        },
+        {
+          "info": {
+            "name": "Update preferences of an alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.mention.net/api/accounts/:account_id/alerts/:alert_id/preferences",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alert_id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": {
+                "push_notification_frequency": "never",
+                "weight": 1
+              }
+            }
+          },
+          "docs": "Updates the alert preferences. Any attribute returned by the GET request can be updated, and any attribute may be omitted. The weight attribute controls how important the alert is in the interface."
+        }
+      ]
+    }
+  ]
+}

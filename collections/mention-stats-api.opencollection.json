@@ -1,0 +1,130 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Mention Stats API",
+    "version": "1.21"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Stats",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Fetch statistics",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.mention.net/api/accounts/:account_id/stats",
+            "params": [
+              {
+                "name": "account_id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "alerts[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "from",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "to",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "timezone",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "interval",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "favorite",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "important",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "week_day_stats",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "week_day_by_hour_stats",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tones_per_interval_stats",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "country_stats",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "influencers",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tones[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "languages[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "sources[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "countries[]",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "tags[]",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "headers": [
+              {
+                "name": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "name": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ]
+          },
+          "docs": "Returns aggregate statistics alert by alert over a date range, with an extensive filter surface expressed entirely in the query string: date bounds and timezone, interval, folder flags, tone / language / source / country / tag filters, and switches for the week-day, per-interval tone, country and influencer breakdowns."
+        }
+      ]
+    }
+  ]
+}

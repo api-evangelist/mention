@@ -4,144 +4,116 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: Mention
 providerId: mention
 created: '2026-05-04'
-modified: '2026-05-04'
+modified: '2026-08-13'
+generated: '2026-08-13'
+method: searched
+source: https://mention.com/en/pricing/
+docs: https://mention.com/en/pricing/
 tags:
   - Alerts
   - Brand Monitoring
   - Media Monitoring
   - Social Listening
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
+  - Pricing
+description: >-
+  Plans and pricing as published by Mention on 2026-08-13. This artifact REPLACES a 2026-05-04
+  scaffold that invented Free / Professional / Enterprise tiers with fabricated quotas; none of
+  those tiers exist. Mention publishes exactly one plan, the Company plan, and it publishes no
+  price for it — the pricing page renders the currency symbol with no figure and routes every
+  call to action to "Get a demo" / "Request a demo".
+plan_count: 1
+pricing_model: sales-gated
+currencies:
+  - USD
+  - EUR
+  - GBP
+billing_periods:
+  - monthly
+  - annual
+annual_discount: >-
+  "Pay yearly and get 2 months free". The comparison line reads "Per month, billed yearly - Save
+  360$ / 360€ / 360£", which implies a monthly-equivalent list price of 180 in each currency (360
+  saved over 2 free months), but Mention does not state that figure, so it is recorded as an
+  inference and not as a price.
 plans:
-  - id: mention-free
-    name: Free
-    type: freemium
-    description: Free entry tier for the Mention API surface. Intended for evaluation, prototyping, and
-      low-volume integrations. Real limits and pricing must be reconciled with the provider's published
-      plan documentation.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 1000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://api.mention.com/api
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://api.mention.com/api
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: Mention API
-  - id: mention-pro
-    name: Professional
-    type: paid
-    description: Production tier for Mention. Provides higher quotas, priority support, and access to
-      the broader API portfolio. Pricing placeholder; align with the provider's pricing page.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://api.mention.com/api
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://api.mention.com/api
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
-        type: metered
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: global
-        domains:
-          - https://api.mention.com/api
-        unit: 1000
-        price: TBD
-        userMultiplied: false
-    elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: Mention API
-  - id: mention-enterprise
-    name: Enterprise
+  - id: mention-company
+    name: Company
     type: enterprise
-    description: Custom-negotiated tier for Mention. Includes dedicated capacity, contractual SLAs, security
-      review, data residency options, and named technical account management.
-    entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: configurable
-        domains:
-          - https://api.mention.com/api
-        unit: 1
-        price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains:
-          - https://api.mention.com/api
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: Mention API
+    price: null
+    price_published: false
+    currency: null
+    billing: monthly or annual
+    call_to_action: Request a demo
+    description: >-
+      "Complete media monitoring solution with advanced social listening, sentiment analysis, and
+      competitive intelligence. Tailored to your organization's specific monitoring needs and
+      scale." The page says "Starting at $" with no figure.
+    included:
+      - Real-time mention tracking across social platforms (Facebook, Instagram, Twitter/X, Reddit, TikTok, Pinterest, YouTube and more)
+      - Comprehensive web monitoring across news, blogs and forums
+      - Review monitoring across 75+ review sites including Google, Facebook, Trustpilot, Amazon and Glassdoor
+      - Advanced Boolean search
+      - Sentiment analysis and trend identification
+      - Competitor benchmarking and analysis
+      - Custom reporting and dashboards
+      - Share of voice
+      - Influence scoring and audience insights
+      - Team collaboration (mention assignment, shared alert access, team member roles)
+      - Multi-user access controls
+      - White-label reporting options
+      - Slack, Zapier and other integrations
+      - Alerts and notifications
+      - Dedicated account manager
+      - Custom onboarding and training
+      - Priority technical support
+    add_ons:
+      - name: API access for custom integrations
+        included: false
+        note: >-
+          Verbatim from the plan comparison table: "Not included in this plan — available as a paid
+          add-on." This is the single most important commercial fact about the Mention API — it is
+          not a capability of the plan, it is a separately priced upsell, and no price for it is
+          published anywhere.
+      - name: Historical data access
+        included: false
+        note: '"Not included in this plan — available as a paid add-on." Beyond the standard 2 years of data.'
+    limits_published: false
+    quota_published: false
+    note: >-
+      No request quota, alert quota, user count, mention volume or overage rate is published for this
+      plan. The API quota is described only in the help center, and only relatively: "The Mention API
+      is subject to the same quotas and features as the Mention account."
+trial:
+  available: true
+  url: https://social.agorapulse.com/mention-trial
+  length: not published
+  card_required: not published
+  note: >-
+    The trial and demo calls to action both leave mention.com for social.agorapulse.com, the parent
+    brand's funnel.
+non_profit:
+  available: true
+  note: 'Pricing FAQ: "We offer discounts for non-profit organisations. Please contact us if interested."'
+subscription_terms:
+  source: https://mention.com/en/terms-and-conditions/#general-terms-and-conditions
+  version: 'Apr 15, 2025'
+  seller: Agorapulse SAS
+  auto_renewal: true
+  cancellation_notice:
+    monthly: at least 1 week before the period expires
+    annual: at least 90 days before the period expires
+  post_expiry: >-
+    "Once the paid Subscription Period or the free trial period have ended, the Services will be
+    automatically downgraded to those of the 'free' Subscription offer." A free tier is therefore
+    referenced in the contract even though the pricing page does not offer one.
+observations:
+  - Exactly one plan is published, with no price on it. Every path to a number is a demo request.
+  - >-
+    API access is a paid add-on on the only plan Mention sells, so no published tier grants API
+    access by default.
+  - >-
+    Prior rounds of this catalog carried three invented tiers with invented quotas. They are removed;
+    an honest single sales-gated plan is the real measurement.
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

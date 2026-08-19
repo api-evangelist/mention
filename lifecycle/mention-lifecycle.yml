@@ -1,0 +1,153 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://dev.mention.com/current/src/Changelog.html,
+  https://dev.mention.com/current/src/index.html,
+  https://status.mention.com/,
+  https://mention.com/en/terms-and-conditions/#security-policy,
+  https://mention.com/en/pricing/
+summary: >-
+  Mention runs a header-selected version scheme with a dated, human-readable API changelog, and an
+  Atlassian status page that breaks out API as its own component. It publishes NO deprecation policy
+  and NO Sunset/Deprecation header support: deprecations are announced as changelog lines and the
+  words used are "deprecation" and "soft deprecation" with no removal date attached. The API
+  changelog has not moved since 2023 and the product release notes have not moved since February
+  2025.
+
+versioning:
+  scheme: request-header
+  header: Accept-Version
+  current: '1.21'
+  released: '2023-09-06'
+  default: the version configured in the calling app's settings page
+  granularity: >-
+    Only major.minor selects a version; the patch figure denotes bug fixes and is applied
+    automatically within its major.minor line.
+  docs: https://dev.mention.com/current/src/Changelog.html
+  note: >-
+    The Overview page ends with "This documentation is about the API version 1.8" while the changelog
+    top entry is 1.21 — the reference disagrees with itself about which version it describes.
+
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  notice_period: not published
+  note: >-
+    There is no deprecation policy page, no notice window, and no RFC 8594 Sunset or Deprecation
+    header. Deprecations appear only as changelog prose. Two are on record:
+  events:
+    - version: '1.19'
+      date: '2020-03-31'
+      change: Gender chart dimension deprecated for the API from version 19 onward.
+      removal_date: not stated
+    - version: '1.19'
+      date: '2020-03-31'
+      change: Gender dimension soft-deprecated for all prior versions.
+      removal_date: not stated
+  product_deprecations:
+    - feature: Publish and Respond
+      status: progressively deprecated
+      source: https://mention.com/en/pricing/
+      note: >-
+        Announced on the pricing FAQ, not in the API changelog: "we have decided to progressively
+        deprecate the Publish and Respond features in Mention", with users redirected to Agorapulse.
+        No date and no API-surface impact statement is given.
+
+breaking_changes:
+  policy: not published
+  observed:
+    - version: '1.21'
+      date: '2023-09-06'
+      change: >-
+        group_id became a mandatory query string parameter on POST /accounts/{account_id}/alerts and
+        POST /accounts/{account_id}/dashboards. Previously omissible when the caller had one group.
+      breaking: true
+    - version: '1.21'
+      date: '2023-09-06'
+      change: >-
+        The alert resource now returns an empty stats field by default; counters must be requested
+        explicitly with the stats query parameter.
+      breaking: true
+    - version: '1.9'
+      date: '2016-03-10'
+      change: The alerts endpoint became paginated, returning 20 alerts by default.
+      breaking: true
+  note: >-
+    Breaking changes are shipped behind the Accept-Version header, so a pinned caller is insulated —
+    but only if it pins. A caller that never sends Accept-Version inherits whatever version its app
+    settings record, which is account state rather than a documented default.
+
+status_page:
+  url: https://status.mention.com/
+  provider: Atlassian Statuspage
+  components:
+    - App
+    - API
+    - Website
+  feeds:
+    - https://status.mention.com/history.atom
+    - https://status.mention.com/history.rss
+  observed:
+    fetched: '2026-08-13'
+    http_status: 200
+    state: All Systems Operational
+    incidents_last_15_days: 0
+  note: >-
+    The vanity domain is live. The underlying mention.statuspage.io host redirects to /inactive, so
+    status.mention.com is the only working entry point.
+
+sla:
+  published: true
+  uptime_target: 99.99%
+  url: https://mention.com/en/terms-and-conditions/#security-policy
+  quote: >-
+    "Mention services have a goal of being available 99.99% on a yearly basis. Health status for
+    Mention services can be found on status.mention.com."
+  note: >-
+    Stated as a goal in the Security Policy (version Apr 22, 2022), not as a contractual credit-bearing
+    SLA. The General Terms of Sale carry no uptime commitment or service-credit schedule.
+
+support:
+  help_center: https://en.support.mention.com/
+  api_article: https://en.support.mention.com/en/articles/1904644-api-access-explained
+  contact: info@mention.com
+  gdpr_contact: gdpr@mention.com
+
+changelogs:
+  - name: API changelog
+    url: https://dev.mention.com/current/src/Changelog.html
+    scope: the REST API contract
+    latest: '1.21'
+    latest_date: '2023-09-06'
+    staleness_days_at_capture: 1071
+  - name: Product release notes
+    url: https://whatsnew.mention.com
+    resolves_to: https://headwayapp.co/mention-release-notes
+    scope: the web application
+    latest_date: '2025-02-10'
+    staleness_days_at_capture: 549
+changelog_artifact: changelog/mention-changelog.yml
+
+deprecated_operations: []
+retired_operations:
+  - name: Delete an alert
+    note: >-
+      Listed in the reference navigation but no such endpoint exists. Mention documents that an alert
+      cannot be deleted directly — delete your share on it, and the alert is deleted when its last
+      share is. Removed from the OpenAPI in this pass.
+  - name: Fetch all tasks of a mention
+    note: >-
+      Listed in the reference navigation but no such endpoint exists; a mention returns its tasks
+      inline. Removed from the OpenAPI in this pass.
+
+ownership:
+  note: >-
+    Ownership has moved twice and the published surface still reflects both eras. The Security Policy
+    (Apr 2022) states Mention Solutions SAS is "ultimately owned by NHST Media Group AS in Norway";
+    the General Terms of Sale (Apr 2025) are issued by Agorapulse SAS. The API's own hosts still carry
+    the original mention.net domain (api.mention.net, stream.mention.net, web.mention.net).
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

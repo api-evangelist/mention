@@ -1,46 +1,354 @@
 openapi: 3.1.0
 info:
-  title: Mention Accounts Tags API
-  description: Minimal OpenAPI 3.1 specification for the Mention API, covering alerts, mentions, accounts, shares, alert preferences, tags, authors, tasks, and statistics.
-  version: 1.0.0
+  title: Mention Tags API
+  description: >-
+    The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social
+    listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation,
+    tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client
+    can do is available through this API.
+
+
+    Authentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through
+    the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json
+    header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format
+    level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are
+    cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header;
+    without it, the version configured in the app's settings applies.
+
+
+    This description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/
+    — Mention does not publish a machine-readable OpenAPI definition.
+  version: '1.21'
+  contact:
+    name: Mention Support
+    url: https://en.support.mention.com/
+  license:
+    name: Proprietary
+    url: https://mention.com/en/terms-and-conditions/
+externalDocs:
+  description: Mention API reference
+  url: https://dev.mention.com/current/
+x-generated-from: https://dev.mention.com/current/
+x-generated-by: api-evangelist-enrichment-2026-08-13
 servers:
+- url: https://api.mention.net/api
+  description: Mention API — the base URL named in Mention's own reference documentation.
 - url: https://api.mention.com/api
-  description: Mention API
+  description: Alternate host observed answering the same API (returns the same OAuth2 challenge).
+security:
+- bearerAuth: []
+- accessTokenQuery: []
+- oauth2: []
 tags:
 - name: Tags
+  description: Tags and auto-tagging keywords on an alert.
 paths:
-  /tags/{id}:
+  /accounts/{account_id}/alerts/{alert_id}/tags:
+    get:
+      operationId: listAlertTags
+      summary: Fetch all tags of an alert
+      description: Lists the tags defined on an alert, with the number of mentions carrying each tag.
+      tags:
+      - Tags
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/tag/GetTags.html
+      parameters:
+      - &id001
+        name: account_id
+        in: path
+        required: true
+        description: ID of the account.
+        schema:
+          type: string
+        example: 12345_69gjjsg4itgkcco040okwsck700o4w8gsco0k4kco0s4scw8o0
+      - &id002
+        name: alert_id
+        in: path
+        required: true
+        description: ID of the alert.
+        schema:
+          type: integer
+        example: 112233
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: A list of tags.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagList'
+        '400': &id003
+          $ref: '#/components/responses/ValidationError'
+        '401': &id004
+          $ref: '#/components/responses/Unauthorized'
+        '402': &id005
+          $ref: '#/components/responses/PaymentRequired'
+        '403': &id006
+          $ref: '#/components/responses/Forbidden'
+        '404': &id007
+          $ref: '#/components/responses/NotFound'
+        '429': &id008
+          $ref: '#/components/responses/RateLimited'
+    post:
+      operationId: createAlertTag
+      summary: Create a tag
+      description: >-
+        Creates a tag available to every mention of the alert. An alert is limited to 100 tags, a tag name to 20 characters,
+        and the auto-tagging keywords list to 5 keywords.
+      tags:
+      - Tags
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/tag/PostTag.html
+      parameters:
+      - *id001
+      - *id002
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagWrite'
+            example:
+              name: space innovation
+      responses:
+        '200':
+          description: The created tag.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagEnvelope'
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
+  /accounts/{account_id}/alerts/{alert_id}/tags/{tag_id}:
     put:
       operationId: renameTag
       summary: Rename a tag
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Tag renamed
-        default:
-          description: Error response
+      description: >-
+        Modifies an existing tag's label or auto-tagging keywords. Mentions stay linked to the tag by id, so renaming
+        a tag does not detach it from the mentions already carrying it.
       tags:
       - Tags
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/tag/PutTag.html
+      parameters:
+      - *id001
+      - *id002
+      - &id009
+        name: tag_id
+        in: path
+        required: true
+        description: ID of the tag.
+        schema:
+          type: integer
+        example: 46468
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TagWrite'
+            example:
+              name: space new technos
+      responses:
+        '200':
+          description: The updated tag.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TagEnvelope'
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
     delete:
       operationId: deleteTag
       summary: Delete a tag
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: Tag deleted
-        default:
-          description: Error response
+      description: Deletes a tag from the alert.
       tags:
       - Tags
-x-generated-from: https://dev.mention.com/
-x-generated-by: claude-crawl-2026-05-08
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/tag/DeleteTag.html
+      parameters:
+      - *id001
+      - *id002
+      - *id009
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '204':
+          description: The tag was deleted.
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Access token passed in the Authorization header, prefixed with 'Bearer '. This is the preferred method. A
+        token for your own account is available at the bottom of your app's settings page.
+    accessTokenQuery:
+      type: apiKey
+      in: query
+      name: access_token
+      description: >-
+        The same access token passed in the query string. Supported but discouraged, as it puts the credential in
+        the URL.
+    oauth2:
+      type: oauth2
+      description: >-
+        Authorization-code flow used to obtain an access token for a third party's Mention account. No scopes are
+        defined: a granted token carries full access to the authorizing account.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://web.mention.com/authorize
+          tokenUrl: https://web.mention.net/oauth/v2/token
+          scopes: {}
+  parameters:
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: >-
+        API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings
+        applies.
+      schema:
+        type: string
+      example: '1.21'
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      description: Language used for translated resource fields.
+      schema:
+        type: string
+      example: fr
+  responses:
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    RateLimited:
+      description: >-
+        Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit
+        resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+  schemas:
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          description: Relative URL to follow.
+        params:
+          type: object
+          description: The query string parameters encoded in href.
+          additionalProperties: true
+    Links:
+      type: object
+      title: Pagination links
+      description: >-
+        Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present
+        only when applicable.
+      properties:
+        more:
+          $ref: '#/components/schemas/Link'
+        pull:
+          $ref: '#/components/schemas/Link'
+    Tag:
+      type: object
+      title: Tag
+      properties:
+        id:
+          type: integer
+          example: 46468
+        name:
+          type: string
+          maxLength: 20
+          example: space innovation
+        mention_count:
+          type: integer
+        keywords:
+          type: array
+          maxItems: 5
+          items:
+            type: string
+          description: Auto-tagging keywords; new mentions containing them are tagged automatically.
+    TagEnvelope:
+      type: object
+      properties:
+        tag:
+          $ref: '#/components/schemas/Tag'
+    TagList:
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        _links:
+          $ref: '#/components/schemas/Links'
+    TagWrite:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 20
+        keywords:
+          type: array
+          maxItems: 5
+          items:
+            type: string

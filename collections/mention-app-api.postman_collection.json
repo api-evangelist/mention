@@ -1,0 +1,76 @@
+{
+  "item": [
+    {
+      "id": "eeb17223-c367-4603-993a-9f762c9e48b1",
+      "name": "App",
+      "description": {
+        "content": "Application reference data and vocabularies.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "c3aa0b2b-103c-44e2-9a5e-1caa1f040c65",
+          "name": "Fetch application data",
+          "request": {
+            "name": "Fetch application data",
+            "description": {
+              "content": "Retrieves reference data about the application: available app languages, alert languages, alert countries, alert tones, alert sources, alert share roles, alert colors, task types, mention folders, mention log types, social account types, week days and the notification frequency vocabularies. Several properties are translated according to the Accept-Language request header. This endpoint is the source of the enumerated values used by the alert, mention, task and preference resources.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "app",
+                "data"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mention.net/api",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "REDACTED_EXAMPLE_TOKEN",
+      "key": "access_token"
+    },
+    {
+      "type": "string",
+      "value": "1.21",
+      "key": "apiVersion"
+    }
+  ],
+  "info": {
+    "_postman_id": "2ee7b412-c3c0-469f-b682-d19cbe95de8a",
+    "name": "Mention App API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation, tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client can do is available through this API.\n\nAuthentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header; without it, the version configured in the app's settings applies.\n\nThis description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/ \u2014 Mention does not publish a machine-readable OpenAPI definition.",
+      "type": "text/plain"
+    }
+  }
+}

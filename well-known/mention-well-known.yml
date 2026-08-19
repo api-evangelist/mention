@@ -1,0 +1,64 @@
+generated: '2026-08-13'
+method: probed
+source: Live HTTP probes of the /.well-known/ discovery surface on every Mention host in apis.yml and openapi servers[]
+result: no-hits
+note: >-
+  Every /.well-known/ path probed returned HTTP 404 on every host. NOTHING here is a discovery
+  document, so no WellKnown, APICatalog or SecurityTxt pointer is emitted in apis.yml — this file
+  records a measured absence, not a served surface. The 404 bodies are HTML error pages from the
+  application front ends (mention.com is WordPress, api.mention.com/dev.mention.com share a
+  Symfony/nginx 404 template), which is why the content-type column reads text/html throughout.
+hosts:
+  - host: https://mention.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /.well-known/mcp.json
+        status: 404
+  - host: https://api.mention.com
+    documents:
+      - path: /.well-known/security.txt
+        status: 404
+      - path: /.well-known/openid-configuration
+        status: 404
+      - path: /.well-known/oauth-authorization-server
+        status: 404
+      - path: /.well-known/oauth-protected-resource
+        status: 404
+      - path: /.well-known/api-catalog
+        status: 404
+      - path: /.well-known/ai-plugin.json
+        status: 404
+      - path: /.well-known/agent-card.json
+        status: 404
+      - path: /.well-known/agent.json
+        status: 404
+      - path: /.well-known/mcp.json
+        status: 404
+observations:
+  - >-
+    No RFC 9116 security.txt is served. Mention does publish a Security Policy as a section of
+    https://mention.com/en/terms-and-conditions/#security-policy, but it is a human page, not a
+    machine-readable well-known document.
+  - >-
+    No OAuth 2.0 Authorization Server Metadata (RFC 8414) or OpenID Connect discovery document is
+    served, even though the API runs an OAuth2 authorization-code flow. The authorization and token
+    endpoints are documented in prose only, at
+    https://dev.mention.com/current/src/appendix/OAuth2.html
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com

@@ -1,0 +1,516 @@
+{
+  "item": [
+    {
+      "id": "530bb98b-5e45-4df5-b4ee-793e14a845df",
+      "name": "Alerts",
+      "description": {
+        "content": "The keyword queries Mention crawls the web and social media for.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ff08f6e8-7d71-45f0-bf99-66f44cd4423e",
+          "name": "Fetch all alerts of an account",
+          "request": {
+            "name": "Fetch all alerts of an account",
+            "description": {
+              "content": "Returns the alerts visible to the account. The collection is paginated with an opaque cursor; follow _links.more to page. Since API version 1.21 the stats field is empty by default \u2014 request counters explicitly with the stats query string parameter.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": true,
+                  "key": "limit",
+                  "value": "<string>",
+                  "description": "Number of alerts to return. Default: return all alerts."
+                },
+                {
+                  "disabled": true,
+                  "key": "cursor",
+                  "value": "<string>",
+                  "description": "Opaque pagination cursor supplied by the API in _links.more."
+                },
+                {
+                  "disabled": true,
+                  "key": "ids",
+                  "value": "<string>",
+                  "description": "IDs of the alerts to fetch. Must not contain more than 50 ids."
+                },
+                {
+                  "disabled": true,
+                  "key": "stats",
+                  "value": "<string>",
+                  "description": "Comma-separated list of alert counters to include. One or more of mention_folders.inbox.total, mention_folders.archive.total, mention_folders.spam.total, mention_folders.trash.total, unread_mentions.total, unseen_mentions.total, favorite_mentions.total, tasks.total, todo_tasks, done_tasks, logs.total. Added in API version 1.21."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "948dfd8f-4489-4b8c-8bb3-b0cc7546eeee",
+          "name": "Create an alert",
+          "request": {
+            "name": "Create an alert",
+            "description": {
+              "content": "Creates a new alert for the account. A query is either basic (included / required / excluded keyword arrays) or advanced (a boolean query_string). At least one of included_keywords or required_keywords must carry a keyword. Since API version 1.21 the group_id query string parameter is always mandatory.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": true,
+                  "key": "group_id",
+                  "value": "<string>",
+                  "description": "(Required) Group the alert belongs to. Mandatory since API version 1.21; before 1.21 it could be omitted when the caller had only one group."
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"NASA and competitors\",\n  \"query\": {\n    \"type\": \"basic\",\n    \"included_keywords\": [\n      \"NASA\",\n      \"Arianespace\",\n      \"SpaceX\"\n    ]\n  },\n  \"languages\": [\n    \"en\"\n  ],\n  \"sources\": [\n    \"web\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "99803a68-f0f6-48b6-94f9-bf8cfbdb1053",
+          "name": "Fetch an alert",
+          "request": {
+            "name": "Fetch an alert",
+            "description": {
+              "content": "Retrieve details about a single alert, including its query, sources, languages, shares and permissions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "04f6b320-a775-4c54-af9c-0417b767d581",
+          "name": "Update an alert",
+          "request": {
+            "name": "Update an alert",
+            "description": {
+              "content": "Modifies an existing alert, usually to refine the query criteria and improve the search's efficiency. Omitted properties are left unchanged; an alert fetched with GET may be sent back unchanged.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Space innovation\",\n  \"query\": {\n    \"type\": \"advanced\",\n    \"query_string\": \"(space AND innovation)\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        },
+        {
+          "id": "76d60e9f-15cb-49e3-b0ab-75a769ba7bca",
+          "name": "Pause an alert",
+          "request": {
+            "name": "Pause an alert",
+            "description": {
+              "content": "Pauses a single alert so that it stops collecting new mentions.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "pause"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "27cf57a8-fdd4-4835-937a-8535484986a2",
+          "name": "Unpause an alert",
+          "request": {
+            "name": "Unpause an alert",
+            "description": {
+              "content": "Resumes collection on a previously paused alert.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "unpause"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "POST",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "6248bb9d-604d-40dd-9d6c-e486d88da91b",
+          "name": "Fetch preferences of an alert",
+          "request": {
+            "name": "Fetch preferences of an alert",
+            "description": {
+              "content": "Retrieves the per-account notification preferences and display weight for the given alert.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "preferences"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": []
+        },
+        {
+          "id": "ddfdec11-3144-44ce-84ef-03ae8586a411",
+          "name": "Update preferences of an alert",
+          "request": {
+            "name": "Update preferences of an alert",
+            "description": {
+              "content": "Updates the alert preferences. Any attribute returned by the GET request can be updated, and any attribute may be omitted. The weight attribute controls how important the alert is in the interface.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "accounts",
+                ":account_id",
+                "alerts",
+                ":alert_id",
+                "preferences"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "account_id",
+                  "description": "(Required) ID of the account."
+                },
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "alert_id",
+                  "description": "(Required) ID of the alert."
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access_token}}"
+              },
+              {
+                "key": "Accept-Version",
+                "value": "{{apiVersion}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"push_notification_frequency\": \"never\",\n  \"weight\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.mention.net/api",
+      "key": "baseUrl"
+    },
+    {
+      "type": "string",
+      "value": "REDACTED_EXAMPLE_TOKEN",
+      "key": "access_token"
+    },
+    {
+      "type": "string",
+      "value": "1.21",
+      "key": "apiVersion"
+    }
+  ],
+  "info": {
+    "_postman_id": "6799eba9-4fa5-4d45-b720-1f22bd25e109",
+    "name": "Mention Alerts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation, tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client can do is available through this API.\n\nAuthentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header; without it, the version configured in the app's settings applies.\n\nThis description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/ \u2014 Mention does not publish a machine-readable OpenAPI definition.",
+      "type": "text/plain"
+    }
+  }
+}

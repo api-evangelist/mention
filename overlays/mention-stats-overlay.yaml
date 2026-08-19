@@ -1,0 +1,47 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for the Mention Stats API
+  version: 1.0.0
+extends: openapi/mention-stats-api-openapi.yml
+x-generated: '2026-08-13'
+x-method: generated
+x-source: https://dev.mention.com/current/
+x-note: >-
+  Mention publishes no machine-readable API description. The OpenAPI this overlay extends was reconstructed by API
+  Evangelist from Mention's own HTML reference at https://dev.mention.com/current/. This overlay records the enhancements
+  API Evangelist applied on top of that reconstruction: provider and rating metadata, the runtime semantics Mention
+  documents in prose but cannot express in a spec (no idempotency, cursor pagination, header versioning, the X-Rate-Limit-Reset
+  signal), and a per-operation link back to the exact reference page each operation was read from.
+actions:
+- target: $.info
+  description: Stamp provider identity and the reconstruction provenance onto the document.
+  update:
+    x-apievangelist-provider: mention
+    x-apievangelist-enriched: '2026-08-13'
+    x-api-evangelist-source: https://dev.mention.com/current/
+    x-spec-provenance: reconstructed-from-html-reference
+- target: $.info
+  description: Record the cross-cutting runtime semantics an agent needs and the spec cannot carry.
+  update:
+    x-conventions:
+      auth: bearer token in Authorization header; access_token query parameter also accepted
+      idempotency: none documented — retried POSTs can duplicate resources
+      pagination: cursor, via _links.more (older) and _links.pull (newer)
+      versioning: Accept-Version request header; current 1.21
+      date_format: W3C date-time level 6, YYYY-MM-DDThh:mm:ss.sTZD
+      rate_limit_signal: X-Rate-Limit-Reset (unix timestamp) on 429; no limit or remaining header
+      error_envelope: proprietary {form:{errors,children}} on 400; HTML body on other statuses
+      request_id: none documented
+    x-agentic-access: agentic-access/mention-agentic-access.yml
+- target: $.servers
+  description: Name api.mention.net as the documented base URL, per the Overview page.
+  update:
+  - url: https://api.mention.net/api
+    description: Mention API — the base URL named in Mention's own reference documentation.
+  - url: https://api.mention.com/api
+    description: Alternate host observed answering the same API.
+- target: $.paths['/accounts/{account_id}/stats'].get
+  description: Link getStats back to the reference page it was read from.
+  update:
+    x-source-doc: https://dev.mention.com/current/
+    x-reconstructed: true

@@ -1,62 +1,419 @@
 openapi: 3.1.0
 info:
-  title: Mention Accounts Shares API
-  description: Minimal OpenAPI 3.1 specification for the Mention API, covering alerts, mentions, accounts, shares, alert preferences, tags, authors, tasks, and statistics.
-  version: 1.0.0
+  title: Mention Shares API
+  description: >-
+    The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social
+    listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation,
+    tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client
+    can do is available through this API.
+
+
+    Authentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through
+    the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json
+    header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format
+    level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are
+    cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header;
+    without it, the version configured in the app's settings applies.
+
+
+    This description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/
+    — Mention does not publish a machine-readable OpenAPI definition.
+  version: '1.21'
+  contact:
+    name: Mention Support
+    url: https://en.support.mention.com/
+  license:
+    name: Proprietary
+    url: https://mention.com/en/terms-and-conditions/
+externalDocs:
+  description: Mention API reference
+  url: https://dev.mention.com/current/
+x-generated-from: https://dev.mention.com/current/
+x-generated-by: api-evangelist-enrichment-2026-08-13
 servers:
+- url: https://api.mention.net/api
+  description: Mention API — the base URL named in Mention's own reference documentation.
 - url: https://api.mention.com/api
-  description: Mention API
+  description: Alternate host observed answering the same API (returns the same OAuth2 challenge).
+security:
+- bearerAuth: []
+- accessTokenQuery: []
+- oauth2: []
 tags:
 - name: Shares
+  description: Which accounts an alert is shared with.
 paths:
-  /shares/{id}:
+  /accounts/{account_id}/alerts/{alert_id}/shares:
+    get:
+      operationId: listAlertShares
+      summary: Fetch all shares of an alert
+      description: Lists every share object on the alert — that is, every account the alert is shared with.
+      tags:
+      - Shares
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/share/GetShares.html
+      parameters:
+      - &id001
+        name: account_id
+        in: path
+        required: true
+        description: ID of the account.
+        schema:
+          type: string
+        example: 12345_69gjjsg4itgkcco040okwsck700o4w8gsco0k4kco0s4scw8o0
+      - &id002
+        name: alert_id
+        in: path
+        required: true
+        description: ID of the alert.
+        schema:
+          type: integer
+        example: 112233
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: A list of shares.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareList'
+        '400': &id003
+          $ref: '#/components/responses/ValidationError'
+        '401': &id004
+          $ref: '#/components/responses/Unauthorized'
+        '402': &id005
+          $ref: '#/components/responses/PaymentRequired'
+        '403': &id006
+          $ref: '#/components/responses/Forbidden'
+        '404': &id007
+          $ref: '#/components/responses/NotFound'
+        '429': &id008
+          $ref: '#/components/responses/RateLimited'
+    post:
+      operationId: createAlertShare
+      summary: Create a share
+      description: >-
+        Creates a share object linking another account to this alert. The account_id in the body is the public id
+        of the account the alert is shared with.
+      tags:
+      - Shares
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/share/PostShare.html
+      parameters:
+      - *id001
+      - *id002
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShareCreate'
+            example:
+              account_id: 12345_69gjjsg4itgkcco040okwsck700o4w8gsco0k4kco0s4scw8o0
+      responses:
+        '200':
+          description: The created share.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareEnvelope'
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
+  /accounts/{account_id}/alerts/{alert_id}/shares/{share_id}:
     get:
       operationId: getShare
       summary: Fetch a share
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Share object
-        default:
-          description: Error response
+      description: Retrieves a single share object on an alert.
       tags:
       - Shares
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/share/GetShare.html
+      parameters:
+      - *id001
+      - *id002
+      - &id009
+        name: share_id
+        in: path
+        required: true
+        description: ID of the share object.
+        schema:
+          type: integer
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: The share.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareEnvelope'
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
     put:
       operationId: updateShare
       summary: Update a share
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Share updated
-        default:
-          description: Error response
+      description: Updates an existing share, typically to block an account's access to the alert.
       tags:
       - Shares
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/share/PutShare.html
+      parameters:
+      - *id001
+      - *id002
+      - *id009
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShareUpdate'
+            example:
+              blocked: false
+      responses:
+        '200':
+          description: The updated share.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShareEnvelope'
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
     delete:
       operationId: deleteShare
       summary: Delete a share
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '204':
-          description: Share deleted
-        default:
-          description: Error response
+      description: >-
+        Deletes the share object linking an account to an alert. Team admin rights are required to delete someone
+        else's share. There is no delete-alert operation: when the last share on an alert is deleted, the alert itself
+        is deleted.
       tags:
       - Shares
-x-generated-from: https://dev.mention.com/
-x-generated-by: claude-crawl-2026-05-08
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/share/DeleteShare.html
+      parameters:
+      - *id001
+      - *id002
+      - *id009
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '204':
+          description: The share was deleted.
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Access token passed in the Authorization header, prefixed with 'Bearer '. This is the preferred method. A
+        token for your own account is available at the bottom of your app's settings page.
+    accessTokenQuery:
+      type: apiKey
+      in: query
+      name: access_token
+      description: >-
+        The same access token passed in the query string. Supported but discouraged, as it puts the credential in
+        the URL.
+    oauth2:
+      type: oauth2
+      description: >-
+        Authorization-code flow used to obtain an access token for a third party's Mention account. No scopes are
+        defined: a granted token carries full access to the authorizing account.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://web.mention.com/authorize
+          tokenUrl: https://web.mention.net/oauth/v2/token
+          scopes: {}
+  parameters:
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: >-
+        API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings
+        applies.
+      schema:
+        type: string
+      example: '1.21'
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      description: Language used for translated resource fields.
+      schema:
+        type: string
+      example: fr
+  responses:
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    RateLimited:
+      description: >-
+        Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit
+        resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+  schemas:
+    Account:
+      type: object
+      title: Account
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        language_code:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        avatar_url:
+          type: string
+        timezone:
+          type: string
+        grouped_email_notification:
+          type: boolean
+        default_email_notification_frequency:
+          type: string
+        default_desktop_notification_frequency:
+          type: string
+        default_push_notification_frequency:
+          type: string
+        permissions:
+          type: object
+          additionalProperties: true
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          description: Relative URL to follow.
+        params:
+          type: object
+          description: The query string parameters encoded in href.
+          additionalProperties: true
+    Links:
+      type: object
+      title: Pagination links
+      description: >-
+        Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present
+        only when applicable.
+      properties:
+        more:
+          $ref: '#/components/schemas/Link'
+        pull:
+          $ref: '#/components/schemas/Link'
+    Share:
+      type: object
+      title: Alert share
+      description: The link between an account and an alert. Deleting the last share deletes the alert.
+      properties:
+        id:
+          type: string
+        account:
+          $ref: '#/components/schemas/Account'
+        role:
+          type: string
+        blocked:
+          type: boolean
+        permissions:
+          type: object
+          additionalProperties:
+            type: boolean
+        created_at:
+          type: string
+        weight:
+          type: integer
+    ShareCreate:
+      type: object
+      required:
+      - account_id
+      properties:
+        account_id:
+          type: string
+          description: Public id of the account the alert is shared with.
+    ShareEnvelope:
+      type: object
+      properties:
+        share:
+          $ref: '#/components/schemas/Share'
+    ShareList:
+      type: object
+      properties:
+        shares:
+          type: array
+          items:
+            $ref: '#/components/schemas/Share'
+        _links:
+          $ref: '#/components/schemas/Links'
+    ShareUpdate:
+      type: object
+      properties:
+        blocked:
+          type: boolean
+          description: Blocks the account's access to the alert.

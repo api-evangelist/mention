@@ -1,129 +1,653 @@
 openapi: 3.1.0
 info:
-  title: Mention Accounts Mentions API
-  description: Minimal OpenAPI 3.1 specification for the Mention API, covering alerts, mentions, accounts, shares, alert preferences, tags, authors, tasks, and statistics.
-  version: 1.0.0
+  title: Mention Mentions API
+  description: >-
+    The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social
+    listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation,
+    tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client
+    can do is available through this API.
+
+
+    Authentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through
+    the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json
+    header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format
+    level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are
+    cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header;
+    without it, the version configured in the app's settings applies.
+
+
+    This description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/
+    — Mention does not publish a machine-readable OpenAPI definition.
+  version: '1.21'
+  contact:
+    name: Mention Support
+    url: https://en.support.mention.com/
+  license:
+    name: Proprietary
+    url: https://mention.com/en/terms-and-conditions/
+externalDocs:
+  description: Mention API reference
+  url: https://dev.mention.com/current/
+x-generated-from: https://dev.mention.com/current/
+x-generated-by: api-evangelist-enrichment-2026-08-13
 servers:
+- url: https://api.mention.net/api
+  description: Mention API — the base URL named in Mention's own reference documentation.
 - url: https://api.mention.com/api
-  description: Mention API
+  description: Alternate host observed answering the same API (returns the same OAuth2 challenge).
+security:
+- bearerAuth: []
+- accessTokenQuery: []
+- oauth2: []
 tags:
 - name: Mentions
+  description: The results an alert collects, plus curation and streaming.
 paths:
-  /mentions:
+  /accounts/{account_id}/alerts/{alert_id}/mentions:
     get:
       operationId: listMentions
       summary: Fetch mentions
-      responses:
-        '200':
-          description: List of mentions
-        default:
-          description: Error response
+      description: >-
+        Returns the mentions collected by an alert. The query string carries the filter surface; every filter is optional.
+        Retrieve older mentions by following _links.more and poll for new ones by following _links.pull. The index_version
+        attribute of the alert determines which filters are available to it.
       tags:
       - Mentions
-  /mentions/{id}:
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/GetMentions.html
+      parameters:
+      - &id001
+        name: account_id
+        in: path
+        required: true
+        description: ID of the account.
+        schema:
+          type: string
+        example: 12345_69gjjsg4itgkcco040okwsck700o4w8gsco0k4kco0s4scw8o0
+      - &id002
+        name: alert_id
+        in: path
+        required: true
+        description: ID of the alert.
+        schema:
+          type: integer
+        example: 112233
+      - name: since_id
+        in: query
+        required: false
+        description: >-
+          Return mentions with an id greater (more recently found) than the given id. Cannot be combined with before_date,
+          not_before_date or cursor.
+        schema:
+          type: integer
+      - name: before_date
+        in: query
+        required: false
+        description: Return mentions published before the provided date, ordered by publication date.
+        schema:
+          type: string
+      - name: not_before_date
+        in: query
+        required: false
+        description: Ignore mentions older than the given date. Only allowed when before_date is provided.
+        schema:
+          type: string
+      - name: limit
+        in: query
+        required: false
+        description: Number of mentions to return. Default 20, maximum 1000. A small limit gives faster responses.
+        schema:
+          type: integer
+      - name: source
+        in: query
+        required: false
+        description: Restrict to one of the available sources. Only available to plans with search access.
+        schema:
+          type: string
+      - name: unread
+        in: query
+        required: false
+        description: Return only unread mentions. Cannot be combined with favorite, q or tone.
+        schema:
+          type: integer
+      - name: favorite
+        in: query
+        required: false
+        description: Return only favorite mentions. Cannot be combined with folder unless folder is inbox or archive.
+        schema:
+          type: integer
+      - name: folder
+        in: query
+        required: false
+        description: 'Filter by folder: inbox, archive, spam or trash. With spam and trash, include_children defaults
+          to enabled.'
+        schema:
+          type: string
+      - name: tone
+        in: query
+        required: false
+        description: 'Filter by tone: -1 negative, 0 neutral, 1 positive. Accepts an array of values.'
+        schema:
+          type: integer
+      - name: countries
+        in: query
+        required: false
+        description: Filter by country. Accepts an array of values.
+        schema:
+          type: string
+      - name: include_children
+        in: query
+        required: false
+        description: Whether to include children mentions.
+        schema:
+          type: integer
+      - name: sort
+        in: query
+        required: false
+        description: >-
+          Sort results by published_at, author_influence.score, direct_reach, cumulative_reach or domain_reach. Only
+          allowed on plans with search access.
+        schema:
+          type: string
+      - name: languages
+        in: query
+        required: false
+        description: Filter by language. Accepts an array of values.
+        schema:
+          type: string
+      - name: timezone
+        in: query
+        required: false
+        description: Timezone used when parsing dates in the q parameter.
+        schema:
+          type: string
+      - name: q
+        in: query
+        required: false
+        description: >-
+          Keyword / compound filter expression, e.g. source:(facebook OR twitter) in:(inbox OR archive) is:favorite.
+          Only accounts with search access can use it.
+        schema:
+          type: string
+      - name: cursor
+        in: query
+        required: false
+        description: Opaque pagination cursor supplied by the API.
+        schema:
+          type: string
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: A paginated list of mentions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MentionList'
+        '400': &id003
+          $ref: '#/components/responses/ValidationError'
+        '401': &id004
+          $ref: '#/components/responses/Unauthorized'
+        '402': &id005
+          $ref: '#/components/responses/PaymentRequired'
+        '403': &id006
+          $ref: '#/components/responses/Forbidden'
+        '404': &id007
+          $ref: '#/components/responses/NotFound'
+        '429': &id008
+          $ref: '#/components/responses/RateLimited'
+  /accounts/{account_id}/alerts/{alert_id}/mentions/{mention_id}:
     get:
       operationId: getMention
       summary: Fetch a mention
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Mention object
-        default:
-          description: Error response
+      description: Fetches a single mention by its ID, including its tasks, logs and children.
       tags:
       - Mentions
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/GetMention.html
+      parameters:
+      - *id001
+      - *id002
+      - &id009
+        name: mention_id
+        in: path
+        required: true
+        description: ID of the mention.
+        schema:
+          type: integer
+        example: 527849933
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      responses:
+        '200':
+          description: The mention.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mention'
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
     put:
       operationId: curateMention
       summary: Curate a mention
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        '200':
-          description: Mention curated
-        default:
-          description: Error response
+      description: >-
+        Updates the curation state of a mention: folder, tags, tone, read/favorite/trashed flags. The content and
+        source of a mention cannot be modified. Any property may be omitted. Marking a mention favorite automatically
+        marks it read. Tags must already exist on the alert.
       tags:
       - Mentions
-  /mentions/{id}/children:
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/PutMention.html
+      parameters:
+      - *id001
+      - *id002
+      - *id009
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MentionCurate'
+            example:
+              favorite: true
+              trashed: false
+              read: true
+              tags:
+              - id: 123
+              folder: archive
+              tone: 1
+      responses:
+        '200':
+          description: The updated mention.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mention'
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
+  /accounts/{account_id}/alerts/{alert_id}/mentions/{mention_id}/children:
     get:
       operationId: getMentionChildren
       summary: Fetch mention children
+      description: Returns the child mentions grouped under a given mention, paginated through _links.more.
+      tags:
+      - Mentions
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/GetMentionChildren.html
       parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
+      - *id001
+      - *id002
+      - *id009
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
       responses:
         '200':
-          description: List of mention children
-        default:
-          description: Error response
-      tags:
-      - Mentions
-  /mentions/stream:
-    get:
-      operationId: streamMentions
-      summary: Stream mentions
-      responses:
-        '200':
-          description: Stream of mentions
-        default:
-          description: Error response
-      tags:
-      - Mentions
-  /mentions/mark-all-read:
+          description: A paginated list of child mentions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MentionList'
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
+  /accounts/{account_id}/alerts/{alert_id}/mentions/markallread:
     post:
       operationId: markAllMentionsRead
       summary: Mark all mentions as read
+      description: Marks every mention of the alert as read.
+      tags:
+      - Mentions
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/PostMentionsMarkallread.html
+      parameters:
+      - *id001
+      - *id002
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
       responses:
         '204':
-          description: Marked as read
-        default:
-          description: Error response
+          description: All mentions were marked as read.
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
+  /accounts/{account_id}/mentions:
+    get:
+      operationId: streamMentions
+      summary: Stream mentions
+      description: >-
+        Opens a long-lived HTTP connection that pushes each mention as soon as it is collected for the selected alerts.
+        This operation is only available on the streaming endpoint https://stream.mention.net/api, and one stream
+        at a time may be open per account.
       tags:
       - Mentions
-  /mentions/{id}/tasks:
-    get:
-      operationId: listMentionTasks
-      summary: Fetch all tasks of a mention
+      externalDocs:
+        description: Mention API reference
+        url: https://dev.mention.com/current/src/account/alert/mention/StreamMentions.html
       parameters:
-      - name: id
-        in: path
+      - *id001
+      - name: alerts[]
+        in: query
         required: true
+        explode: true
+        description: IDs of the alerts to stream.
         schema:
-          type: string
+          type: array
+          items:
+            type: integer
+        example:
+        - 112233
+      - $ref: '#/components/parameters/AcceptVersion'
+      - $ref: '#/components/parameters/AcceptLanguage'
       responses:
         '200':
-          description: List of tasks
-        default:
-          description: Error response
-      tags:
-      - Mentions
-    post:
-      operationId: createMentionTask
-      summary: Create a task on a mention
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
+          description: A long-lived stream of mention objects.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Mention'
+        '400': *id003
+        '401': *id004
+        '402': *id005
+        '403': *id006
+        '404': *id007
+        '429': *id008
+      servers:
+      - url: https://stream.mention.net/api
+        description: Mention streaming endpoint
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        Access token passed in the Authorization header, prefixed with 'Bearer '. This is the preferred method. A
+        token for your own account is available at the bottom of your app's settings page.
+    accessTokenQuery:
+      type: apiKey
+      in: query
+      name: access_token
+      description: >-
+        The same access token passed in the query string. Supported but discouraged, as it puts the credential in
+        the URL.
+    oauth2:
+      type: oauth2
+      description: >-
+        Authorization-code flow used to obtain an access token for a third party's Mention account. No scopes are
+        defined: a granted token carries full access to the authorizing account.
+      flows:
+        authorizationCode:
+          authorizationUrl: https://web.mention.com/authorize
+          tokenUrl: https://web.mention.net/oauth/v2/token
+          scopes: {}
+  parameters:
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: >-
+        API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings
+        applies.
+      schema:
+        type: string
+      example: '1.21'
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      description: Language used for translated resource fields.
+      schema:
+        type: string
+      example: fr
+  responses:
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    RateLimited:
+      description: >-
+        Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit
+        resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+  schemas:
+    Link:
+      type: object
+      properties:
+        href:
           type: string
-      responses:
-        '201':
-          description: Task created
-        default:
-          description: Error response
-      tags:
-      - Mentions
-x-generated-from: https://dev.mention.com/
-x-generated-by: claude-crawl-2026-05-08
+          description: Relative URL to follow.
+        params:
+          type: object
+          description: The query string parameters encoded in href.
+          additionalProperties: true
+    Links:
+      type: object
+      title: Pagination links
+      description: >-
+        Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present
+        only when applicable.
+      properties:
+        more:
+          $ref: '#/components/schemas/Link'
+        pull:
+          $ref: '#/components/schemas/Link'
+    Mention:
+      type: object
+      title: Mention
+      properties:
+        id:
+          type: string
+        alert_id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        original_url:
+          type: string
+        clickable_url:
+          type: string
+        displayable_url:
+          type: string
+        unique_id:
+          type: string
+        published_at:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        country:
+          type: string
+        favorite:
+          type: boolean
+        folder:
+          type: string
+          enum:
+          - inbox
+          - archive
+          - spam
+          - trash
+        folder_set_by_user:
+          type: boolean
+        read:
+          type: boolean
+        tone:
+          type: integer
+          enum:
+          - -1
+          - 0
+          - 1
+        source_type:
+          type: string
+        source_name:
+          type: string
+        source_url:
+          type: string
+        language_code:
+          type: string
+        picture_url:
+          type: string
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        logs:
+          type: array
+          items:
+            type: object
+            additionalProperties: true
+        children:
+          type: object
+          properties:
+            children:
+              type: array
+              items:
+                type: object
+                additionalProperties: true
+            total:
+              type: integer
+            _links:
+              $ref: '#/components/schemas/Links'
+    MentionCurate:
+      type: object
+      title: Mention curation
+      description: All properties are optional; send only what changes.
+      properties:
+        favorite:
+          type: boolean
+          description: Admin only. Marking a mention favorite also marks it read.
+        trashed:
+          type: boolean
+          description: Admin only.
+        read:
+          type: boolean
+        tags:
+          type: array
+          description: Tags to attach. Each entry needs at least an id, and the tag must already exist on the alert.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+        folder:
+          type: string
+          enum:
+          - inbox
+          - archive
+          - spam
+          - trash
+        tone:
+          type: integer
+          enum:
+          - -1
+          - 0
+          - 1
+          description: Tone key. Valid keys come from app/data.
+    MentionList:
+      type: object
+      properties:
+        mentions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mention'
+        _links:
+          $ref: '#/components/schemas/Links'
+    Tag:
+      type: object
+      title: Tag
+      properties:
+        id:
+          type: integer
+          example: 46468
+        name:
+          type: string
+          maxLength: 20
+          example: space innovation
+        mention_count:
+          type: integer
+        keywords:
+          type: array
+          maxItems: 5
+          items:
+            type: string
+          description: Auto-tagging keywords; new mentions containing them are tagged automatically.
+    Task:
+      type: object
+      title: Mention task
+      properties:
+        id:
+          type: integer
+        assigned_to_account_id:
+          type: string
+        type:
+          type: string
+          description: Task type; valid values come from app/data.
+        comment:
+          type: string
+        done:
+          type: boolean
+        created_at:
+          type: string
+        updated_at:
+          type: string
