@@ -33,6 +33,18 @@ tags:
   - Brand Monitoring
   - Media Monitoring
   - Social Listening
+  - Social-Media
+  - Sentiment Analysis
+  - Reputation Management
+  - Influencer Marketing
+  - Competitive Intelligence
+  - Streaming
+  - Marketing
+tags_raw:
+  - Alerts
+  - Brand Monitoring
+  - Media Monitoring
+  - Social Listening
   - Social Media
   - Sentiment Analysis
   - Reputation Management
@@ -52,6 +64,8 @@ apis:
   humanURL: https://dev.mention.com/current/
   baseURL: https://api.mention.net/api
   tags:
+  - Account
+  tags_raw:
   - Accounts
   properties:
   - type: OpenAPI
@@ -171,6 +185,8 @@ apis:
   humanURL: https://dev.mention.com/current/
   baseURL: https://api.mention.net/api
   tags:
+  - Task
+  tags_raw:
   - Tasks
   properties:
   - type: OpenAPI
