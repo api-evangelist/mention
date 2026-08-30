@@ -9,6 +9,13 @@
       "method": "feed"
     },
     {
+      "source": "https://en.support.mention.com/feed.xml",
+      "feed_url": "https://en.support.mention.com/feed.xml",
+      "title": "",
+      "saved": 0,
+      "method": "feed"
+    },
+    {
       "source": "https://en.support.mention.com/",
       "feed_url": "https://en.support.mention.com/feed.xml",
       "title": "",
@@ -16,6 +23,6 @@
       "method": "discovered"
     }
   ],
-  "fetched": "2026-08-22T20:20:02Z",
-  "post_count": 12
+  "fetched": "2026-08-30T22:33:40Z",
+  "post_count": 37
 }
