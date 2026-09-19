@@ -146,6 +146,8 @@ apis:
   humanURL: https://dev.mention.com/current/
   baseURL: https://api.mention.net/api
   tags:
+  - Share
+  tags_raw:
   - Shares
   properties:
   - type: OpenAPI
