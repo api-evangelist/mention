@@ -1,23 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Mention Authors API
-  description: >-
-    The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social
-    listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation,
-    tags, tasks, alert sharing, authors and influencers, and aggregate statistics. Everything the Mention web client
-    can do is available through this API.
-
-
-    Authentication uses bearer tokens, obtained either from an app's settings page (for your own account) or through
-    the OAuth2 authorization-code flow (for a third party's account). Requests send JSON with a Content-Type: application/json
-    header; the OAuth2 endpoints alone take application/x-www-form-urlencoded. Dates use the W3C date-time format
-    level 6 (YYYY-MM-DDThh:mm:ss.sTZD) so that fractional seconds can drive date-based pagination. Collections are
-    cursor-paginated through a _links object. The API version is selected per request with the Accept-Version header;
-    without it, the version configured in the app's settings applies.
-
-
-    This description was reconstructed from Mention's own published API reference at https://dev.mention.com/current/
-    — Mention does not publish a machine-readable OpenAPI definition.
+  description: 'The Mention API is a JSON-based, RESTful API that gives programmatic access to the media monitoring and social listening platform: alerts (the keyword queries Mention crawls for), mentions (the results it finds), curation, tags, tasks, alert sharing, authors and influencers, and aggregate statistics.'
   version: '1.21'
   contact:
     name: Mention Support
@@ -25,11 +9,6 @@ info:
   license:
     name: Proprietary
     url: https://mention.com/en/terms-and-conditions/
-externalDocs:
-  description: Mention API reference
-  url: https://dev.mention.com/current/
-x-generated-from: https://dev.mention.com/current/
-x-generated-by: api-evangelist-enrichment-2026-08-13
 servers:
 - url: https://api.mention.net/api
   description: Mention API — the base URL named in Mention's own reference documentation.
@@ -47,9 +26,7 @@ paths:
     get:
       operationId: listAuthors
       summary: Fetch authors and influencers of an alert
-      description: >-
-        Returns the authors behind an alert's mentions, with their influence score, reach and social profiles. The
-        query string must be URL encoded.
+      description: Returns the authors behind an alert's mentions, with their influence score, reach and social profiles. The query string must be URL encoded.
       tags:
       - Authors
       externalDocs:
@@ -137,94 +114,48 @@ paths:
         '429':
           $ref: '#/components/responses/RateLimited'
 components:
-  securitySchemes:
-    bearerAuth:
-      type: http
-      scheme: bearer
-      description: >-
-        Access token passed in the Authorization header, prefixed with 'Bearer '. This is the preferred method. A
-        token for your own account is available at the bottom of your app's settings page.
-    accessTokenQuery:
-      type: apiKey
-      in: query
-      name: access_token
-      description: >-
-        The same access token passed in the query string. Supported but discouraged, as it puts the credential in
-        the URL.
-    oauth2:
-      type: oauth2
-      description: >-
-        Authorization-code flow used to obtain an access token for a third party's Mention account. No scopes are
-        defined: a granted token carries full access to the authorizing account.
-      flows:
-        authorizationCode:
-          authorizationUrl: https://web.mention.com/authorize
-          tokenUrl: https://web.mention.net/oauth/v2/token
-          scopes: {}
-  parameters:
-    AcceptVersion:
-      name: Accept-Version
-      in: header
-      required: false
-      description: >-
-        API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings
-        applies.
-      schema:
-        type: string
-      example: '1.21'
-    AcceptLanguage:
-      name: Accept-Language
-      in: header
-      required: false
-      description: Language used for translated resource fields.
-      schema:
-        type: string
-      example: fr
-  responses:
-    ValidationError:
-      description: Invalid input — query string, body or parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationError'
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    Forbidden:
-      description: Access was denied — the token is valid but not permitted on this resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    NotFound:
-      description: The resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    RateLimited:
-      description: >-
-        Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit
-        resets.
-      headers:
-        X-Rate-Limit-Reset:
-          description: Unix timestamp at which the rate limit resets.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
   schemas:
+    OAuthError:
+      type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      properties:
+        error:
+          type: string
+          example: access_denied
+        error_description:
+          type: string
+          example: OAuth2 authentication required
+    AuthorList:
+      type: object
+      properties:
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
+    ValidationError:
+      type: object
+      title: Validation error
+      description: Validation errors on POST and PUT requests are returned with a 400 status code. Field-level messages are keyed by field name under form.children and are intended to be displayed directly to the end user when they result from a form submission.
+      properties:
+        form:
+          type: object
+          properties:
+            errors:
+              type: array
+              items:
+                type: string
+              description: Request-wide error messages.
+            children:
+              type: object
+              description: Field-specific error messages, keyed by field name.
+              additionalProperties:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
     Author:
       type: object
       title: Author
@@ -249,12 +180,86 @@ components:
         main_author:
           type: object
           additionalProperties: true
-          description: 'The primary social profile behind the author: kind, url, name, realname, score, picture and
-            followers_count.'
-    AuthorList:
-      type: object
-      properties:
-        authors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Author'
+          description: 'The primary social profile behind the author: kind, url, name, realname, score, picture and followers_count.'
+  responses:
+    RateLimited:
+      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+  parameters:
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
+      schema:
+        type: string
+      example: '1.21'
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      description: Language used for translated resource fields.
+      schema:
+        type: string
+      example: fr
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Access token passed in the Authorization header, prefixed with 'Bearer '. This is the preferred method. A token for your own account is available at the bottom of your app's settings page.
+    accessTokenQuery:
+      type: apiKey
+      in: query
+      name: access_token
+      description: The same access token passed in the query string. Supported but discouraged, as it puts the credential in the URL.
+    oauth2:
+      type: oauth2
+      description: 'Authorization-code flow used to obtain an access token for a third party''s Mention account. No scopes are defined: a granted token carries full access to the authorizing account.'
+      flows:
+        authorizationCode:
+          authorizationUrl: https://web.mention.com/authorize
+          tokenUrl: https://web.mention.net/oauth/v2/token
+          scopes: {}
+externalDocs:
+  description: Mention API reference
+  url: https://dev.mention.com/current/
+x-generated-from: https://dev.mention.com/current/
+x-generated-by: api-evangelist-enrichment-2026-08-13

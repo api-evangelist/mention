@@ -1,18 +1,12 @@
 {
   "provider": "mention",
   "sources": [
-    "mention-accounts-api-openapi.yml",
-    "mention-alerts-api-openapi.yml",
-    "mention-authors-api-openapi.yml",
-    "mention-mentions-api-openapi.yml",
-    "mention-shares-api-openapi.yml",
-    "mention-stats-api-openapi.yml",
-    "mention-tags-api-openapi.yml",
-    "mention-tasks-api-openapi.yml"
+    "_ae-authored/mention-openapi.yml"
   ],
   "outputs": [
     "mention-accounts-api-openapi.yml",
     "mention-alerts-api-openapi.yml",
+    "mention-app-api-openapi.yml",
     "mention-authors-api-openapi.yml",
     "mention-mentions-api-openapi.yml",
     "mention-shares-api-openapi.yml",
@@ -23,6 +17,20 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (0 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "mention-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "mention-accounts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mention-alerts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mention-app-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mention-authors-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mention-mentions-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mention-shares-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mention-stats-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mention-tags-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "mention-tasks-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
