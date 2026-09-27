@@ -433,6 +433,15 @@ paths:
         description: Mention streaming endpoint
 components:
   schemas:
+    Links:
+      type: object
+      title: Pagination links
+      description: Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present only when applicable.
+      properties:
+        more:
+          $ref: '#/components/schemas/Link'
+        pull:
+          $ref: '#/components/schemas/Link'
     OAuthError:
       type: object
       title: OAuth2 error
@@ -444,15 +453,6 @@ components:
         error_description:
           type: string
           example: OAuth2 authentication required
-    MentionList:
-      type: object
-      properties:
-        mentions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Mention'
-        _links:
-          $ref: '#/components/schemas/Links'
     Mention:
       type: object
       title: Mention
@@ -535,15 +535,15 @@ components:
               type: integer
             _links:
               $ref: '#/components/schemas/Links'
-    Links:
+    MentionList:
       type: object
-      title: Pagination links
-      description: Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present only when applicable.
       properties:
-        more:
-          $ref: '#/components/schemas/Link'
-        pull:
-          $ref: '#/components/schemas/Link'
+        mentions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mention'
+        _links:
+          $ref: '#/components/schemas/Links'
     MentionCurate:
       type: object
       title: Mention curation
@@ -581,35 +581,6 @@ components:
           - 0
           - 1
           description: Tone key. Valid keys come from app/data.
-    Tag:
-      type: object
-      title: Tag
-      properties:
-        id:
-          type: integer
-          example: 46468
-        name:
-          type: string
-          maxLength: 20
-          example: space innovation
-        mention_count:
-          type: integer
-        keywords:
-          type: array
-          maxItems: 5
-          items:
-            type: string
-          description: Auto-tagging keywords; new mentions containing them are tagged automatically.
-    Link:
-      type: object
-      properties:
-        href:
-          type: string
-          description: Relative URL to follow.
-        params:
-          type: object
-          description: The query string parameters encoded in href.
-          additionalProperties: true
     Task:
       type: object
       title: Mention task
@@ -629,6 +600,25 @@ components:
           type: string
         updated_at:
           type: string
+    Tag:
+      type: object
+      title: Tag
+      properties:
+        id:
+          type: integer
+          example: 46468
+        name:
+          type: string
+          maxLength: 20
+          example: space innovation
+        mention_count:
+          type: integer
+        keywords:
+          type: array
+          maxItems: 5
+          items:
+            type: string
+          description: Auto-tagging keywords; new mentions containing them are tagged automatically.
     ValidationError:
       type: object
       title: Validation error
@@ -652,7 +642,23 @@ components:
                     type: array
                     items:
                       type: string
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          description: Relative URL to follow.
+        params:
+          type: object
+          description: The query string parameters encoded in href.
+          additionalProperties: true
   responses:
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
     RateLimited:
       description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
       headers:
@@ -664,20 +670,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OAuthError'
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
     NotFound:
       description: The resource does not exist.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/OAuthError'
-    Forbidden:
-      description: Access was denied — the token is valid but not permitted on this resource.
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
       content:
         application/json:
           schema:
@@ -688,12 +694,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationError'
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
   parameters:
     AcceptVersion:
       name: Accept-Version

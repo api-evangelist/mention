@@ -281,39 +281,6 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
-    OAuthError:
-      type: object
-      title: OAuth2 error
-      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
-      properties:
-        error:
-          type: string
-          example: access_denied
-        error_description:
-          type: string
-          example: OAuth2 authentication required
-    ShareCreate:
-      type: object
-      required:
-      - account_id
-      properties:
-        account_id:
-          type: string
-          description: Public id of the account the alert is shared with.
-    ShareEnvelope:
-      type: object
-      properties:
-        share:
-          $ref: '#/components/schemas/Share'
-    ShareList:
-      type: object
-      properties:
-        shares:
-          type: array
-          items:
-            $ref: '#/components/schemas/Share'
-        _links:
-          $ref: '#/components/schemas/Links'
     Share:
       type: object
       title: Alert share
@@ -335,6 +302,11 @@ components:
           type: string
         weight:
           type: integer
+    ShareEnvelope:
+      type: object
+      properties:
+        share:
+          $ref: '#/components/schemas/Share'
     Links:
       type: object
       title: Pagination links
@@ -344,12 +316,26 @@ components:
           $ref: '#/components/schemas/Link'
         pull:
           $ref: '#/components/schemas/Link'
-    ShareUpdate:
+    OAuthError:
+      type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      properties:
+        error:
+          type: string
+          example: access_denied
+        error_description:
+          type: string
+          example: OAuth2 authentication required
+    ShareList:
       type: object
       properties:
-        blocked:
-          type: boolean
-          description: Blocks the account's access to the alert.
+        shares:
+          type: array
+          items:
+            $ref: '#/components/schemas/Share'
+        _links:
+          $ref: '#/components/schemas/Links'
     Account:
       type: object
       title: Account
@@ -382,16 +368,20 @@ components:
         permissions:
           type: object
           additionalProperties: true
-    Link:
+    ShareUpdate:
       type: object
       properties:
-        href:
+        blocked:
+          type: boolean
+          description: Blocks the account's access to the alert.
+    ShareCreate:
+      type: object
+      required:
+      - account_id
+      properties:
+        account_id:
           type: string
-          description: Relative URL to follow.
-        params:
-          type: object
-          description: The query string parameters encoded in href.
-          additionalProperties: true
+          description: Public id of the account the alert is shared with.
     ValidationError:
       type: object
       title: Validation error
@@ -415,7 +405,23 @@ components:
                     type: array
                     items:
                       type: string
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          description: Relative URL to follow.
+        params:
+          type: object
+          description: The query string parameters encoded in href.
+          additionalProperties: true
   responses:
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
     RateLimited:
       description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
       headers:
@@ -427,20 +433,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OAuthError'
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
     NotFound:
       description: The resource does not exist.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/OAuthError'
-    Forbidden:
-      description: Access was denied — the token is valid but not permitted on this resource.
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
       content:
         application/json:
           schema:
@@ -451,12 +457,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationError'
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
   parameters:
     AcceptVersion:
       name: Accept-Version

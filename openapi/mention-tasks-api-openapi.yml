@@ -311,6 +311,24 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
+    Links:
+      type: object
+      title: Pagination links
+      description: Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present only when applicable.
+      properties:
+        more:
+          $ref: '#/components/schemas/Link'
+        pull:
+          $ref: '#/components/schemas/Link'
+    TaskUpdate:
+      type: object
+      properties:
+        type:
+          type: string
+        comment:
+          type: string
+        done:
+          type: boolean
     OAuthError:
       type: object
       title: OAuth2 error
@@ -336,29 +354,6 @@ components:
           type: string
         done:
           type: boolean
-    TaskUpdate:
-      type: object
-      properties:
-        type:
-          type: string
-        comment:
-          type: string
-        done:
-          type: boolean
-    Links:
-      type: object
-      title: Pagination links
-      description: Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present only when applicable.
-      properties:
-        more:
-          $ref: '#/components/schemas/Link'
-        pull:
-          $ref: '#/components/schemas/Link'
-    TaskEnvelope:
-      type: object
-      properties:
-        task:
-          $ref: '#/components/schemas/Task'
     TaskList:
       type: object
       properties:
@@ -368,16 +363,11 @@ components:
             $ref: '#/components/schemas/Task'
         _links:
           $ref: '#/components/schemas/Links'
-    Link:
+    TaskEnvelope:
       type: object
       properties:
-        href:
-          type: string
-          description: Relative URL to follow.
-        params:
-          type: object
-          description: The query string parameters encoded in href.
-          additionalProperties: true
+        task:
+          $ref: '#/components/schemas/Task'
     Task:
       type: object
       title: Mention task
@@ -420,7 +410,23 @@ components:
                     type: array
                     items:
                       type: string
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          description: Relative URL to follow.
+        params:
+          type: object
+          description: The query string parameters encoded in href.
+          additionalProperties: true
   responses:
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
     RateLimited:
       description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
       headers:
@@ -432,20 +438,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OAuthError'
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
     NotFound:
       description: The resource does not exist.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/OAuthError'
-    Forbidden:
-      description: Access was denied — the token is valid but not permitted on this resource.
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
       content:
         application/json:
           schema:
@@ -456,12 +462,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationError'
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
   parameters:
     AcceptVersion:
       name: Accept-Version

@@ -219,6 +219,11 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
+    AccountEnvelope:
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/Account'
     OAuthError:
       type: object
       title: OAuth2 error
@@ -230,57 +235,6 @@ components:
         error_description:
           type: string
           example: OAuth2 authentication required
-    AccountEnvelope:
-      type: object
-      properties:
-        account:
-          $ref: '#/components/schemas/Account'
-    AccountCreate:
-      type: object
-      title: Account create
-      required:
-      - name
-      - email
-      - password
-      - language_code
-      properties:
-        name:
-          type: string
-        email:
-          type: string
-          format: email
-          minLength: 2
-          maxLength: 255
-        phone:
-          type: string
-        password:
-          type: string
-          minLength: 6
-          description: At least 6 characters, mixing letters and figures.
-        language_code:
-          type: string
-          description: Two character language code; valid values come from app/data.
-        client:
-          type: string
-          description: Name of the application registering the user. Not updatable.
-    AccountUpdate:
-      type: object
-      title: Account update
-      description: Any property may be omitted. Changing the password requires old_password and new_password rather than password.
-      properties:
-        name:
-          type: string
-        email:
-          type: string
-          format: email
-        phone:
-          type: string
-        language_code:
-          type: string
-        old_password:
-          type: string
-        new_password:
-          type: string
     Account:
       type: object
       title: Account
@@ -336,7 +290,59 @@ components:
                     type: array
                     items:
                       type: string
+    AccountCreate:
+      type: object
+      title: Account create
+      required:
+      - name
+      - email
+      - password
+      - language_code
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+          minLength: 2
+          maxLength: 255
+        phone:
+          type: string
+        password:
+          type: string
+          minLength: 6
+          description: At least 6 characters, mixing letters and figures.
+        language_code:
+          type: string
+          description: Two character language code; valid values come from app/data.
+        client:
+          type: string
+          description: Name of the application registering the user. Not updatable.
+    AccountUpdate:
+      type: object
+      title: Account update
+      description: Any property may be omitted. Changing the password requires old_password and new_password rather than password.
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        language_code:
+          type: string
+        old_password:
+          type: string
+        new_password:
+          type: string
   responses:
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
     RateLimited:
       description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
       headers:
@@ -348,20 +354,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OAuthError'
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    NotFound:
-      description: The resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
     Forbidden:
       description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
       content:
         application/json:
           schema:
@@ -372,12 +378,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationError'
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
   parameters:
     AcceptVersion:
       name: Accept-Version
