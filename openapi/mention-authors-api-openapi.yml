@@ -114,25 +114,66 @@ paths:
         '429':
           $ref: '#/components/responses/RateLimited'
 components:
+  responses:
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    RateLimited:
+      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+  parameters:
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      description: Language used for translated resource fields.
+      schema:
+        type: string
+      example: fr
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
+      schema:
+        type: string
+      example: '1.21'
   schemas:
-    AuthorList:
-      type: object
-      properties:
-        authors:
-          type: array
-          items:
-            $ref: '#/components/schemas/Author'
-    OAuthError:
-      type: object
-      title: OAuth2 error
-      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
-      properties:
-        error:
-          type: string
-          example: access_denied
-        error_description:
-          type: string
-          example: OAuth2 authentication required
     Author:
       type: object
       title: Author
@@ -158,6 +199,13 @@ components:
           type: object
           additionalProperties: true
           description: 'The primary social profile behind the author: kind, url, name, realname, score, picture and followers_count.'
+    AuthorList:
+      type: object
+      properties:
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Author'
     ValidationError:
       type: object
       title: Validation error
@@ -181,65 +229,17 @@ components:
                     type: array
                     items:
                       type: string
-  responses:
-    NotFound:
-      description: The resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    Forbidden:
-      description: Access was denied — the token is valid but not permitted on this resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    RateLimited:
-      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
-      headers:
-        X-Rate-Limit-Reset:
-          description: Unix timestamp at which the rate limit resets.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    ValidationError:
-      description: Invalid input — query string, body or parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationError'
-  parameters:
-    AcceptVersion:
-      name: Accept-Version
-      in: header
-      required: false
-      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
-      schema:
-        type: string
-      example: '1.21'
-    AcceptLanguage:
-      name: Accept-Language
-      in: header
-      required: false
-      description: Language used for translated resource fields.
-      schema:
-        type: string
-      example: fr
+    OAuthError:
+      type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      properties:
+        error:
+          type: string
+          example: access_denied
+        error_description:
+          type: string
+          example: OAuth2 authentication required
   securitySchemes:
     bearerAuth:
       type: http

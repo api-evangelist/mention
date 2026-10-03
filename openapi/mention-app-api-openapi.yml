@@ -56,8 +56,32 @@ paths:
       - $ref: '#/components/parameters/AcceptLanguage'
 components:
   responses:
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
     NotFound:
       description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
       content:
         application/json:
           schema:
@@ -73,39 +97,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OAuthError'
-    Forbidden:
-      description: Access was denied — the token is valid but not permitted on this resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    ValidationError:
-      description: Invalid input — query string, body or parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationError'
   parameters:
-    AcceptVersion:
-      name: Accept-Version
-      in: header
-      required: false
-      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
-      schema:
-        type: string
-      example: '1.21'
     AcceptLanguage:
       name: Accept-Language
       in: header
@@ -114,18 +106,15 @@ components:
       schema:
         type: string
       example: fr
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
+      schema:
+        type: string
+      example: '1.21'
   schemas:
-    OAuthError:
-      type: object
-      title: OAuth2 error
-      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
-      properties:
-        error:
-          type: string
-          example: access_denied
-        error_description:
-          type: string
-          example: OAuth2 authentication required
     ValidationError:
       type: object
       title: Validation error
@@ -211,6 +200,17 @@ components:
             type: string
         locale:
           type: string
+    OAuthError:
+      type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      properties:
+        error:
+          type: string
+          example: access_denied
+        error_description:
+          type: string
+          example: OAuth2 authentication required
   securitySchemes:
     bearerAuth:
       type: http

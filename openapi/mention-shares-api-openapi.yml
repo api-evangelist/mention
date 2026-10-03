@@ -302,31 +302,19 @@ components:
           type: string
         weight:
           type: integer
+    ShareCreate:
+      type: object
+      required:
+      - account_id
+      properties:
+        account_id:
+          type: string
+          description: Public id of the account the alert is shared with.
     ShareEnvelope:
       type: object
       properties:
         share:
           $ref: '#/components/schemas/Share'
-    Links:
-      type: object
-      title: Pagination links
-      description: Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present only when applicable.
-      properties:
-        more:
-          $ref: '#/components/schemas/Link'
-        pull:
-          $ref: '#/components/schemas/Link'
-    OAuthError:
-      type: object
-      title: OAuth2 error
-      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
-      properties:
-        error:
-          type: string
-          example: access_denied
-        error_description:
-          type: string
-          example: OAuth2 authentication required
     ShareList:
       type: object
       properties:
@@ -374,14 +362,6 @@ components:
         blocked:
           type: boolean
           description: Blocks the account's access to the alert.
-    ShareCreate:
-      type: object
-      required:
-      - account_id
-      properties:
-        account_id:
-          type: string
-          description: Public id of the account the alert is shared with.
     ValidationError:
       type: object
       title: Validation error
@@ -415,9 +395,53 @@ components:
           type: object
           description: The query string parameters encoded in href.
           additionalProperties: true
+    Links:
+      type: object
+      title: Pagination links
+      description: Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present only when applicable.
+      properties:
+        more:
+          $ref: '#/components/schemas/Link'
+        pull:
+          $ref: '#/components/schemas/Link'
+    OAuthError:
+      type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      properties:
+        error:
+          type: string
+          example: access_denied
+        error_description:
+          type: string
+          example: OAuth2 authentication required
   responses:
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
     Forbidden:
       description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
       content:
         application/json:
           schema:
@@ -433,39 +457,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OAuthError'
-    NotFound:
-      description: The resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    ValidationError:
-      description: Invalid input — query string, body or parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationError'
   parameters:
-    AcceptVersion:
-      name: Accept-Version
-      in: header
-      required: false
-      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
-      schema:
-        type: string
-      example: '1.21'
     AcceptLanguage:
       name: Accept-Language
       in: header
@@ -474,6 +466,14 @@ components:
       schema:
         type: string
       example: fr
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
+      schema:
+        type: string
+      example: '1.21'
   securitySchemes:
     bearerAuth:
       type: http

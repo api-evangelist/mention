@@ -442,17 +442,62 @@ components:
           $ref: '#/components/schemas/Link'
         pull:
           $ref: '#/components/schemas/Link'
-    OAuthError:
+    MentionCurate:
       type: object
-      title: OAuth2 error
-      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      title: Mention curation
+      description: All properties are optional; send only what changes.
       properties:
-        error:
+        favorite:
+          type: boolean
+          description: Admin only. Marking a mention favorite also marks it read.
+        trashed:
+          type: boolean
+          description: Admin only.
+        read:
+          type: boolean
+        tags:
+          type: array
+          description: Tags to attach. Each entry needs at least an id, and the tag must already exist on the alert.
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              name:
+                type: string
+        folder:
           type: string
-          example: access_denied
-        error_description:
+          enum:
+          - inbox
+          - archive
+          - spam
+          - trash
+        tone:
+          type: integer
+          enum:
+          - -1
+          - 0
+          - 1
+          description: Tone key. Valid keys come from app/data.
+    Tag:
+      type: object
+      title: Tag
+      properties:
+        id:
+          type: integer
+          example: 46468
+        name:
           type: string
-          example: OAuth2 authentication required
+          maxLength: 20
+          example: space innovation
+        mention_count:
+          type: integer
+        keywords:
+          type: array
+          maxItems: 5
+          items:
+            type: string
+          description: Auto-tagging keywords; new mentions containing them are tagged automatically.
     Mention:
       type: object
       title: Mention
@@ -535,90 +580,6 @@ components:
               type: integer
             _links:
               $ref: '#/components/schemas/Links'
-    MentionList:
-      type: object
-      properties:
-        mentions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Mention'
-        _links:
-          $ref: '#/components/schemas/Links'
-    MentionCurate:
-      type: object
-      title: Mention curation
-      description: All properties are optional; send only what changes.
-      properties:
-        favorite:
-          type: boolean
-          description: Admin only. Marking a mention favorite also marks it read.
-        trashed:
-          type: boolean
-          description: Admin only.
-        read:
-          type: boolean
-        tags:
-          type: array
-          description: Tags to attach. Each entry needs at least an id, and the tag must already exist on the alert.
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-              name:
-                type: string
-        folder:
-          type: string
-          enum:
-          - inbox
-          - archive
-          - spam
-          - trash
-        tone:
-          type: integer
-          enum:
-          - -1
-          - 0
-          - 1
-          description: Tone key. Valid keys come from app/data.
-    Task:
-      type: object
-      title: Mention task
-      properties:
-        id:
-          type: integer
-        assigned_to_account_id:
-          type: string
-        type:
-          type: string
-          description: Task type; valid values come from app/data.
-        comment:
-          type: string
-        done:
-          type: boolean
-        created_at:
-          type: string
-        updated_at:
-          type: string
-    Tag:
-      type: object
-      title: Tag
-      properties:
-        id:
-          type: integer
-          example: 46468
-        name:
-          type: string
-          maxLength: 20
-          example: space innovation
-        mention_count:
-          type: integer
-        keywords:
-          type: array
-          maxItems: 5
-          items:
-            type: string
-          description: Auto-tagging keywords; new mentions containing them are tagged automatically.
     ValidationError:
       type: object
       title: Validation error
@@ -642,6 +603,45 @@ components:
                     type: array
                     items:
                       type: string
+    OAuthError:
+      type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      properties:
+        error:
+          type: string
+          example: access_denied
+        error_description:
+          type: string
+          example: OAuth2 authentication required
+    MentionList:
+      type: object
+      properties:
+        mentions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Mention'
+        _links:
+          $ref: '#/components/schemas/Links'
+    Task:
+      type: object
+      title: Mention task
+      properties:
+        id:
+          type: integer
+        assigned_to_account_id:
+          type: string
+        type:
+          type: string
+          description: Task type; valid values come from app/data.
+        comment:
+          type: string
+        done:
+          type: boolean
+        created_at:
+          type: string
+        updated_at:
+          type: string
     Link:
       type: object
       properties:
@@ -653,8 +653,32 @@ components:
           description: The query string parameters encoded in href.
           additionalProperties: true
   responses:
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
     Forbidden:
       description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
       content:
         application/json:
           schema:
@@ -670,39 +694,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OAuthError'
-    NotFound:
-      description: The resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    ValidationError:
-      description: Invalid input — query string, body or parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationError'
   parameters:
-    AcceptVersion:
-      name: Accept-Version
-      in: header
-      required: false
-      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
-      schema:
-        type: string
-      example: '1.21'
     AcceptLanguage:
       name: Accept-Language
       in: header
@@ -711,6 +703,14 @@ components:
       schema:
         type: string
       example: fr
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
+      schema:
+        type: string
+      example: '1.21'
   securitySchemes:
     bearerAuth:
       type: http
