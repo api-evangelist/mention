@@ -281,30 +281,6 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
-    OAuthError:
-      type: object
-      title: OAuth2 error
-      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
-      properties:
-        error:
-          type: string
-          example: access_denied
-        error_description:
-          type: string
-          example: OAuth2 authentication required
-    ShareCreate:
-      type: object
-      required:
-      - account_id
-      properties:
-        account_id:
-          type: string
-          description: Public id of the account the alert is shared with.
-    ShareEnvelope:
-      type: object
-      properties:
-        share:
-          $ref: '#/components/schemas/Share'
     ShareList:
       type: object
       properties:
@@ -314,6 +290,21 @@ components:
             $ref: '#/components/schemas/Share'
         _links:
           $ref: '#/components/schemas/Links'
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          description: Relative URL to follow.
+        params:
+          type: object
+          description: The query string parameters encoded in href.
+          additionalProperties: true
+    ShareEnvelope:
+      type: object
+      properties:
+        share:
+          $ref: '#/components/schemas/Share'
     Share:
       type: object
       title: Alert share
@@ -344,12 +335,40 @@ components:
           $ref: '#/components/schemas/Link'
         pull:
           $ref: '#/components/schemas/Link'
-    ShareUpdate:
+    OAuthError:
       type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
       properties:
-        blocked:
-          type: boolean
-          description: Blocks the account's access to the alert.
+        error:
+          type: string
+          example: access_denied
+        error_description:
+          type: string
+          example: OAuth2 authentication required
+    ValidationError:
+      type: object
+      title: Validation error
+      description: Validation errors on POST and PUT requests are returned with a 400 status code. Field-level messages are keyed by field name under form.children and are intended to be displayed directly to the end user when they result from a form submission.
+      properties:
+        form:
+          type: object
+          properties:
+            errors:
+              type: array
+              items:
+                type: string
+              description: Request-wide error messages.
+            children:
+              type: object
+              description: Field-specific error messages, keyed by field name.
+              additionalProperties:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
     Account:
       type: object
       title: Account
@@ -382,51 +401,21 @@ components:
         permissions:
           type: object
           additionalProperties: true
-    Link:
+    ShareCreate:
       type: object
+      required:
+      - account_id
       properties:
-        href:
+        account_id:
           type: string
-          description: Relative URL to follow.
-        params:
-          type: object
-          description: The query string parameters encoded in href.
-          additionalProperties: true
-    ValidationError:
+          description: Public id of the account the alert is shared with.
+    ShareUpdate:
       type: object
-      title: Validation error
-      description: Validation errors on POST and PUT requests are returned with a 400 status code. Field-level messages are keyed by field name under form.children and are intended to be displayed directly to the end user when they result from a form submission.
       properties:
-        form:
-          type: object
-          properties:
-            errors:
-              type: array
-              items:
-                type: string
-              description: Request-wide error messages.
-            children:
-              type: object
-              description: Field-specific error messages, keyed by field name.
-              additionalProperties:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: string
+        blocked:
+          type: boolean
+          description: Blocks the account's access to the alert.
   responses:
-    RateLimited:
-      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
-      headers:
-        X-Rate-Limit-Reset:
-          description: Unix timestamp at which the rate limit resets.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
     Unauthorized:
       description: Access was denied — missing or invalid access token.
       content:
@@ -435,6 +424,12 @@ components:
             $ref: '#/components/schemas/OAuthError'
     NotFound:
       description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
       content:
         application/json:
           schema:
@@ -451,8 +446,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationError'
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
+    RateLimited:
+      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
       content:
         application/json:
           schema:

@@ -311,6 +311,57 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
+    Task:
+      type: object
+      title: Mention task
+      properties:
+        id:
+          type: integer
+        assigned_to_account_id:
+          type: string
+        type:
+          type: string
+          description: Task type; valid values come from app/data.
+        comment:
+          type: string
+        done:
+          type: boolean
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    TaskEnvelope:
+      type: object
+      properties:
+        task:
+          $ref: '#/components/schemas/Task'
+    Links:
+      type: object
+      title: Pagination links
+      description: Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present only when applicable.
+      properties:
+        more:
+          $ref: '#/components/schemas/Link'
+        pull:
+          $ref: '#/components/schemas/Link'
+    TaskUpdate:
+      type: object
+      properties:
+        type:
+          type: string
+        comment:
+          type: string
+        done:
+          type: boolean
+    TaskList:
+      type: object
+      properties:
+        tasks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Task'
+        _links:
+          $ref: '#/components/schemas/Links'
     OAuthError:
       type: object
       title: OAuth2 error
@@ -336,67 +387,6 @@ components:
           type: string
         done:
           type: boolean
-    TaskUpdate:
-      type: object
-      properties:
-        type:
-          type: string
-        comment:
-          type: string
-        done:
-          type: boolean
-    Links:
-      type: object
-      title: Pagination links
-      description: Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present only when applicable.
-      properties:
-        more:
-          $ref: '#/components/schemas/Link'
-        pull:
-          $ref: '#/components/schemas/Link'
-    TaskEnvelope:
-      type: object
-      properties:
-        task:
-          $ref: '#/components/schemas/Task'
-    TaskList:
-      type: object
-      properties:
-        tasks:
-          type: array
-          items:
-            $ref: '#/components/schemas/Task'
-        _links:
-          $ref: '#/components/schemas/Links'
-    Link:
-      type: object
-      properties:
-        href:
-          type: string
-          description: Relative URL to follow.
-        params:
-          type: object
-          description: The query string parameters encoded in href.
-          additionalProperties: true
-    Task:
-      type: object
-      title: Mention task
-      properties:
-        id:
-          type: integer
-        assigned_to_account_id:
-          type: string
-        type:
-          type: string
-          description: Task type; valid values come from app/data.
-        comment:
-          type: string
-        done:
-          type: boolean
-        created_at:
-          type: string
-        updated_at:
-          type: string
     ValidationError:
       type: object
       title: Validation error
@@ -420,18 +410,17 @@ components:
                     type: array
                     items:
                       type: string
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          description: Relative URL to follow.
+        params:
+          type: object
+          description: The query string parameters encoded in href.
+          additionalProperties: true
   responses:
-    RateLimited:
-      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
-      headers:
-        X-Rate-Limit-Reset:
-          description: Unix timestamp at which the rate limit resets.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
     Unauthorized:
       description: Access was denied — missing or invalid access token.
       content:
@@ -440,6 +429,12 @@ components:
             $ref: '#/components/schemas/OAuthError'
     NotFound:
       description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
       content:
         application/json:
           schema:
@@ -456,8 +451,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationError'
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
+    RateLimited:
+      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
       content:
         application/json:
           schema:

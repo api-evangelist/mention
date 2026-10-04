@@ -458,97 +458,21 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
-    AlertCreate:
-      type: object
-      title: Alert create
-      required:
-      - name
-      - query
-      - languages
-      properties:
-        name:
-          type: string
-          description: Human readable identifier of the alert.
-          example: NASA and competitors
-        query:
-          $ref: '#/components/schemas/AlertQuery'
-        languages:
-          type: array
-          items:
-            type: string
-          description: Language codes to track.
-          example:
-          - en
-          - fr
-          - ru
-        countries:
-          type: array
-          items:
-            type: string
-          example:
-          - US
-          - RU
-        sources:
-          type: array
-          items:
-            type: string
-          description: Sources to crawl. Valid values come from app/data.
-          example:
-          - web
-          - twitter
-        blocked_sites:
-          type: array
-          items:
-            type: string
-        noise_detection:
-          type: boolean
-        reviews_pages:
-          type: array
-          items:
-            type: string
-    AlertList:
+    AlertEnvelope:
       type: object
       properties:
-        alerts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Alert'
-        _links:
-          $ref: '#/components/schemas/Links'
-    OAuthError:
-      type: object
-      title: OAuth2 error
-      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
-      properties:
-        error:
-          type: string
-          example: access_denied
-        error_description:
-          type: string
-          example: OAuth2 authentication required
+        alert:
+          $ref: '#/components/schemas/Alert'
     AlertUpdate:
       allOf:
       - $ref: '#/components/schemas/AlertCreate'
       title: Alert update
       description: Any property may be omitted; omitted properties are left unchanged.
-    Preferences:
+    PreferencesEnvelope:
       type: object
-      title: Alert preferences
-      description: Notification frequency vocabularies come from app/data and may change without notice.
       properties:
-        email_notification_frequency:
-          type: string
-        push_notification_frequency:
-          type: string
-        desktop_notification_frequency:
-          type: string
-        trending_email_notification_frequency:
-          type: string
-        trending_sms_notification_frequency:
-          type: string
-        weight:
-          type: integer
-          description: How important the alert is.
+        preferences:
+          $ref: '#/components/schemas/Preferences'
     Alert:
       type: object
       title: Alert
@@ -616,36 +540,6 @@ components:
         connection_id:
           type: string
           description: 'Set only on related alerts: the id of the main alert.'
-    Share:
-      type: object
-      title: Alert share
-      description: The link between an account and an alert. Deleting the last share deletes the alert.
-      properties:
-        id:
-          type: string
-        account:
-          $ref: '#/components/schemas/Account'
-        role:
-          type: string
-        blocked:
-          type: boolean
-        permissions:
-          type: object
-          additionalProperties:
-            type: boolean
-        created_at:
-          type: string
-        weight:
-          type: integer
-    Links:
-      type: object
-      title: Pagination links
-      description: Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present only when applicable.
-      properties:
-        more:
-          $ref: '#/components/schemas/Link'
-        pull:
-          $ref: '#/components/schemas/Link'
     Link:
       type: object
       properties:
@@ -656,20 +550,15 @@ components:
           type: object
           description: The query string parameters encoded in href.
           additionalProperties: true
-    MonitoredWebsite:
+    AlertList:
       type: object
-      title: Monitored website
-      description: The domain acts as an included keyword; when block_self is true it also acts as a blocked url. A full URL is stripped down to its domain.
-      required:
-      - domain
-      - block_self
       properties:
-        domain:
-          type: string
-          example: www.nasa.gov
-        block_self:
-          type: boolean
-          example: true
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alert'
+        _links:
+          $ref: '#/components/schemas/Links'
     ValidationError:
       type: object
       title: Validation error
@@ -725,11 +614,20 @@ components:
         permissions:
           type: object
           additionalProperties: true
-    PreferencesEnvelope:
+    MonitoredWebsite:
       type: object
+      title: Monitored website
+      description: The domain acts as an included keyword; when block_self is true it also acts as a blocked url. A full URL is stripped down to its domain.
+      required:
+      - domain
+      - block_self
       properties:
-        preferences:
-          $ref: '#/components/schemas/Preferences'
+        domain:
+          type: string
+          example: www.nasa.gov
+        block_self:
+          type: boolean
+          example: true
     AlertQuery:
       type: object
       title: Alert query
@@ -762,11 +660,155 @@ components:
         query_string:
           type: string
           description: Advanced boolean expression, e.g. (NASA AND Discovery) OR (Arianespace AND Ariane). A single clause may not mix AND and OR without parentheses.
-    AlertEnvelope:
+    Share:
       type: object
+      title: Alert share
+      description: The link between an account and an alert. Deleting the last share deletes the alert.
       properties:
-        alert:
-          $ref: '#/components/schemas/Alert'
+        id:
+          type: string
+        account:
+          $ref: '#/components/schemas/Account'
+        role:
+          type: string
+        blocked:
+          type: boolean
+        permissions:
+          type: object
+          additionalProperties:
+            type: boolean
+        created_at:
+          type: string
+        weight:
+          type: integer
+    Links:
+      type: object
+      title: Pagination links
+      description: Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present only when applicable.
+      properties:
+        more:
+          $ref: '#/components/schemas/Link'
+        pull:
+          $ref: '#/components/schemas/Link'
+    Preferences:
+      type: object
+      title: Alert preferences
+      description: Notification frequency vocabularies come from app/data and may change without notice.
+      properties:
+        email_notification_frequency:
+          type: string
+        push_notification_frequency:
+          type: string
+        desktop_notification_frequency:
+          type: string
+        trending_email_notification_frequency:
+          type: string
+        trending_sms_notification_frequency:
+          type: string
+        weight:
+          type: integer
+          description: How important the alert is.
+    OAuthError:
+      type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      properties:
+        error:
+          type: string
+          example: access_denied
+        error_description:
+          type: string
+          example: OAuth2 authentication required
+    AlertCreate:
+      type: object
+      title: Alert create
+      required:
+      - name
+      - query
+      - languages
+      properties:
+        name:
+          type: string
+          description: Human readable identifier of the alert.
+          example: NASA and competitors
+        query:
+          $ref: '#/components/schemas/AlertQuery'
+        languages:
+          type: array
+          items:
+            type: string
+          description: Language codes to track.
+          example:
+          - en
+          - fr
+          - ru
+        countries:
+          type: array
+          items:
+            type: string
+          example:
+          - US
+          - RU
+        sources:
+          type: array
+          items:
+            type: string
+          description: Sources to crawl. Valid values come from app/data.
+          example:
+          - web
+          - twitter
+        blocked_sites:
+          type: array
+          items:
+            type: string
+        noise_detection:
+          type: boolean
+        reviews_pages:
+          type: array
+          items:
+            type: string
+  responses:
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    RateLimited:
+      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
   parameters:
     AcceptVersion:
       name: Accept-Version
@@ -784,48 +826,6 @@ components:
       schema:
         type: string
       example: fr
-  responses:
-    ValidationError:
-      description: Invalid input — query string, body or parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationError'
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    RateLimited:
-      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
-      headers:
-        X-Rate-Limit-Reset:
-          description: Unix timestamp at which the rate limit resets.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    Forbidden:
-      description: Access was denied — the token is valid but not permitted on this resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    NotFound:
-      description: The resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
   securitySchemes:
     bearerAuth:
       type: http

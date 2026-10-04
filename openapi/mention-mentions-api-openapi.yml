@@ -433,17 +433,34 @@ paths:
         description: Mention streaming endpoint
 components:
   schemas:
-    OAuthError:
+    Task:
       type: object
-      title: OAuth2 error
-      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      title: Mention task
       properties:
-        error:
+        id:
+          type: integer
+        assigned_to_account_id:
           type: string
-          example: access_denied
-        error_description:
+        type:
           type: string
-          example: OAuth2 authentication required
+          description: Task type; valid values come from app/data.
+        comment:
+          type: string
+        done:
+          type: boolean
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    Links:
+      type: object
+      title: Pagination links
+      description: Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present only when applicable.
+      properties:
+        more:
+          $ref: '#/components/schemas/Link'
+        pull:
+          $ref: '#/components/schemas/Link'
     MentionList:
       type: object
       properties:
@@ -535,15 +552,69 @@ components:
               type: integer
             _links:
               $ref: '#/components/schemas/Links'
-    Links:
+    Tag:
       type: object
-      title: Pagination links
-      description: Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present only when applicable.
+      title: Tag
       properties:
-        more:
-          $ref: '#/components/schemas/Link'
-        pull:
-          $ref: '#/components/schemas/Link'
+        id:
+          type: integer
+          example: 46468
+        name:
+          type: string
+          maxLength: 20
+          example: space innovation
+        mention_count:
+          type: integer
+        keywords:
+          type: array
+          maxItems: 5
+          items:
+            type: string
+          description: Auto-tagging keywords; new mentions containing them are tagged automatically.
+    OAuthError:
+      type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      properties:
+        error:
+          type: string
+          example: access_denied
+        error_description:
+          type: string
+          example: OAuth2 authentication required
+    ValidationError:
+      type: object
+      title: Validation error
+      description: Validation errors on POST and PUT requests are returned with a 400 status code. Field-level messages are keyed by field name under form.children and are intended to be displayed directly to the end user when they result from a form submission.
+      properties:
+        form:
+          type: object
+          properties:
+            errors:
+              type: array
+              items:
+                type: string
+              description: Request-wide error messages.
+            children:
+              type: object
+              description: Field-specific error messages, keyed by field name.
+              additionalProperties:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          description: Relative URL to follow.
+        params:
+          type: object
+          description: The query string parameters encoded in href.
+          additionalProperties: true
     MentionCurate:
       type: object
       title: Mention curation
@@ -581,89 +652,7 @@ components:
           - 0
           - 1
           description: Tone key. Valid keys come from app/data.
-    Tag:
-      type: object
-      title: Tag
-      properties:
-        id:
-          type: integer
-          example: 46468
-        name:
-          type: string
-          maxLength: 20
-          example: space innovation
-        mention_count:
-          type: integer
-        keywords:
-          type: array
-          maxItems: 5
-          items:
-            type: string
-          description: Auto-tagging keywords; new mentions containing them are tagged automatically.
-    Link:
-      type: object
-      properties:
-        href:
-          type: string
-          description: Relative URL to follow.
-        params:
-          type: object
-          description: The query string parameters encoded in href.
-          additionalProperties: true
-    Task:
-      type: object
-      title: Mention task
-      properties:
-        id:
-          type: integer
-        assigned_to_account_id:
-          type: string
-        type:
-          type: string
-          description: Task type; valid values come from app/data.
-        comment:
-          type: string
-        done:
-          type: boolean
-        created_at:
-          type: string
-        updated_at:
-          type: string
-    ValidationError:
-      type: object
-      title: Validation error
-      description: Validation errors on POST and PUT requests are returned with a 400 status code. Field-level messages are keyed by field name under form.children and are intended to be displayed directly to the end user when they result from a form submission.
-      properties:
-        form:
-          type: object
-          properties:
-            errors:
-              type: array
-              items:
-                type: string
-              description: Request-wide error messages.
-            children:
-              type: object
-              description: Field-specific error messages, keyed by field name.
-              additionalProperties:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: string
   responses:
-    RateLimited:
-      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
-      headers:
-        X-Rate-Limit-Reset:
-          description: Unix timestamp at which the rate limit resets.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
     Unauthorized:
       description: Access was denied — missing or invalid access token.
       content:
@@ -672,6 +661,12 @@ components:
             $ref: '#/components/schemas/OAuthError'
     NotFound:
       description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
       content:
         application/json:
           schema:
@@ -688,8 +683,13 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationError'
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
+    RateLimited:
+      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
       content:
         application/json:
           schema:
