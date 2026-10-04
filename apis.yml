@@ -234,6 +234,9 @@ apis:
   - type: GettingStarted
     url: https://en.support.mention.com/en/articles/1904644-api-access-explained
 common:
+  - type: CapabilityMap
+    url: capabilities/mention-capability-edges.yml
+    name: Mention Business Capability Map
   - type: DeveloperPortal
     url: https://dev.mention.com/current/
   - type: Documentation

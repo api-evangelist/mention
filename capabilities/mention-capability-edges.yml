@@ -1,0 +1,38 @@
+slug: mention
+provider: Mention
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: Mentions
+  spec_file: mention-mentions-api-openapi.yml
+  capability_id: BC-400.30
+  capability_id_l1: BC-400
+  capability_name: Market Intelligence Management
+  confidence: 0.75
+  evidence: GET .../mentions 'Fetch mentions', PUT .../mentions/{mention_id} 'Curate a mention', GET /accounts/{account_id}/mentions
+    'Stream mentions'
+  reason: Retrieval, streaming and curation of the media/social mentions collected by monitoring queries
+    — the core social-listening result set feeding brand and competitive insight. Market Intelligence
+    Management is the best fit; a brand/PR reputation reading is the main alternative.
+- tag: Alerts
+  spec_file: mention-alerts-api-openapi.yml
+  capability_id: BC-400.30
+  capability_id_l1: BC-400
+  capability_name: Market Intelligence Management
+  confidence: 0.7
+  evidence: '''alerts (the keyword queries Mention crawls for)''; POST /accounts/{account_id}/alerts ''Create
+    an alert''; schemas AlertQuery, MonitoredWebsite'
+  reason: Despite the homographic tag, these Alerts are standing keyword queries that drive media monitoring
+    and social listening across news, social and review sites — i.e. configuring market/brand intelligence
+    gathering, not operational or financial-crime alerting. Mapped to Market Intelligence; a PR/reputation
+    reading (BC-850.30) is also defensible, hence 0.7.
