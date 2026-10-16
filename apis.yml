@@ -40,12 +40,15 @@ accessModel:
     trial exists at social.agorapulse.com/mention-trial. API access is listed as a paid add-on, not
     included in the plan.
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/mention.png
+x-docs-platform: gitbook
+x-docs-platform-confidence: medium
+x-docs-platform-checked: 2026-10-04
 tags:
   - Alerts
   - Brand Monitoring
   - Media Monitoring
   - Social Listening
-  - Social-Media
+  - Social Media
   - Sentiment Analysis
   - Reputation Management
   - Influencer Marketing
