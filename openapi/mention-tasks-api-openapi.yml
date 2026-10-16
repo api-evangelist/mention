@@ -311,30 +311,6 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
-    Task:
-      type: object
-      title: Mention task
-      properties:
-        id:
-          type: integer
-        assigned_to_account_id:
-          type: string
-        type:
-          type: string
-          description: Task type; valid values come from app/data.
-        comment:
-          type: string
-        done:
-          type: boolean
-        created_at:
-          type: string
-        updated_at:
-          type: string
-    TaskEnvelope:
-      type: object
-      properties:
-        task:
-          $ref: '#/components/schemas/Task'
     Links:
       type: object
       title: Pagination links
@@ -362,31 +338,11 @@ components:
             $ref: '#/components/schemas/Task'
         _links:
           $ref: '#/components/schemas/Links'
-    OAuthError:
+    TaskEnvelope:
       type: object
-      title: OAuth2 error
-      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
       properties:
-        error:
-          type: string
-          example: access_denied
-        error_description:
-          type: string
-          example: OAuth2 authentication required
-    TaskCreate:
-      type: object
-      required:
-      - assigned_to_account_id
-      properties:
-        assigned_to_account_id:
-          type: string
-          description: Account id of the team mate assigned. Not updatable.
-        type:
-          type: string
-        comment:
-          type: string
-        done:
-          type: boolean
+        task:
+          $ref: '#/components/schemas/Task'
     ValidationError:
       type: object
       title: Validation error
@@ -420,21 +376,59 @@ components:
           type: object
           description: The query string parameters encoded in href.
           additionalProperties: true
+    Task:
+      type: object
+      title: Mention task
+      properties:
+        id:
+          type: integer
+        assigned_to_account_id:
+          type: string
+        type:
+          type: string
+          description: Task type; valid values come from app/data.
+        comment:
+          type: string
+        done:
+          type: boolean
+        created_at:
+          type: string
+        updated_at:
+          type: string
+    OAuthError:
+      type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      properties:
+        error:
+          type: string
+          example: access_denied
+        error_description:
+          type: string
+          example: OAuth2 authentication required
+    TaskCreate:
+      type: object
+      required:
+      - assigned_to_account_id
+      properties:
+        assigned_to_account_id:
+          type: string
+          description: Account id of the team mate assigned. Not updatable.
+        type:
+          type: string
+        comment:
+          type: string
+        done:
+          type: boolean
   responses:
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/OAuthError'
     NotFound:
       description: The resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
       content:
         application/json:
           schema:
@@ -451,6 +445,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationError'
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
     RateLimited:
       description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
       headers:
@@ -463,14 +463,6 @@ components:
           schema:
             $ref: '#/components/schemas/OAuthError'
   parameters:
-    AcceptVersion:
-      name: Accept-Version
-      in: header
-      required: false
-      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
-      schema:
-        type: string
-      example: '1.21'
     AcceptLanguage:
       name: Accept-Language
       in: header
@@ -479,6 +471,14 @@ components:
       schema:
         type: string
       example: fr
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
+      schema:
+        type: string
+      example: '1.21'
   securitySchemes:
     bearerAuth:
       type: http

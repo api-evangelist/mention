@@ -2,10 +2,6 @@
   "repo": "mention",
   "feeds": [
     {
-      "source": "https://en.support.mention.com/",
-      "error": "URLError"
-    },
-    {
       "source": "https://mention.com/en/blog/feed/",
       "feed_url": "https://mention.com/en/blog/feed/",
       "title": "",
@@ -13,7 +9,7 @@
       "method": "feed"
     }
   ],
-  "fetched": "2026-09-19T20:17:39Z",
+  "fetched": "2026-10-10T13:15:00Z",
   "post_count": 37,
   "feed_nature": "vendor-blog",
   "feed_nature_basis": "path_blog",

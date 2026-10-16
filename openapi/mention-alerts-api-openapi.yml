@@ -458,21 +458,90 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   schemas:
+    Share:
+      type: object
+      title: Alert share
+      description: The link between an account and an alert. Deleting the last share deletes the alert.
+      properties:
+        id:
+          type: string
+        account:
+          $ref: '#/components/schemas/Account'
+        role:
+          type: string
+        blocked:
+          type: boolean
+        permissions:
+          type: object
+          additionalProperties:
+            type: boolean
+        created_at:
+          type: string
+        weight:
+          type: integer
     AlertEnvelope:
       type: object
       properties:
         alert:
           $ref: '#/components/schemas/Alert'
+    Preferences:
+      type: object
+      title: Alert preferences
+      description: Notification frequency vocabularies come from app/data and may change without notice.
+      properties:
+        email_notification_frequency:
+          type: string
+        push_notification_frequency:
+          type: string
+        desktop_notification_frequency:
+          type: string
+        trending_email_notification_frequency:
+          type: string
+        trending_sms_notification_frequency:
+          type: string
+        weight:
+          type: integer
+          description: How important the alert is.
+    Link:
+      type: object
+      properties:
+        href:
+          type: string
+          description: Relative URL to follow.
+        params:
+          type: object
+          description: The query string parameters encoded in href.
+          additionalProperties: true
+    OAuthError:
+      type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      properties:
+        error:
+          type: string
+          example: access_denied
+        error_description:
+          type: string
+          example: OAuth2 authentication required
+    MonitoredWebsite:
+      type: object
+      title: Monitored website
+      description: The domain acts as an included keyword; when block_self is true it also acts as a blocked url. A full URL is stripped down to its domain.
+      required:
+      - domain
+      - block_self
+      properties:
+        domain:
+          type: string
+          example: www.nasa.gov
+        block_self:
+          type: boolean
+          example: true
     AlertUpdate:
       allOf:
       - $ref: '#/components/schemas/AlertCreate'
       title: Alert update
       description: Any property may be omitted; omitted properties are left unchanged.
-    PreferencesEnvelope:
-      type: object
-      properties:
-        preferences:
-          $ref: '#/components/schemas/Preferences'
     Alert:
       type: object
       title: Alert
@@ -540,94 +609,11 @@ components:
         connection_id:
           type: string
           description: 'Set only on related alerts: the id of the main alert.'
-    Link:
+    PreferencesEnvelope:
       type: object
       properties:
-        href:
-          type: string
-          description: Relative URL to follow.
-        params:
-          type: object
-          description: The query string parameters encoded in href.
-          additionalProperties: true
-    AlertList:
-      type: object
-      properties:
-        alerts:
-          type: array
-          items:
-            $ref: '#/components/schemas/Alert'
-        _links:
-          $ref: '#/components/schemas/Links'
-    ValidationError:
-      type: object
-      title: Validation error
-      description: Validation errors on POST and PUT requests are returned with a 400 status code. Field-level messages are keyed by field name under form.children and are intended to be displayed directly to the end user when they result from a form submission.
-      properties:
-        form:
-          type: object
-          properties:
-            errors:
-              type: array
-              items:
-                type: string
-              description: Request-wide error messages.
-            children:
-              type: object
-              description: Field-specific error messages, keyed by field name.
-              additionalProperties:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: string
-    Account:
-      type: object
-      title: Account
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        email:
-          type: string
-          format: email
-        language_code:
-          type: string
-        created_at:
-          type: string
-        updated_at:
-          type: string
-        avatar_url:
-          type: string
-        timezone:
-          type: string
-        grouped_email_notification:
-          type: boolean
-        default_email_notification_frequency:
-          type: string
-        default_desktop_notification_frequency:
-          type: string
-        default_push_notification_frequency:
-          type: string
-        permissions:
-          type: object
-          additionalProperties: true
-    MonitoredWebsite:
-      type: object
-      title: Monitored website
-      description: The domain acts as an included keyword; when block_self is true it also acts as a blocked url. A full URL is stripped down to its domain.
-      required:
-      - domain
-      - block_self
-      properties:
-        domain:
-          type: string
-          example: www.nasa.gov
-        block_self:
-          type: boolean
-          example: true
+        preferences:
+          $ref: '#/components/schemas/Preferences'
     AlertQuery:
       type: object
       title: Alert query
@@ -660,27 +646,38 @@ components:
         query_string:
           type: string
           description: Advanced boolean expression, e.g. (NASA AND Discovery) OR (Arianespace AND Ariane). A single clause may not mix AND and OR without parentheses.
-    Share:
+    Account:
       type: object
-      title: Alert share
-      description: The link between an account and an alert. Deleting the last share deletes the alert.
+      title: Account
       properties:
         id:
           type: string
-        account:
-          $ref: '#/components/schemas/Account'
-        role:
+        name:
           type: string
-        blocked:
-          type: boolean
-        permissions:
-          type: object
-          additionalProperties:
-            type: boolean
+        email:
+          type: string
+          format: email
+        language_code:
+          type: string
         created_at:
           type: string
-        weight:
-          type: integer
+        updated_at:
+          type: string
+        avatar_url:
+          type: string
+        timezone:
+          type: string
+        grouped_email_notification:
+          type: boolean
+        default_email_notification_frequency:
+          type: string
+        default_desktop_notification_frequency:
+          type: string
+        default_push_notification_frequency:
+          type: string
+        permissions:
+          type: object
+          additionalProperties: true
     Links:
       type: object
       title: Pagination links
@@ -690,35 +687,6 @@ components:
           $ref: '#/components/schemas/Link'
         pull:
           $ref: '#/components/schemas/Link'
-    Preferences:
-      type: object
-      title: Alert preferences
-      description: Notification frequency vocabularies come from app/data and may change without notice.
-      properties:
-        email_notification_frequency:
-          type: string
-        push_notification_frequency:
-          type: string
-        desktop_notification_frequency:
-          type: string
-        trending_email_notification_frequency:
-          type: string
-        trending_sms_notification_frequency:
-          type: string
-        weight:
-          type: integer
-          description: How important the alert is.
-    OAuthError:
-      type: object
-      title: OAuth2 error
-      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
-      properties:
-        error:
-          type: string
-          example: access_denied
-        error_description:
-          type: string
-          example: OAuth2 authentication required
     AlertCreate:
       type: object
       title: Alert create
@@ -767,15 +735,70 @@ components:
           type: array
           items:
             type: string
+    ValidationError:
+      type: object
+      title: Validation error
+      description: Validation errors on POST and PUT requests are returned with a 400 status code. Field-level messages are keyed by field name under form.children and are intended to be displayed directly to the end user when they result from a form submission.
+      properties:
+        form:
+          type: object
+          properties:
+            errors:
+              type: array
+              items:
+                type: string
+              description: Request-wide error messages.
+            children:
+              type: object
+              description: Field-specific error messages, keyed by field name.
+              additionalProperties:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
+    AlertList:
+      type: object
+      properties:
+        alerts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Alert'
+        _links:
+          $ref: '#/components/schemas/Links'
+  parameters:
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      description: Language used for translated resource fields.
+      schema:
+        type: string
+      example: fr
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
+      schema:
+        type: string
+      example: '1.21'
   responses:
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
     PaymentRequired:
       description: Payment required — the account's plan does not cover this request.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/OAuthError'
-    Forbidden:
-      description: Access was denied — the token is valid but not permitted on this resource.
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
       content:
         application/json:
           schema:
@@ -787,12 +810,6 @@ components:
           description: Unix timestamp at which the rate limit resets.
           schema:
             type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
       content:
         application/json:
           schema:
@@ -809,23 +826,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ValidationError'
-  parameters:
-    AcceptVersion:
-      name: Accept-Version
-      in: header
-      required: false
-      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
-      schema:
-        type: string
-      example: '1.21'
-    AcceptLanguage:
-      name: Accept-Language
-      in: header
-      required: false
-      description: Language used for translated resource fields.
-      schema:
-        type: string
-      example: fr
   securitySchemes:
     bearerAuth:
       type: http
