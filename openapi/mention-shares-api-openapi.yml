@@ -280,28 +280,69 @@ paths:
         '429':
           $ref: '#/components/responses/RateLimited'
 components:
+  responses:
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    RateLimited:
+      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
   schemas:
-    Share:
+    Links:
       type: object
-      title: Alert share
-      description: The link between an account and an alert. Deleting the last share deletes the alert.
+      title: Pagination links
+      description: Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present only when applicable.
       properties:
-        id:
+        more:
+          $ref: '#/components/schemas/Link'
+        pull:
+          $ref: '#/components/schemas/Link'
+    OAuthError:
+      type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      properties:
+        error:
           type: string
-        account:
-          $ref: '#/components/schemas/Account'
-        role:
+          example: access_denied
+        error_description:
           type: string
-        blocked:
-          type: boolean
-        permissions:
-          type: object
-          additionalProperties:
-            type: boolean
-        created_at:
-          type: string
-        weight:
-          type: integer
+          example: OAuth2 authentication required
     ShareCreate:
       type: object
       required:
@@ -310,58 +351,6 @@ components:
         account_id:
           type: string
           description: Public id of the account the alert is shared with.
-    ShareEnvelope:
-      type: object
-      properties:
-        share:
-          $ref: '#/components/schemas/Share'
-    ShareList:
-      type: object
-      properties:
-        shares:
-          type: array
-          items:
-            $ref: '#/components/schemas/Share'
-        _links:
-          $ref: '#/components/schemas/Links'
-    Account:
-      type: object
-      title: Account
-      properties:
-        id:
-          type: string
-        name:
-          type: string
-        email:
-          type: string
-          format: email
-        language_code:
-          type: string
-        created_at:
-          type: string
-        updated_at:
-          type: string
-        avatar_url:
-          type: string
-        timezone:
-          type: string
-        grouped_email_notification:
-          type: boolean
-        default_email_notification_frequency:
-          type: string
-        default_desktop_notification_frequency:
-          type: string
-        default_push_notification_frequency:
-          type: string
-        permissions:
-          type: object
-          additionalProperties: true
-    ShareUpdate:
-      type: object
-      properties:
-        blocked:
-          type: boolean
-          description: Blocks the account's access to the alert.
     ValidationError:
       type: object
       title: Validation error
@@ -395,68 +384,79 @@ components:
           type: object
           description: The query string parameters encoded in href.
           additionalProperties: true
-    Links:
+    Share:
       type: object
-      title: Pagination links
-      description: Hypermedia links for cursor pagination. more points at older items and pull at newer items; each is present only when applicable.
+      title: Alert share
+      description: The link between an account and an alert. Deleting the last share deletes the alert.
       properties:
-        more:
-          $ref: '#/components/schemas/Link'
-        pull:
-          $ref: '#/components/schemas/Link'
-    OAuthError:
+        id:
+          type: string
+        account:
+          $ref: '#/components/schemas/Account'
+        role:
+          type: string
+        blocked:
+          type: boolean
+        permissions:
+          type: object
+          additionalProperties:
+            type: boolean
+        created_at:
+          type: string
+        weight:
+          type: integer
+    Account:
       type: object
-      title: OAuth2 error
-      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      title: Account
       properties:
-        error:
+        id:
           type: string
-          example: access_denied
-        error_description:
+        name:
           type: string
-          example: OAuth2 authentication required
-  responses:
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    NotFound:
-      description: The resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    Forbidden:
-      description: Access was denied — the token is valid but not permitted on this resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    ValidationError:
-      description: Invalid input — query string, body or parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationError'
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    RateLimited:
-      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
-      headers:
-        X-Rate-Limit-Reset:
-          description: Unix timestamp at which the rate limit resets.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
+        email:
+          type: string
+          format: email
+        language_code:
+          type: string
+        created_at:
+          type: string
+        updated_at:
+          type: string
+        avatar_url:
+          type: string
+        timezone:
+          type: string
+        grouped_email_notification:
+          type: boolean
+        default_email_notification_frequency:
+          type: string
+        default_desktop_notification_frequency:
+          type: string
+        default_push_notification_frequency:
+          type: string
+        permissions:
+          type: object
+          additionalProperties: true
+    ShareEnvelope:
+      type: object
+      properties:
+        share:
+          $ref: '#/components/schemas/Share'
+    ShareList:
+      type: object
+      properties:
+        shares:
+          type: array
+          items:
+            $ref: '#/components/schemas/Share'
+        _links:
+          $ref: '#/components/schemas/Links'
+    ShareUpdate:
+      type: object
+      properties:
+        blocked:
+          type: boolean
+          description: Blocks the account's access to the alert.
   parameters:
     AcceptLanguage:
       name: Accept-Language

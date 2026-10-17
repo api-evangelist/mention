@@ -219,32 +219,20 @@ paths:
           $ref: '#/components/responses/RateLimited'
 components:
   responses:
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
     PaymentRequired:
       description: Payment required — the account's plan does not cover this request.
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/OAuthError'
-    NotFound:
-      description: The resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
     Forbidden:
       description: Access was denied — the token is valid but not permitted on this resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    ValidationError:
-      description: Invalid input — query string, body or parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationError'
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
       content:
         application/json:
           schema:
@@ -260,24 +248,24 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/OAuthError'
-  parameters:
-    AcceptLanguage:
-      name: Accept-Language
-      in: header
-      required: false
-      description: Language used for translated resource fields.
-      schema:
-        type: string
-      example: fr
-    AcceptVersion:
-      name: Accept-Version
-      in: header
-      required: false
-      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
-      schema:
-        type: string
-      example: '1.21'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
   schemas:
+    AccountEnvelope:
+      type: object
+      properties:
+        account:
+          $ref: '#/components/schemas/Account'
     AccountCreate:
       type: object
       title: Account create
@@ -306,11 +294,40 @@ components:
         client:
           type: string
           description: Name of the application registering the user. Not updatable.
-    AccountEnvelope:
+    OAuthError:
       type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
       properties:
-        account:
-          $ref: '#/components/schemas/Account'
+        error:
+          type: string
+          example: access_denied
+        error_description:
+          type: string
+          example: OAuth2 authentication required
+    ValidationError:
+      type: object
+      title: Validation error
+      description: Validation errors on POST and PUT requests are returned with a 400 status code. Field-level messages are keyed by field name under form.children and are intended to be displayed directly to the end user when they result from a form submission.
+      properties:
+        form:
+          type: object
+          properties:
+            errors:
+              type: array
+              items:
+                type: string
+              description: Request-wide error messages.
+            children:
+              type: object
+              description: Field-specific error messages, keyed by field name.
+              additionalProperties:
+                type: object
+                properties:
+                  errors:
+                    type: array
+                    items:
+                      type: string
     Account:
       type: object
       title: Account
@@ -361,40 +378,23 @@ components:
           type: string
         new_password:
           type: string
-    ValidationError:
-      type: object
-      title: Validation error
-      description: Validation errors on POST and PUT requests are returned with a 400 status code. Field-level messages are keyed by field name under form.children and are intended to be displayed directly to the end user when they result from a form submission.
-      properties:
-        form:
-          type: object
-          properties:
-            errors:
-              type: array
-              items:
-                type: string
-              description: Request-wide error messages.
-            children:
-              type: object
-              description: Field-specific error messages, keyed by field name.
-              additionalProperties:
-                type: object
-                properties:
-                  errors:
-                    type: array
-                    items:
-                      type: string
-    OAuthError:
-      type: object
-      title: OAuth2 error
-      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
-      properties:
-        error:
-          type: string
-          example: access_denied
-        error_description:
-          type: string
-          example: OAuth2 authentication required
+  parameters:
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      description: Language used for translated resource fields.
+      schema:
+        type: string
+      example: fr
+    AcceptVersion:
+      name: Accept-Version
+      in: header
+      required: false
+      description: API version to use for this request, e.g. 1.21. When omitted, the version configured in the app's settings applies.
+      schema:
+        type: string
+      example: '1.21'
   securitySchemes:
     bearerAuth:
       type: http

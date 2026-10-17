@@ -231,7 +231,60 @@ paths:
         '429':
           $ref: '#/components/responses/RateLimited'
 components:
+  responses:
+    Unauthorized:
+      description: Access was denied — missing or invalid access token.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    PaymentRequired:
+      description: Payment required — the account's plan does not cover this request.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    Forbidden:
+      description: Access was denied — the token is valid but not permitted on this resource.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    RateLimited:
+      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
+      headers:
+        X-Rate-Limit-Reset:
+          description: Unix timestamp at which the rate limit resets.
+          schema:
+            type: integer
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    NotFound:
+      description: The resource does not exist.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OAuthError'
+    ValidationError:
+      description: Invalid input — query string, body or parameters.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ValidationError'
   schemas:
+    OAuthError:
+      type: object
+      title: OAuth2 error
+      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      properties:
+        error:
+          type: string
+          example: access_denied
+        error_description:
+          type: string
+          example: OAuth2 authentication required
     Links:
       type: object
       title: Pagination links
@@ -241,39 +294,6 @@ components:
           $ref: '#/components/schemas/Link'
         pull:
           $ref: '#/components/schemas/Link'
-    TagEnvelope:
-      type: object
-      properties:
-        tag:
-          $ref: '#/components/schemas/Tag'
-    TagList:
-      type: object
-      properties:
-        tags:
-          type: array
-          items:
-            $ref: '#/components/schemas/Tag'
-        _links:
-          $ref: '#/components/schemas/Links'
-    Tag:
-      type: object
-      title: Tag
-      properties:
-        id:
-          type: integer
-          example: 46468
-        name:
-          type: string
-          maxLength: 20
-          example: space innovation
-        mention_count:
-          type: integer
-        keywords:
-          type: array
-          maxItems: 5
-          items:
-            type: string
-          description: Auto-tagging keywords; new mentions containing them are tagged automatically.
     TagWrite:
       type: object
       properties:
@@ -308,6 +328,15 @@ components:
                     type: array
                     items:
                       type: string
+    TagList:
+      type: object
+      properties:
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        _links:
+          $ref: '#/components/schemas/Links'
     Link:
       type: object
       properties:
@@ -318,59 +347,30 @@ components:
           type: object
           description: The query string parameters encoded in href.
           additionalProperties: true
-    OAuthError:
+    Tag:
       type: object
-      title: OAuth2 error
-      description: Error envelope returned by the API gateway and the OAuth2 endpoints.
+      title: Tag
       properties:
-        error:
+        id:
+          type: integer
+          example: 46468
+        name:
           type: string
-          example: access_denied
-        error_description:
-          type: string
-          example: OAuth2 authentication required
-  responses:
-    PaymentRequired:
-      description: Payment required — the account's plan does not cover this request.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    NotFound:
-      description: The resource does not exist.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    Forbidden:
-      description: Access was denied — the token is valid but not permitted on this resource.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    ValidationError:
-      description: Invalid input — query string, body or parameters.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ValidationError'
-    Unauthorized:
-      description: Access was denied — missing or invalid access token.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
-    RateLimited:
-      description: Rate limited. The response carries an X-Rate-Limit-Reset header holding the unix timestamp at which the limit resets.
-      headers:
-        X-Rate-Limit-Reset:
-          description: Unix timestamp at which the rate limit resets.
-          schema:
-            type: integer
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/OAuthError'
+          maxLength: 20
+          example: space innovation
+        mention_count:
+          type: integer
+        keywords:
+          type: array
+          maxItems: 5
+          items:
+            type: string
+          description: Auto-tagging keywords; new mentions containing them are tagged automatically.
+    TagEnvelope:
+      type: object
+      properties:
+        tag:
+          $ref: '#/components/schemas/Tag'
   parameters:
     AcceptLanguage:
       name: Accept-Language
