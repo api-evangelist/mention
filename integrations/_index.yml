@@ -31,7 +31,7 @@
     - alpha
     in_cloud: true
     builder: unknown (community connector; contributor not in the record)
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
 - slug: mention-fivetran
   label: Fivetran
@@ -57,5 +57,5 @@
     - connectors/applications/mention
     vendor_link: https://mention.com/en/
     builder: Fivetran
-  status: pending-generation
+  status: not-a-workflow
   arazzo: null
