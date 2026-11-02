@@ -1,0 +1,43 @@
+# Pricing transcribed from the provider's own page — see provenance. Numbers are quoted, not derived.
+generated: '2026-10-28'
+method: searched
+source: https://mention.com/en/pricing/
+sources:
+- https://mention.com/en/pricing/
+provenance:
+  tool: engine/economics/harvest_pricing.py
+  run: 20261028T141238
+  grounding: every price_text was found verbatim in the fetched page text
+audience: business-product
+pricing_basis: negotiated
+delivery:
+  delivery: managed
+  method: page
+  read: '2026-10-28'
+  managed_tier: Company
+published: false
+note: No numeric price is published on the pricing page; Pricing page shows only a 'Company' plan with
+  an empty 'Starting at $' amount and 'Get a demo' / 'Request a demo' calls to action; the only number
+  present is a yearly-billing saving ('Save 360$'), not a price. No numeric price published.
+plan_count: 1
+currency: USD
+plans:
+- name: Company
+  price_text: Starting at $
+  currency: USD
+  period: month
+  included_quota: Social media & review monitoring, analytics, collaboration, integrations, support; historical
+    data access and API access available as paid add-ons
+x-canonical:
+  generated: '2026-11-01'
+  vocabulary: engine/economics/plans-canonical.yml
+  models: []
+  units: []
+  plans:
+  - name: Company
+    access: other
+    model: unstated
+    model_how: derived
+    units: []
+    periods:
+    - month
