@@ -29,7 +29,7 @@ plans:
   included_quota: Social media & review monitoring, analytics, collaboration, integrations, support; historical
     data access and API access available as paid add-ons
 x-canonical:
-  generated: '2026-11-02'
+  generated: '2026-11-06'
   vocabulary: engine/economics/plans-canonical.yml
   models: []
   units: []
